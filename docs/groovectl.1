@@ -1,0 +1,88 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GROOVECTL" "1" "March 2014" "" ""
+.
+.SH "NAME"
+\fBgroovectl\fR \- groovy music player client
+.
+.SH "SYNOPSIS"
+\fBgroovectl COMMAND [ARGS]\fR
+.
+.SH "DESCRIPTION"
+\fBgroovectl\fR is a command\-line client for grooved\. It communicates with the groved daemon via the DBus session bus\.
+.
+.SH "COMMANDS"
+\fBstatus\fR
+.
+.P
+\~\~\~\~\~\~ Show the status of the player\.
+.
+.P
+\fBplay\fR
+.
+.P
+\~\~\~\~\~\~ Unpause the player\.
+.
+.P
+\fBpause\fR
+.
+.P
+\~\~\~\~\~\~ Pause the player\.
+.
+.P
+\fBtoggle\fR
+.
+.P
+\~\~\~\~\~\~ Toggle the player\'s pause status\.
+.
+.P
+\fBnext\fR
+.
+.P
+\~\~\~\~\~\~ Skip to the next track\.
+.
+.P
+\fBprev\fR
+.
+.P
+\~\~\~\~\~\~ Skip to the previous track\.
+.
+.P
+\fBadd TRACK [, TRACK \.\.\.]\fR
+.
+.P
+\~\~\~\~\~\~ Append tracks to the player\'s tracklist\. Tracks can be either files on the filesystem or other kinds of streams (e\.g\. HTTP streams)\.
+.
+.P
+\fBrgain track|album|none\fR
+.
+.P
+\~\~\~\~\~\~ Set the player\'s replaygain mode\.
+.
+.P
+\fBloop on|off\fR
+.
+.P
+\~\~\~\~\~\~ Set the player\'s loop mode\.
+.
+.P
+\fBlyrics\fR
+.
+.P
+\~\~\~\~\~\~ Download and show lyrics for the currently playing track\.
+.
+.P
+\fBquit\fR
+.
+.P
+\~\~\~\~\~\~ Shutdown the player\.
+.
+.SH "AUTHOR"
+Alessandro Ghedini \fIalessandro@ghedini\.me\fR
+.
+.SH "COPYRIGHT"
+Copyright (C) 2014 Alessandro Ghedini \fIalessandro@ghedini\.me\fR
+.
+.P
+This program is released under the 2 clause BSD license\.

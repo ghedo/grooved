@@ -1,0 +1,53 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GROOVED" "1" "March 2014" "" ""
+.
+.SH "NAME"
+\fBgrooved\fR \- groovy music player daemon
+.
+.SH "SYNOPSIS"
+\fBgrooved [OPTIONS]\fR
+.
+.SH "DESCRIPTION"
+\fBgrooved\fR is a stupidly simple music player that runs as a daemon instead of showing a fancy GUI\. I\'m kinda lazy, so instead or re\-implementing some of the features that make up a music player, I just used stuff someone else already built\. For example, grooved uses mpv to reproduce audio instead of implementing its own half\-working audio decoder and player, and piggybacks on tools like beets instead of implementing yet another music database\. Life gets so much better once you let other people do the hard work\.
+.
+.SH "OPTIONS"
+\fB\-c, \-\-config=<file>\fR
+.
+.P
+\~\~\~\~\~\~ Specify the configuration file (default: \fB~/\.config/grooved/config\.ini\fR)\.
+.
+.P
+\fB\-V, \-\-verbose\fR
+.
+.P
+\~\~\~\~\~\~ Enable verbose log messages\.
+.
+.SH "CONFIG"
+Here is an example configuration that illustrates the available options:
+.
+.IP "" 4
+.
+.nf
+
+[default]
+library = ~/data/musiclibrary\.blb    ; path to beets\' database
+verbose = off                        ; enable/disable verbose output
+
+[player]
+replaygain = none                    ; optionally enable replaygain, can be
+                                     ; "track", "album" or "none"
+.
+.fi
+.
+.IP "" 0
+.
+.SH "AUTHOR"
+Alessandro Ghedini \fIalessandro@ghedini\.me\fR
+.
+.SH "COPYRIGHT"
+Copyright (C) 2014 Alessandro Ghedini \fIalessandro@ghedini\.me\fR
+.
+.P
+This program is released under the 2 clause BSD license\.
