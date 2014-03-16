@@ -146,11 +146,6 @@ void player_init(void) {
 
 	mpv_request_log_messages(player_ctx, "error");
 
-	if (player_loop) {
-		rc = mpv_set_option_string(player_ctx, "loop", "yes");
-		player_check_error("Could not set loop", rc);
-	}
-
 	player_playback_replaygain(cfg.rgain);
 	player_check_error("Could not set replaygain", rc);
 
