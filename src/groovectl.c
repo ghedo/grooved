@@ -33,8 +33,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <termios.h>
 
 #include <inttypes.h>
+
+#include <sys/select.h>
 
 #include <glyr/glyr.h>
 
@@ -53,6 +56,7 @@ static void cmd_add(GroovedPlayer *proxy, const char *path);
 static void cmd_rgain(GroovedPlayer *proxy, const char *mode);
 static void cmd_loop(GroovedPlayer *proxy, const char *mode);
 static void cmd_lyrics(GroovedPlayer *proxy);
+static void cmd_interactive(GroovedPlayer *proxy);
 static void cmd_quit(GroovedPlayer *proxy);
 
 static inline void help();
@@ -60,17 +64,14 @@ static inline void help();
 int main(int argc, char *argv[]) {
 	GError *err = NULL;
 
-	if (argc < 2) {
-		help();
-		exit(1);
-	}
-
 	GroovedPlayer *proxy = grooved_player_proxy_new_for_bus_sync(
 		G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
 		GROOVED_DBUS_NAME, GROOVED_DBUS_PLAYER_PATH, NULL, &err
 	);
 
-	if (strcmp("status", argv[1]) == 0)
+	if (argc < 2)
+		cmd_interactive(proxy);
+	else if (strcmp("status", argv[1]) == 0)
 		cmd_status(proxy);
 	else if (strcmp("play", argv[1]) == 0)
 		cmd_play(proxy);
@@ -121,6 +122,8 @@ int main(int argc, char *argv[]) {
 		cmd_lyrics(proxy);
 	else if (strcmp("quit", argv[1]) == 0)
 		cmd_quit(proxy);
+	else if (strcmp("help", argv[1]) == 0)
+		help();
 	else if (strcmp("introspect", argv[1]) == 0)
 		puts(intro_xml);
 	else {
@@ -291,7 +294,6 @@ static void cmd_lyrics(GroovedPlayer *proxy) {
 	if (err != NULL)
 		fail_printf("%s", err -> message);
 
-
 	g_variant_iter_init(&iter, metadata);
 	while (g_variant_iter_loop(&iter, "{ss}", &key, &val)) {
 		if (strcasecmp("title", key) == 0)
@@ -329,6 +331,77 @@ static void cmd_lyrics(GroovedPlayer *proxy) {
 
 	glyr_free_list(cache);
 	glyr_cleanup();
+}
+
+static void cmd_interactive(GroovedPlayer *proxy) {
+	fd_set rfds;
+	struct timeval tv;
+
+	GError *err = NULL;
+
+	char *state;
+	double len, pos, percent;
+
+	struct termios tio_new;
+	tcgetattr(0, &tio_new);
+
+	tio_new.c_lflag &= ~(ICANON|ECHO); /* Clear ICANON and ECHO. */
+	tio_new.c_cc[VMIN] = 1;
+	tio_new.c_cc[VTIME] = 0;
+	tcsetattr(0,TCSANOW,&tio_new);
+
+	FD_ZERO(&rfds);
+
+	do {
+		if (FD_ISSET(0, &rfds)) {
+			if ((getchar() == 27) && (getchar() == 91)) {
+				int ch = getchar();
+
+				switch (ch) {
+					case 65: /* up */
+						cmd_seek(proxy, "15");
+						break;
+
+					case 66: /* down */
+						cmd_seek(proxy, "-15");
+						break;
+
+					case 67: /* right */
+						cmd_seek(proxy, "5");
+						break;
+
+					case 68: /* left */
+						cmd_seek(proxy, "-5");
+						break;
+
+					default:
+						break;
+				}
+			}
+		}
+
+		grooved_player_call_status_sync(
+			proxy, &state, NULL, &len, &pos, &percent,
+			NULL, NULL, NULL, NULL, &err
+		);
+
+		int pos_min = pos / 60;
+		int pos_sec = (int) pos % 60;
+
+		int len_min = len / 60;
+		int len_sec = (int) len % 60;
+
+		printf(
+			"\r[%s]   %d:%02d/%d:%02d   (%d%%)",
+			state, pos_min, pos_sec, len_min, len_sec, (int) percent
+		);
+		fflush(stdout);
+
+		tv.tv_sec = 0;
+		tv.tv_usec = 100000;
+
+		FD_SET(0, &rfds);
+	} while (select(1, &rfds, NULL, NULL, &tv) >= 0);
 }
 
 static void cmd_quit(GroovedPlayer *proxy) {
