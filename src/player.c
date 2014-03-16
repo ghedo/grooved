@@ -151,26 +151,7 @@ void player_init(void) {
 		player_check_error("Could not set loop", rc);
 	}
 
-	switch (cfg.rgain) {
-		case PLAYER_REPLAYGAIN_TRACK:
-			rc = mpv_set_option_string(
-				player_ctx, "af",
-				"@replaygain_track:volume=replaygain-track"
-			);
-			break;
-
-		case PLAYER_REPLAYGAIN_ALBUM:
-			rc = mpv_set_option_string(
-				player_ctx, "af",
-				"@replaygain_album:volume=replaygain-album"
-			);
-			break;
-
-		case PLAYER_REPLAYGAIN_NONE:
-			rc = MPV_ERROR_SUCCESS;
-			break;
-	}
-
+	player_playback_replaygain(cfg.rgain);
 	player_check_error("Could not set replaygain", rc);
 
 	rc = mpv_initialize(player_ctx);
@@ -296,32 +277,27 @@ void player_playback_seek(int64_t secs) {
 
 void player_playback_replaygain(enum replaygain mode) {
 	int rc;
+	char *filter;
 	const char *cmd[] = { "af", NULL, NULL, NULL };
 
 	switch (mode) {
 		case PLAYER_REPLAYGAIN_TRACK:
-			player_playback_replaygain(PLAYER_REPLAYGAIN_NONE);
-
-			cmd[1] = "add";
-			cmd[2] = "@replaygain_track:volume=replaygain-track";
+			filter = "@replaygain_track:volume=replaygain-track";
+			rc = mpv_set_option_string(player_ctx, "af", filter);
 			break;
 
 		case PLAYER_REPLAYGAIN_ALBUM:
-			player_playback_replaygain(PLAYER_REPLAYGAIN_NONE);
-
-			cmd[1] = "add";
-			cmd[2] = "@replaygain_album:volume=replaygain-album";
+			filter = "@replaygain_album:volume=replaygain-album";
+			rc = mpv_set_option_string(player_ctx, "af", filter);
 			break;
 
 		case PLAYER_REPLAYGAIN_NONE:
 			cmd[1] = "del";
 			cmd[2] = "@replaygain_track,@replaygain_album";
+			rc = mpv_command(player_ctx, cmd);
 			break;
 	}
 
-	player_replaygain = mode;
-
-	rc = mpv_command(player_ctx, cmd);
 	player_check_error("Could not change af chain", rc);
 }
 
