@@ -198,9 +198,14 @@ void player_status(GVariantBuilder *status) {
 
 	g_variant_builder_add_value(status, g_variant_builder_end(meta_build));
 
+	mpv_free_node_contents(&metadata);
+
 	g_variant_builder_add(status, "s", player_playback_replaygain_tostr());
 
 	g_variant_builder_add(status, "b", player_loop);
+
+	mpv_free(state);
+	mpv_free(path);
 }
 
 void player_playback_start(void) {
@@ -257,6 +262,8 @@ void player_playback_toggle(void) {
 		player_playback_pause();
 	else
 		err_printf("Could not get player state");
+
+	mpv_free(val);
 }
 
 void player_playback_seek(int64_t secs) {
@@ -390,25 +397,22 @@ void player_destroy(void) {
 
 static void player_print_metadata(void) {
 	int i;
-	mpv_node md;
+	mpv_node metadata;
 
-	mpv_get_property(
-			player_ctx, "metadata",
-			MPV_FORMAT_NODE, &md
-			);
+	mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
 
-	if (md.format != MPV_FORMAT_NODE_ARRAY)
+	if (metadata.format != MPV_FORMAT_NODE_ARRAY)
 		err_printf("No metadata");
 
 	debug_printf("tags:");
-	for (i = 0; i < md.u.list -> num; i += 2) {
-		char *key =
-			md.u.list -> values[i].u.string;
-		char *val =
-			md.u.list -> values[i + 1].u.string;
+	for (i = 0; i < metadata.u.list -> num; i += 2) {
+		char *key = metadata.u.list -> values[i].u.string;
+		char *val = metadata.u.list -> values[i + 1].u.string;
 
 		debug_printf(" %s: %s", key, val);
 	}
+
+	mpv_free_node_contents(&metadata);
 }
 
 static void player_print_playlist_status(void) {
@@ -418,4 +422,6 @@ static void player_print_playlist_status(void) {
 	int64_t pos   = player_playlist_position();
 
 	debug_printf("position: %d, count: %d, path: %s", pos + 1, count, path);
+
+	mpv_free(path);
 }

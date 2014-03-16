@@ -101,6 +101,8 @@ int main(int argc, char *argv[]) {
 
 	g_main_loop_run(loop);
 
+	g_main_destroy(loop);
+
 	player_destroy();
 
 	x11_destroy();
