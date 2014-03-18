@@ -94,3 +94,15 @@ INSTALL(FILES
 	${PROJECT_SOURCE_DIR}/docs/groovectl.1
 	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/man/man1
 )
+
+INSTALL(FILES
+	${PROJECT_SOURCE_DIR}/etc/groovectl.bash-completion
+	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/bash-completion/completions/
+	RENAME groovectl
+)
+
+INSTALL(FILES
+	${PROJECT_SOURCE_DIR}/etc/groovectl.zsh-completion
+	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/zsh/vendor-completions/
+	RENAME _groovectl
+)
