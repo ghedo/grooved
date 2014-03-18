@@ -1,0 +1,59 @@
+#compdef groovectl
+
+# groovectl zsh completion
+# Copyright (C) 2014 Alessandro Ghedini <alessandro@ghedini.me>
+# This file is released under the 2 clause BSD license, see COPYING
+
+_arguments                      \
+  ':subcommand:->subcommand'    \
+  '*:args:->args'
+
+case $state in
+  subcommand)
+    local -a subcommands
+    subcommands=(
+      "status:show the status of the player"
+      "play:unpause the player"
+      "pause:pause the player"
+      "toggle:toggle the player's pause status"
+      "next:skip to next track"
+      "prev:skip to previous track"
+      "add:append tracks to the player's tracklist"
+      "rgain:set the player's replaygain mode"
+      "loop:set the player's loop mode"
+      "lyrics:download and show lyrics for the currently playing track"
+      "quit:shutdown the player"
+    )
+
+    _describe -t subcommands 'groovectl subcommand' subcommands
+  ;;
+
+  args)
+    case $words[2] in
+      add)
+        _files
+      ;;
+
+      rgain)
+        local -a values
+        values=(
+          "track:track mode"
+          "album:album mode"
+          "none:disable replaygain"
+        )
+
+        _describe -t values 'groovectl rgain values' values
+      ;;
+
+      loop)
+        local -a values
+        values=(
+          "on:enable loop mode"
+          "off:disable loop mode"
+        )
+
+        _describe -t values 'groovectl loop values' values
+      ;;
+    esac
+  ;;
+esac
