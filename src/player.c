@@ -420,10 +420,12 @@ void player_destroy(void) {
 }
 
 static void player_print_metadata(void) {
-	int i;
+	int rc, i;
 	mpv_node metadata;
 
-	mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
+	rc = mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
+	if (rc != MPV_ERROR_SUCCESS)
+		return;
 
 	if (metadata.format != MPV_FORMAT_NODE_ARRAY)
 		err_printf("No metadata");
