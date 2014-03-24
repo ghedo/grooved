@@ -33,12 +33,12 @@
 #include <dbus/dbus.h>
 
 #include "dbus.h"
+#include "dbus-common.h"
 #include "grooved.h"
 #include "player.h"
 #include "printf.h"
 
 static unsigned int owner_id;
-static GDBusConnection *dbus_conn;
 
 static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p);
 static void on_name_acquired(GDBusConnection *conn, const char *name, void *p);
@@ -55,122 +55,170 @@ void dbus_destroy(void) {
 	g_bus_unown_name(owner_id);
 }
 
-static void on_method_call(GDBusConnection *conn, const char *sender,
-			   const char *path, const char *ifname,
-			   const char *method, GVariant *args,
-			   GDBusMethodInvocation *invocation, void *p) {
+gboolean on_add_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
+		     const char *arg_path) {
+	player_playlist_append_list(arg_path);
 
-	if (g_strcmp0(method, "Status") == 0) {
-		GVariantBuilder *status = g_variant_builder_new(
-			G_VARIANT_TYPE("(ssddda{ss}sb)")
-		);
+	g_dbus_method_invocation_return_value(invocation, NULL);
 
-		player_status(status);
-
-		g_dbus_method_invocation_return_value(
-			invocation, g_variant_builder_end(status)
-		);
-	} else if (g_strcmp0(method, "Play") == 0) {
-		player_playback_play();
-
-		g_dbus_method_invocation_return_value(invocation, NULL);
-	} else if (g_strcmp0(method, "Pause") == 0) {
-		player_playback_pause();
-
-		g_dbus_method_invocation_return_value(invocation, NULL);
-	} else if (g_strcmp0(method, "Toggle") == 0) {
-		player_playback_toggle();
-
-		g_dbus_method_invocation_return_value(invocation, NULL);
-	} else if (g_strcmp0(method, "Next") == 0) {
-		player_playlist_next();
-
-		g_dbus_method_invocation_return_value(invocation, NULL);
-	} else if (g_strcmp0(method, "Prev") == 0) {
-		player_playlist_prev();
-
-		g_dbus_method_invocation_return_value(invocation, NULL);
-	} else if (g_strcmp0(method, "Seek") == 0) {
-		int64_t secs;
-
-		g_variant_get(args, "(x)", &secs);
-		player_playback_seek(secs);
-
-		g_dbus_method_invocation_return_value(invocation, NULL);
-	} else if (g_strcmp0(method, "AddTrack") == 0) {
-		const char *path;
-
-		g_variant_get(args, "(s)", &path);
-		player_playlist_append_file(path);
-
-		g_dbus_method_invocation_return_value(invocation, NULL);
-	} else if (g_strcmp0(method, "AddList") == 0) {
-		const char *path;
-
-		g_variant_get(args, "(s)", &path);
-		player_playlist_append_list(path);
-
-		g_dbus_method_invocation_return_value(invocation, NULL);
-	} else if (g_strcmp0(method, "Replaygain") == 0) {
-		const char *mode;
-
-		g_variant_get(args, "(s)", &mode);
-
-		if (g_strcmp0(mode, "track") == 0) {
-			player_playback_replaygain(PLAYER_REPLAYGAIN_TRACK);
-			g_dbus_method_invocation_return_value(invocation, NULL);
-		} else if (g_strcmp0(mode, "album") == 0) {
-			player_playback_replaygain(PLAYER_REPLAYGAIN_ALBUM);
-			g_dbus_method_invocation_return_value(invocation, NULL);
-		} else if (g_strcmp0(mode, "none") == 0) {
-			player_playback_replaygain(PLAYER_REPLAYGAIN_NONE);
-			g_dbus_method_invocation_return_value(invocation, NULL);
-		} else {
-			g_dbus_method_invocation_return_dbus_error(
-				invocation, DBUS_ERROR_INVALID_ARGS,
-				"Invalid Replaygain mode"
-			);
-		}
-	} else if (g_strcmp0(method, "Loop") == 0) {
-		bool enable;
-
-		g_variant_get(args, "(b)", &enable);
-		player_playback_loop(enable);
-
-		g_dbus_method_invocation_return_value(invocation, NULL);
-	} else if (g_strcmp0(method, "Quit") == 0) {
-		g_main_loop_quit(loop);
-
-		g_dbus_method_invocation_return_value(invocation, NULL);
-	} else {
-		g_dbus_method_invocation_return_dbus_error(
-			invocation, DBUS_ERROR_UNKNOWN_METHOD, ""
-		);
-	}
-
-	g_dbus_connection_flush(conn, NULL, NULL, NULL);
+	return TRUE;
 }
 
-static const GDBusInterfaceVTable player_vtable = {
-	.method_call = on_method_call
+gboolean on_add_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
+		      const char *arg_path) {
+	player_playlist_append_file(arg_path);
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+gboolean on_loop(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
+		 gboolean arg_enable) {
+	player_playback_loop(arg_enable == TRUE ? true : false);
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+gboolean on_next(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	player_playlist_next();
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+gboolean on_pause(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	player_playback_pause();
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+gboolean on_play(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	player_playback_play();
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+gboolean on_prev(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	player_playlist_prev();
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+gboolean on_quit(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	g_main_loop_quit(loop);
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+gboolean on_replaygain(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
+		       const char *arg_mode) {
+	if (g_strcmp0(arg_mode, "track") == 0) {
+		player_playback_replaygain(PLAYER_REPLAYGAIN_TRACK);
+	} else if (g_strcmp0(arg_mode, "album") == 0) {
+		player_playback_replaygain(PLAYER_REPLAYGAIN_ALBUM);
+	} else if (g_strcmp0(arg_mode, "none") == 0) {
+		player_playback_replaygain(PLAYER_REPLAYGAIN_NONE);
+	} else {
+		g_dbus_method_invocation_return_dbus_error(
+			invocation, DBUS_ERROR_INVALID_ARGS,
+			"Invalid Replaygain mode"
+		);
+
+		goto exit;
+	}
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+exit:
+	return TRUE;
+}
+
+gboolean on_seek(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
+		 int64_t arg_seconds) {
+	player_playback_seek(arg_seconds);
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+gboolean on_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	GVariantBuilder *status = g_variant_builder_new(
+		G_VARIANT_TYPE("(ssddda{ss}sb)")
+	);
+
+	player_status(status);
+
+	g_dbus_method_invocation_return_value(
+		invocation, g_variant_builder_end(status)
+	);
+
+	return TRUE;
+}
+
+gboolean on_stop(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	return FALSE;
+}
+
+gboolean on_toggle(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	player_playback_toggle();
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+struct handle_signal {
+	const char *name;
+	GCallback callback;
 };
 
 static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
-	unsigned int registration_id;
+	int i;
+	GError *err = NULL;
+	GroovedPlayer *iface = grooved_player_skeleton_new();
 
-	GDBusNodeInfo *intro = g_dbus_node_info_new_for_xml(intro_xml, NULL);
+	struct handle_signal cbs[] = {
+		{ "handle-add-list",   G_CALLBACK(on_add_list) },
+		{ "handle-add-track",  G_CALLBACK(on_add_track) },
+		{ "handle-loop",       G_CALLBACK(on_loop) },
+		{ "handle-next",       G_CALLBACK(on_next) },
+		{ "handle-pause",      G_CALLBACK(on_pause) },
+		{ "handle-play",       G_CALLBACK(on_play) },
+		{ "handle-prev",       G_CALLBACK(on_prev) },
+		{ "handle-quit",       G_CALLBACK(on_quit) },
+		{ "handle-replaygain", G_CALLBACK(on_replaygain) },
+		{ "handle-seek",       G_CALLBACK(on_seek) },
+		{ "handle-status",     G_CALLBACK(on_status) },
+		{ "handle-stop",       G_CALLBACK(on_stop) },
+		{ "handle-toggle",     G_CALLBACK(on_toggle) },
+	};
 
-	registration_id = g_dbus_connection_register_object(
-		conn, GROOVED_DBUS_PLAYER_PATH, intro -> interfaces[0],
-		&player_vtable, NULL, NULL, NULL
+	for (i = 0; i < sizeof(cbs) / sizeof(cbs[0]); i++)
+		g_signal_connect(iface, cbs[i].name, cbs[i].callback, NULL);
+
+	g_dbus_interface_skeleton_export(
+		G_DBUS_INTERFACE_SKELETON(iface),
+		conn, GROOVED_DBUS_PLAYER_PATH, &err
 	);
 
-	if (registration_id <= 0)
-		fail_printf("Could not register DBus object");
+	if (err != NULL)
+		fail_printf("%s", err -> message);
 }
 
 static void on_name_acquired(GDBusConnection *conn, const char *name, void *p) {
-	dbus_conn = conn;
 }
 
 static void on_name_lost(GDBusConnection *conn, const char *name, void *ptr) {

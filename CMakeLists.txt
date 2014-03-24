@@ -29,6 +29,7 @@ ADD_EXECUTABLE(grooved
 	src/grooved.c
 	src/config.c
 	src/dbus.c
+	src/dbus-common.c
 	src/library.c
 	src/player.c
 	src/printf.c
