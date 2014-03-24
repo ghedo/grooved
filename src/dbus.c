@@ -40,10 +40,25 @@
 static unsigned int owner_id;
 static GDBusConnection *dbus_conn;
 
+static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p);
+static void on_name_acquired(GDBusConnection *conn, const char *name, void *p);
+static void on_name_lost(GDBusConnection *conn, const char *name, void *ptr);
 
-void on_method_call(GDBusConnection *conn, const char *sender, const char *path,
-		    const char *ifname, const char *method, GVariant *args,
-		    GDBusMethodInvocation *invocation, void *p) {
+void dbus_init(void) {
+	owner_id = g_bus_own_name(
+		G_BUS_TYPE_SESSION, GROOVED_DBUS_NAME, G_BUS_NAME_OWNER_FLAGS_NONE,
+		on_bus_acquired, on_name_acquired, on_name_lost, NULL, NULL
+	);
+}
+
+void dbus_destroy(void) {
+	g_bus_unown_name(owner_id);
+}
+
+static void on_method_call(GDBusConnection *conn, const char *sender,
+			   const char *path, const char *ifname,
+			   const char *method, GVariant *args,
+			   GDBusMethodInvocation *invocation, void *p) {
 
 	if (g_strcmp0(method, "Status") == 0) {
 		GVariantBuilder *status = g_variant_builder_new(
@@ -160,15 +175,4 @@ static void on_name_acquired(GDBusConnection *conn, const char *name, void *p) {
 
 static void on_name_lost(GDBusConnection *conn, const char *name, void *ptr) {
 	fail_printf("Lost DBus name");
-}
-
-void dbus_init(void) {
-	owner_id = g_bus_own_name(
-		G_BUS_TYPE_SESSION, GROOVED_DBUS_NAME, G_BUS_NAME_OWNER_FLAGS_NONE,
-		on_bus_acquired, on_name_acquired, on_name_lost, NULL, NULL
-	);
-}
-
-void dbus_destroy(void) {
-	g_bus_unown_name(owner_id);
 }
