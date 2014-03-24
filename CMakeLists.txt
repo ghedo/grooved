@@ -38,8 +38,8 @@ ADD_EXECUTABLE(grooved
 ADD_EXECUTABLE(groovectl
 	deps/inih/ini.c
 	src/groovectl.c
-	src/client.c
 	src/config.c
+	src/dbus-common.c
 	src/printf.c
 )
 

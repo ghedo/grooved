@@ -8,7 +8,7 @@
 #  include "config.h"
 #endif
 
-#include "client.h"
+#include "dbus-common.h"
 
 #include <string.h>
 #ifdef G_OS_UNIX

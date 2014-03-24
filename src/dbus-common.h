@@ -4,8 +4,8 @@
  * The license of this code is the same as for the source it was derived from.
  */
 
-#ifndef __CLIENT_H__
-#define __CLIENT_H__
+#ifndef __DBUS_COMMON_H__
+#define __DBUS_COMMON_H__
 
 #include <gio/gio.h>
 
@@ -633,4 +633,4 @@ GDBusObjectManager *grooved_object_manager_client_new_for_bus_sync (
 
 G_END_DECLS
 
-#endif /* __CLIENT_H__ */
+#endif /* __DBUS_COMMON_H__ */

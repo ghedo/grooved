@@ -42,7 +42,7 @@
 #include <glyr/glyr.h>
 
 #include "dbus.h"
-#include "client.h"
+#include "dbus-common.h"
 #include "printf.h"
 
 static void cmd_status(GroovedPlayer *proxy);
