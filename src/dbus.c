@@ -56,7 +56,7 @@ void dbus_destroy(void) {
 }
 
 gboolean on_add_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
-		     const char *arg_path) {
+                     const char *arg_path) {
 	player_playlist_append_list(arg_path);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
@@ -65,7 +65,7 @@ gboolean on_add_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 }
 
 gboolean on_add_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
-		      const char *arg_path) {
+                      const char *arg_path) {
 	player_playlist_append_file(arg_path);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
@@ -74,7 +74,7 @@ gboolean on_add_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 }
 
 gboolean on_loop(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
-		 gboolean arg_enable) {
+                 gboolean arg_enable) {
 	player_playback_loop(arg_enable == TRUE ? true : false);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
@@ -123,7 +123,7 @@ gboolean on_quit(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 }
 
 gboolean on_replaygain(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
-		       const char *arg_mode) {
+                       const char *arg_mode) {
 	if (g_strcmp0(arg_mode, "track") == 0) {
 		player_playback_replaygain(PLAYER_REPLAYGAIN_TRACK);
 	} else if (g_strcmp0(arg_mode, "album") == 0) {
@@ -146,7 +146,7 @@ exit:
 }
 
 gboolean on_seek(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
-		 int64_t arg_seconds) {
+                 int64_t arg_seconds) {
 	player_playback_seek(arg_seconds);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);

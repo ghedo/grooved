@@ -51,8 +51,8 @@ void cfg_parse(const char *file) {
 		fail_printf("Could not load config file '%s'", file);
 }
 
-static int config_cb(void *argp, const char *section, const char *key,
-						      const char *val) {
+static int config_cb(void *argp, const char *section,
+                     const char *key, const char *val) {
 	struct config *cfg = argp;
 
 	if (strcmp(section, "default") == 0) {

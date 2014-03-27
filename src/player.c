@@ -269,7 +269,7 @@ void player_playback_start(void) {
 
 	if (rc < 0) {
 		err_printf("Could not set playlist position: %s",
-			   mpv_error_string(rc));
+		           mpv_error_string(rc));
 		return;
 	}
 
