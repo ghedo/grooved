@@ -159,7 +159,7 @@ gboolean on_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 		G_VARIANT_TYPE("(ssddda{ss}sb)")
 	);
 
-	player_status(status);
+	player_make_status(status);
 
 	g_dbus_method_invocation_return_value(
 		invocation, g_variant_builder_end(status)

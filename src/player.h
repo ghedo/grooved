@@ -41,12 +41,14 @@ enum replaygain {
 
 extern void player_init(void);
 extern void player_destroy(void);
-extern void player_status(GVariantBuilder *status);
+
+extern void player_make_status(GVariantBuilder *status);
 
 extern void player_playback_start(void);
 extern void player_playback_play(void);
 extern void player_playback_pause(void);
 extern void player_playback_toggle(void);
+extern void player_playback_stop(void);
 
 extern void player_playback_seek(int64_t secs);
 

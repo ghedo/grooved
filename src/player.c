@@ -42,11 +42,18 @@
 #include "config.h"
 #include "printf.h"
 
+enum player_status {
+	STARTING,
+	IDLE,
+	PLAYING,
+	PAUSED,
+	STOPPED,
+};
+
 static pthread_t   player_thr;
 static mpv_handle *player_ctx;
 
-static bool player_is_started = false;
-static bool player_is_idle    = true;
+static enum player_status player_status;
 
 static enum replaygain player_replaygain = PLAYER_REPLAYGAIN_TRACK;
 static bool player_loop = false;
@@ -66,21 +73,33 @@ static void player_print_playlist_status(void);
 static void *player_start_thread(void *ptr) {
 	mpv_handle *ctx = ptr;
 
+	player_status = STARTING;
+
 	while (1) {
 		mpv_event *event = mpv_wait_event(ctx, 10000);
 		debug_printf("event: %s", mpv_event_name(event -> event_id));
 
 		switch (event -> event_id) {
 			case MPV_EVENT_IDLE: {
-				player_is_idle = true;
+				enum player_status prev_status = player_status;
 
-				if (!player_is_started) {
-					player_is_started = true;
+				player_status = IDLE;
+
+				if (prev_status == STARTING)
 					break;
-				}
 
 				player_playback_play();
 
+				break;
+			}
+
+			case MPV_EVENT_PAUSE: {
+				player_status = PAUSED;
+				break;
+			}
+
+			case MPV_EVENT_UNPAUSE: {
+				player_status = PLAYING;
 				break;
 			}
 
@@ -174,7 +193,7 @@ void player_init(void) {
 	pthread_create(&player_thr, NULL, player_start_thread, player_ctx);
 }
 
-void player_status(GVariantBuilder *status) {
+void player_make_status(GVariantBuilder *status) {
 	int i;
 
 	mpv_node metadata;
@@ -182,7 +201,6 @@ void player_status(GVariantBuilder *status) {
 	GVariantBuilder *meta_build;
 	double length = 0, position = 0, percent = 0;
 
-	char *state = mpv_get_property_string(player_ctx, "pause");
 	char *path  = mpv_get_property_string(player_ctx, "path");
 
 	mpv_get_property(player_ctx, "length", MPV_FORMAT_DOUBLE, &length);
@@ -191,12 +209,23 @@ void player_status(GVariantBuilder *status) {
 
 	mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
 
-	if (player_is_idle)
-		g_variant_builder_add(status, "s", "idle");
-	else if (state && strcmp(state, "no") == 0)
-		g_variant_builder_add(status, "s", "play");
-	else if (state && strcmp(state, "yes") == 0)
-		g_variant_builder_add(status, "s", "pause");
+	switch (player_status) {
+		case IDLE:
+			g_variant_builder_add(status, "s", "idle");
+			break;
+
+		case PLAYING:
+			g_variant_builder_add(status, "s", "play");
+			break;
+
+		case PAUSED:
+			g_variant_builder_add(status, "s", "pause");
+			break;
+
+		default:
+			err_printf("Invalid state");
+			break;
+	}
 
 	g_variant_builder_add(status, "s", path);
 
@@ -223,7 +252,6 @@ void player_status(GVariantBuilder *status) {
 
 	g_variant_builder_add(status, "b", player_loop);
 
-	mpv_free(state);
 	mpv_free(path);
 }
 
@@ -250,39 +278,60 @@ void player_playback_start(void) {
 		return;
 	}
 
-	player_is_idle = false;
+	player_status = PLAYING;
 }
 
 void player_playback_play(void) {
 	int rc;
 
-	if (player_is_idle) {
-		player_playback_start();
-		return;
-	}
+	switch (player_status) {
+		case IDLE:
+			player_playback_start();
+			break;
 
-	rc = mpv_set_property_string(player_ctx, "pause", "no");
-	player_check_error("Could not unpause", rc);
+		case PLAYING:
+		case PAUSED:
+			rc = mpv_set_property_string(player_ctx, "pause", "no");
+			player_check_error("Could not unpause", rc);
+			break;
+
+		default:
+			err_printf("Invalid state");
+			break;
+	}
 }
 
 void player_playback_pause(void) {
 	int rc;
 
-	rc = mpv_set_property_string(player_ctx, "pause", "yes");
-	player_check_error("Could not pause", rc);
+	switch (player_status) {
+		case PLAYING:
+		case PAUSED:
+			rc = mpv_set_property_string(player_ctx, "pause", "yes");
+			player_check_error("Could not pause", rc);
+			break;
+
+		default:
+			err_printf("Invalid state");
+			break;
+	}
 }
 
 void player_playback_toggle(void) {
-	char *val = mpv_get_property_string(player_ctx, "pause");
+	switch (player_status) {
+		case IDLE:
+		case PAUSED:
+			player_playback_play();
+			break;
 
-	if (player_is_idle || (val && (strcmp("yes", val) == 0)))
-		player_playback_play();
-	else if (val && (strcmp("no", val) == 0))
-		player_playback_pause();
-	else
-		err_printf("Could not get player state");
+		case PLAYING:
+			player_playback_pause();
+			break;
 
-	mpv_free(val);
+		default:
+			err_printf("Invalid state");
+			break;
+	}
 }
 
 void player_playback_seek(int64_t secs) {
