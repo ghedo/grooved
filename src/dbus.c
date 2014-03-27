@@ -169,7 +169,11 @@ gboolean on_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 }
 
 gboolean on_stop(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	return FALSE;
+	player_playback_stop();
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
 }
 
 gboolean on_toggle(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {

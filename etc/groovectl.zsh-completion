@@ -16,6 +16,7 @@ case $state in
       "play:unpause the player"
       "pause:pause the player"
       "toggle:toggle the player's pause status"
+      "stop:stop playback and clear tracklist"
       "next:skip to next track"
       "prev:skip to previous track"
       "add:append tracks to the player's tracklist"

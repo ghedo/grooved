@@ -32,6 +32,11 @@ Pause the player.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Toggle the player's pause status.
 
+`stop`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Stop playback and clear tracklist.
+
 `next`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

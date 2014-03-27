@@ -85,7 +85,8 @@ static void *player_start_thread(void *ptr) {
 
 				player_status = IDLE;
 
-				if (prev_status == STARTING)
+				if ((prev_status == STARTING) ||
+				    (prev_status == STOPPED))
 					break;
 
 				player_playback_play();
@@ -287,7 +288,6 @@ void player_playback_play(void) {
 	switch (player_status) {
 		case IDLE:
 			player_playback_start();
-			break;
 
 		case PLAYING:
 		case PAUSED:
@@ -332,6 +332,31 @@ void player_playback_toggle(void) {
 			err_printf("Invalid state");
 			break;
 	}
+}
+
+void player_playback_stop(void) {
+	int rc;
+	const char *cmd_clear[]  = { "playlist_clear", NULL };
+	const char *cmd_remove[] = { "playlist_remove", "current", NULL };
+
+	switch (player_status) {
+		case PLAYING:
+		case PAUSED:
+			rc = mpv_command(player_ctx, cmd_clear);
+			player_check_error("Could not stop", rc);
+
+			rc = mpv_command(player_ctx, cmd_remove);
+			player_check_error("Could not stop", rc);
+
+			playlist_pos = -1;
+
+			break;
+
+		default:
+			break;
+	}
+
+	player_status = STOPPED;
 }
 
 void player_playback_seek(int64_t secs) {

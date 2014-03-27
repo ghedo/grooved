@@ -49,6 +49,7 @@ static void cmd_status(GroovedPlayer *proxy);
 static void cmd_play(GroovedPlayer *proxy);
 static void cmd_pause(GroovedPlayer *proxy);
 static void cmd_toggle(GroovedPlayer *proxy);
+static void cmd_stop(GroovedPlayer *proxy);
 static void cmd_next(GroovedPlayer *proxy);
 static void cmd_prev(GroovedPlayer *proxy);
 static void cmd_seek(GroovedPlayer *proxy, const char *secs);
@@ -79,6 +80,8 @@ int main(int argc, char *argv[]) {
 		cmd_pause(proxy);
 	else if (strcmp("toggle", argv[1]) == 0)
 		cmd_toggle(proxy);
+	else if (strcmp("stop", argv[1]) == 0)
+		cmd_stop(proxy);
 	else if (strcmp("next", argv[1]) == 0)
 		cmd_next(proxy);
 	else if (strcmp("prev", argv[1]) == 0)
@@ -198,6 +201,14 @@ static void cmd_pause(GroovedPlayer *proxy) {
 static void cmd_toggle(GroovedPlayer *proxy) {
 	GError *err = NULL;
 	grooved_player_call_toggle_sync(proxy, NULL, &err);
+
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+}
+
+static void cmd_stop(GroovedPlayer *proxy) {
+	GError *err = NULL;
+	grooved_player_call_stop_sync(proxy, NULL, &err);
 
 	if (err != NULL)
 		fail_printf("%s", err -> message);

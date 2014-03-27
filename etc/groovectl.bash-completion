@@ -10,7 +10,7 @@ _groovectl() {
 	cur=${COMP_WORDS[COMP_CWORD]}
 	prev=${COMP_WORDS[COMP_CWORD-1]}
 
-	CMDS="status play pause toggle next prev add rgain loop lyrics quit"
+	CMDS="status play pause toggle stop next prev add rgain loop lyrics quit"
 
 	COMPREPLY=($(compgen -W "$CMDS" -- $cur))
 
