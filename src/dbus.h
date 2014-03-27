@@ -92,7 +92,19 @@
 "    <method name=\"Quit\">\n"						\
 "    </method>\n"							\
 									\
-"   </interface>\n"							\
+"    <signal name=\"StatusChanged\">\n"					\
+"    </signal>\n"							\
+									\
+"    <signal name=\"TrackChanged\">\n"					\
+"    </signal>\n"							\
+									\
+"    <signal name=\"TrackAdded\">\n"					\
+"    </signal>\n"							\
+									\
+"    <signal name=\"OptionChanged\">\n"					\
+"    </signal>\n"							\
+									\
+"  </interface>\n"							\
 "</node>"
 
 extern void dbus_init(void);

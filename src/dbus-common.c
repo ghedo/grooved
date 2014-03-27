@@ -536,13 +536,66 @@ static const _ExtendedGDBusMethodInfo * const _grooved_player_method_info_pointe
   NULL
 };
 
+static const _ExtendedGDBusSignalInfo _grooved_player_signal_info_status_changed =
+{
+  {
+    -1,
+    (gchar *) "StatusChanged",
+    NULL,
+    NULL
+  },
+  "status-changed"
+};
+
+static const _ExtendedGDBusSignalInfo _grooved_player_signal_info_track_changed =
+{
+  {
+    -1,
+    (gchar *) "TrackChanged",
+    NULL,
+    NULL
+  },
+  "track-changed"
+};
+
+static const _ExtendedGDBusSignalInfo _grooved_player_signal_info_track_added =
+{
+  {
+    -1,
+    (gchar *) "TrackAdded",
+    NULL,
+    NULL
+  },
+  "track-added"
+};
+
+static const _ExtendedGDBusSignalInfo _grooved_player_signal_info_option_changed =
+{
+  {
+    -1,
+    (gchar *) "OptionChanged",
+    NULL,
+    NULL
+  },
+  "option-changed"
+};
+
+static const _ExtendedGDBusSignalInfo * const _grooved_player_signal_info_pointers[] =
+{
+  &_grooved_player_signal_info_status_changed,
+  &_grooved_player_signal_info_track_changed,
+  &_grooved_player_signal_info_track_added,
+  &_grooved_player_signal_info_option_changed,
+  NULL
+};
+
 static const _ExtendedGDBusInterfaceInfo _grooved_player_interface_info =
 {
   {
     -1,
     (gchar *) "io.github.ghedo.grooved.Player",
     (GDBusMethodInfo **) &_grooved_player_method_info_pointers,
-    NULL,
+    (GDBusSignalInfo **) &_grooved_player_signal_info_pointers,
     NULL,
     NULL
   },
@@ -603,6 +656,10 @@ grooved_player_override_properties (GObjectClass *klass, guint property_id_begin
  * @handle_status: Handler for the #GroovedPlayer::handle-status signal.
  * @handle_stop: Handler for the #GroovedPlayer::handle-stop signal.
  * @handle_toggle: Handler for the #GroovedPlayer::handle-toggle signal.
+ * @option_changed: Handler for the #GroovedPlayer::option-changed signal.
+ * @status_changed: Handler for the #GroovedPlayer::status-changed signal.
+ * @track_added: Handler for the #GroovedPlayer::track-added signal.
+ * @track_changed: Handler for the #GroovedPlayer::track-changed signal.
  *
  * Virtual table for the D-Bus interface <link linkend="gdbus-interface-io-github-ghedo-grooved-Player.top_of_page">io.github.ghedo.grooved.Player</link>.
  */
@@ -905,6 +962,131 @@ grooved_player_default_init (GroovedPlayerIface *iface)
     1,
     G_TYPE_DBUS_METHOD_INVOCATION);
 
+  /* GObject signals for received D-Bus signals: */
+  /**
+   * GroovedPlayer::status-changed:
+   * @object: A #GroovedPlayer.
+   *
+   * On the client-side, this signal is emitted whenever the D-Bus signal <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.StatusChanged">"StatusChanged"</link> is received.
+   *
+   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.
+   */
+  g_signal_new ("status-changed",
+    G_TYPE_FROM_INTERFACE (iface),
+    G_SIGNAL_RUN_LAST,
+    G_STRUCT_OFFSET (GroovedPlayerIface, status_changed),
+    NULL,
+    NULL,
+    g_cclosure_marshal_generic,
+    G_TYPE_NONE,
+    0);
+
+  /**
+   * GroovedPlayer::track-changed:
+   * @object: A #GroovedPlayer.
+   *
+   * On the client-side, this signal is emitted whenever the D-Bus signal <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.TrackChanged">"TrackChanged"</link> is received.
+   *
+   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.
+   */
+  g_signal_new ("track-changed",
+    G_TYPE_FROM_INTERFACE (iface),
+    G_SIGNAL_RUN_LAST,
+    G_STRUCT_OFFSET (GroovedPlayerIface, track_changed),
+    NULL,
+    NULL,
+    g_cclosure_marshal_generic,
+    G_TYPE_NONE,
+    0);
+
+  /**
+   * GroovedPlayer::track-added:
+   * @object: A #GroovedPlayer.
+   *
+   * On the client-side, this signal is emitted whenever the D-Bus signal <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.TrackAdded">"TrackAdded"</link> is received.
+   *
+   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.
+   */
+  g_signal_new ("track-added",
+    G_TYPE_FROM_INTERFACE (iface),
+    G_SIGNAL_RUN_LAST,
+    G_STRUCT_OFFSET (GroovedPlayerIface, track_added),
+    NULL,
+    NULL,
+    g_cclosure_marshal_generic,
+    G_TYPE_NONE,
+    0);
+
+  /**
+   * GroovedPlayer::option-changed:
+   * @object: A #GroovedPlayer.
+   *
+   * On the client-side, this signal is emitted whenever the D-Bus signal <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.OptionChanged">"OptionChanged"</link> is received.
+   *
+   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.
+   */
+  g_signal_new ("option-changed",
+    G_TYPE_FROM_INTERFACE (iface),
+    G_SIGNAL_RUN_LAST,
+    G_STRUCT_OFFSET (GroovedPlayerIface, option_changed),
+    NULL,
+    NULL,
+    g_cclosure_marshal_generic,
+    G_TYPE_NONE,
+    0);
+
+}
+
+/**
+ * grooved_player_emit_status_changed:
+ * @object: A #GroovedPlayer.
+ *
+ * Emits the <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.StatusChanged">"StatusChanged"</link> D-Bus signal.
+ */
+void
+grooved_player_emit_status_changed (
+    GroovedPlayer *object)
+{
+  g_signal_emit_by_name (object, "status-changed");
+}
+
+/**
+ * grooved_player_emit_track_changed:
+ * @object: A #GroovedPlayer.
+ *
+ * Emits the <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.TrackChanged">"TrackChanged"</link> D-Bus signal.
+ */
+void
+grooved_player_emit_track_changed (
+    GroovedPlayer *object)
+{
+  g_signal_emit_by_name (object, "track-changed");
+}
+
+/**
+ * grooved_player_emit_track_added:
+ * @object: A #GroovedPlayer.
+ *
+ * Emits the <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.TrackAdded">"TrackAdded"</link> D-Bus signal.
+ */
+void
+grooved_player_emit_track_added (
+    GroovedPlayer *object)
+{
+  g_signal_emit_by_name (object, "track-added");
+}
+
+/**
+ * grooved_player_emit_option_changed:
+ * @object: A #GroovedPlayer.
+ *
+ * Emits the <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.OptionChanged">"OptionChanged"</link> D-Bus signal.
+ */
+void
+grooved_player_emit_option_changed (
+    GroovedPlayer *object)
+{
+  g_signal_emit_by_name (object, "option-changed");
 }
 
 /**
@@ -2980,6 +3162,94 @@ grooved_player_skeleton_dbus_interface_flush (GDBusInterfaceSkeleton *_skeleton)
 {
 }
 
+static void
+_grooved_player_on_signal_status_changed (
+    GroovedPlayer *object)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+
+  GList      *connections, *l;
+  GVariant   *signal_variant;
+  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
+
+  signal_variant = g_variant_ref_sink (g_variant_new ("()"));
+  for (l = connections; l != NULL; l = l->next)
+    {
+      GDBusConnection *connection = l->data;
+      g_dbus_connection_emit_signal (connection,
+        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "io.github.ghedo.grooved.Player", "StatusChanged",
+        signal_variant, NULL);
+    }
+  g_variant_unref (signal_variant);
+  g_list_free_full (connections, g_object_unref);
+}
+
+static void
+_grooved_player_on_signal_track_changed (
+    GroovedPlayer *object)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+
+  GList      *connections, *l;
+  GVariant   *signal_variant;
+  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
+
+  signal_variant = g_variant_ref_sink (g_variant_new ("()"));
+  for (l = connections; l != NULL; l = l->next)
+    {
+      GDBusConnection *connection = l->data;
+      g_dbus_connection_emit_signal (connection,
+        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "io.github.ghedo.grooved.Player", "TrackChanged",
+        signal_variant, NULL);
+    }
+  g_variant_unref (signal_variant);
+  g_list_free_full (connections, g_object_unref);
+}
+
+static void
+_grooved_player_on_signal_track_added (
+    GroovedPlayer *object)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+
+  GList      *connections, *l;
+  GVariant   *signal_variant;
+  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
+
+  signal_variant = g_variant_ref_sink (g_variant_new ("()"));
+  for (l = connections; l != NULL; l = l->next)
+    {
+      GDBusConnection *connection = l->data;
+      g_dbus_connection_emit_signal (connection,
+        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "io.github.ghedo.grooved.Player", "TrackAdded",
+        signal_variant, NULL);
+    }
+  g_variant_unref (signal_variant);
+  g_list_free_full (connections, g_object_unref);
+}
+
+static void
+_grooved_player_on_signal_option_changed (
+    GroovedPlayer *object)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+
+  GList      *connections, *l;
+  GVariant   *signal_variant;
+  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
+
+  signal_variant = g_variant_ref_sink (g_variant_new ("()"));
+  for (l = connections; l != NULL; l = l->next)
+    {
+      GDBusConnection *connection = l->data;
+      g_dbus_connection_emit_signal (connection,
+        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "io.github.ghedo.grooved.Player", "OptionChanged",
+        signal_variant, NULL);
+    }
+  g_variant_unref (signal_variant);
+  g_list_free_full (connections, g_object_unref);
+}
+
 static void grooved_player_skeleton_iface_init (GroovedPlayerIface *iface);
 G_DEFINE_TYPE_WITH_CODE (GroovedPlayerSkeleton, grooved_player_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,
                          G_ADD_PRIVATE (GroovedPlayerSkeleton)
@@ -3024,6 +3294,10 @@ grooved_player_skeleton_class_init (GroovedPlayerSkeletonClass *klass)
 static void
 grooved_player_skeleton_iface_init (GroovedPlayerIface *iface)
 {
+  iface->status_changed = _grooved_player_on_signal_status_changed;
+  iface->track_changed = _grooved_player_on_signal_track_changed;
+  iface->track_added = _grooved_player_on_signal_track_added;
+  iface->option_changed = _grooved_player_on_signal_option_changed;
 }
 
 /**
@@ -3038,563 +3312,4 @@ grooved_player_skeleton_new (void)
 {
   return GROOVED_PLAYER (g_object_new (GROOVED_TYPE_PLAYER_SKELETON, NULL));
 }
-
-/* ------------------------------------------------------------------------
- * Code for Object, ObjectProxy and ObjectSkeleton
- * ------------------------------------------------------------------------
- */
-
-/**
- * SECTION:GroovedObject
- * @title: GroovedObject
- * @short_description: Specialized GDBusObject types
- *
- * This section contains the #GroovedObject, #GroovedObjectProxy, and #GroovedObjectSkeleton types which make it easier to work with objects implementing generated types for D-Bus interfaces.
- */
-
-/**
- * GroovedObject:
- *
- * The #GroovedObject type is a specialized container of interfaces.
- */
-
-/**
- * GroovedObjectIface:
- * @parent_iface: The parent interface.
- *
- * Virtual table for the #GroovedObject interface.
- */
-
-typedef GroovedObjectIface GroovedObjectInterface;
-G_DEFINE_INTERFACE_WITH_CODE (GroovedObject, grooved_object, G_TYPE_OBJECT, g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_DBUS_OBJECT));
-
-static void
-grooved_object_default_init (GroovedObjectIface *iface)
-{
-  /**
-   * GroovedObject:player:
-   *
-   * The #GroovedPlayer instance corresponding to the D-Bus interface <link linkend="gdbus-interface-io-github-ghedo-grooved-Player.top_of_page">io.github.ghedo.grooved.Player</link>, if any.
-   *
-   * Connect to the #GObject::notify signal to get informed of property changes.
-   */
-  g_object_interface_install_property (iface, g_param_spec_object ("player", "player", "player", GROOVED_TYPE_PLAYER, G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS));
-
-}
-
-/**
- * grooved_object_get_player:
- * @object: A #GroovedObject.
- *
- * Gets the #GroovedPlayer instance for the D-Bus interface <link linkend="gdbus-interface-io-github-ghedo-grooved-Player.top_of_page">io.github.ghedo.grooved.Player</link> on @object, if any.
- *
- * Returns: (transfer full): A #GroovedPlayer that must be freed with g_object_unref() or %NULL if @object does not implement the interface.
- */
-GroovedPlayer *grooved_object_get_player (GroovedObject *object)
-{
-  GDBusInterface *ret;
-  ret = g_dbus_object_get_interface (G_DBUS_OBJECT (object), "io.github.ghedo.grooved.Player");
-  if (ret == NULL)
-    return NULL;
-  return GROOVED_PLAYER (ret);
-}
-
-
-/**
- * grooved_object_peek_player: (skip)
- * @object: A #GroovedObject.
- *
- * Like grooved_object_get_player() but doesn't increase the reference count on the returned object.
- *
- * <warning>It is not safe to use the returned object if you are on another thread than the one where the #GDBusObjectManagerClient or #GDBusObjectManagerServer for @object is running.</warning>
- *
- * Returns: (transfer none): A #GroovedPlayer or %NULL if @object does not implement the interface. Do not free the returned object, it is owned by @object.
- */
-GroovedPlayer *grooved_object_peek_player (GroovedObject *object)
-{
-  GDBusInterface *ret;
-  ret = g_dbus_object_get_interface (G_DBUS_OBJECT (object), "io.github.ghedo.grooved.Player");
-  if (ret == NULL)
-    return NULL;
-  g_object_unref (ret);
-  return GROOVED_PLAYER (ret);
-}
-
-
-static void
-grooved_object_notify (GDBusObject *object, GDBusInterface *interface)
-{
-  g_object_notify (G_OBJECT (object), ((_ExtendedGDBusInterfaceInfo *) g_dbus_interface_get_info (interface))->hyphen_name);
-}
-
-/**
- * GroovedObjectProxy:
- *
- * The #GroovedObjectProxy structure contains only private data and should only be accessed using the provided API.
- */
-
-/**
- * GroovedObjectProxyClass:
- * @parent_class: The parent class.
- *
- * Class structure for #GroovedObjectProxy.
- */
-
-static void
-grooved_object_proxy__grooved_object_iface_init (GroovedObjectIface *iface G_GNUC_UNUSED)
-{
-}
-
-static void
-grooved_object_proxy__g_dbus_object_iface_init (GDBusObjectIface *iface)
-{
-  iface->interface_added = grooved_object_notify;
-  iface->interface_removed = grooved_object_notify;
-}
-
-
-G_DEFINE_TYPE_WITH_CODE (GroovedObjectProxy, grooved_object_proxy, G_TYPE_DBUS_OBJECT_PROXY,
-                         G_IMPLEMENT_INTERFACE (GROOVED_TYPE_OBJECT, grooved_object_proxy__grooved_object_iface_init)
-                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT, grooved_object_proxy__g_dbus_object_iface_init));
-
-static void
-grooved_object_proxy_init (GroovedObjectProxy *object G_GNUC_UNUSED)
-{
-}
-
-static void
-grooved_object_proxy_set_property (GObject      *gobject,
-  guint         prop_id,
-  const GValue *value G_GNUC_UNUSED,
-  GParamSpec   *pspec)
-{
-  G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-}
-
-static void
-grooved_object_proxy_get_property (GObject      *gobject,
-  guint         prop_id,
-  GValue       *value,
-  GParamSpec   *pspec)
-{
-  GroovedObjectProxy *object = GROOVED_OBJECT_PROXY (gobject);
-  GDBusInterface *interface;
-
-  switch (prop_id)
-    {
-    case 1:
-      interface = g_dbus_object_get_interface (G_DBUS_OBJECT (object), "io.github.ghedo.grooved.Player");
-      g_value_take_object (value, interface);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
-  }
-}
-
-static void
-grooved_object_proxy_class_init (GroovedObjectProxyClass *klass)
-{
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  gobject_class->set_property = grooved_object_proxy_set_property;
-  gobject_class->get_property = grooved_object_proxy_get_property;
-
-  g_object_class_override_property (gobject_class, 1, "player");
-}
-
-/**
- * grooved_object_proxy_new:
- * @connection: A #GDBusConnection.
- * @object_path: An object path.
- *
- * Creates a new proxy object.
- *
- * Returns: (transfer full): The proxy object.
- */
-GroovedObjectProxy *
-grooved_object_proxy_new (GDBusConnection *connection,
-  const gchar *object_path)
-{
-  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);
-  return GROOVED_OBJECT_PROXY (g_object_new (GROOVED_TYPE_OBJECT_PROXY, "g-connection", connection, "g-object-path", object_path, NULL));
-}
-
-/**
- * GroovedObjectSkeleton:
- *
- * The #GroovedObjectSkeleton structure contains only private data and should only be accessed using the provided API.
- */
-
-/**
- * GroovedObjectSkeletonClass:
- * @parent_class: The parent class.
- *
- * Class structure for #GroovedObjectSkeleton.
- */
-
-static void
-grooved_object_skeleton__grooved_object_iface_init (GroovedObjectIface *iface G_GNUC_UNUSED)
-{
-}
-
-
-static void
-grooved_object_skeleton__g_dbus_object_iface_init (GDBusObjectIface *iface)
-{
-  iface->interface_added = grooved_object_notify;
-  iface->interface_removed = grooved_object_notify;
-}
-
-G_DEFINE_TYPE_WITH_CODE (GroovedObjectSkeleton, grooved_object_skeleton, G_TYPE_DBUS_OBJECT_SKELETON,
-                         G_IMPLEMENT_INTERFACE (GROOVED_TYPE_OBJECT, grooved_object_skeleton__grooved_object_iface_init)
-                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT, grooved_object_skeleton__g_dbus_object_iface_init));
-
-static void
-grooved_object_skeleton_init (GroovedObjectSkeleton *object G_GNUC_UNUSED)
-{
-}
-
-static void
-grooved_object_skeleton_set_property (GObject      *gobject,
-  guint         prop_id,
-  const GValue *value,
-  GParamSpec   *pspec)
-{
-  GroovedObjectSkeleton *object = GROOVED_OBJECT_SKELETON (gobject);
-  GDBusInterfaceSkeleton *interface;
-
-  switch (prop_id)
-    {
-    case 1:
-      interface = g_value_get_object (value);
-      if (interface != NULL)
-        {
-          g_warn_if_fail (GROOVED_IS_PLAYER (interface));
-          g_dbus_object_skeleton_add_interface (G_DBUS_OBJECT_SKELETON (object), interface);
-        }
-      else
-        {
-          g_dbus_object_skeleton_remove_interface_by_name (G_DBUS_OBJECT_SKELETON (object), "io.github.ghedo.grooved.Player");
-        }
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
-  }
-}
-
-static void
-grooved_object_skeleton_get_property (GObject      *gobject,
-  guint         prop_id,
-  GValue       *value,
-  GParamSpec   *pspec)
-{
-  GroovedObjectSkeleton *object = GROOVED_OBJECT_SKELETON (gobject);
-  GDBusInterface *interface;
-
-  switch (prop_id)
-    {
-    case 1:
-      interface = g_dbus_object_get_interface (G_DBUS_OBJECT (object), "io.github.ghedo.grooved.Player");
-      g_value_take_object (value, interface);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
-  }
-}
-
-static void
-grooved_object_skeleton_class_init (GroovedObjectSkeletonClass *klass)
-{
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  gobject_class->set_property = grooved_object_skeleton_set_property;
-  gobject_class->get_property = grooved_object_skeleton_get_property;
-
-  g_object_class_override_property (gobject_class, 1, "player");
-}
-
-/**
- * grooved_object_skeleton_new:
- * @object_path: An object path.
- *
- * Creates a new skeleton object.
- *
- * Returns: (transfer full): The skeleton object.
- */
-GroovedObjectSkeleton *
-grooved_object_skeleton_new (const gchar *object_path)
-{
-  g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);
-  return GROOVED_OBJECT_SKELETON (g_object_new (GROOVED_TYPE_OBJECT_SKELETON, "g-object-path", object_path, NULL));
-}
-
-/**
- * grooved_object_skeleton_set_player:
- * @object: A #GroovedObjectSkeleton.
- * @interface_: (allow-none): A #GroovedPlayer or %NULL to clear the interface.
- *
- * Sets the #GroovedPlayer instance for the D-Bus interface <link linkend="gdbus-interface-io-github-ghedo-grooved-Player.top_of_page">io.github.ghedo.grooved.Player</link> on @object.
- */
-void grooved_object_skeleton_set_player (GroovedObjectSkeleton *object, GroovedPlayer *interface_)
-{
-  g_object_set (G_OBJECT (object), "player", interface_, NULL);
-}
-
-
-/* ------------------------------------------------------------------------
- * Code for ObjectManager client
- * ------------------------------------------------------------------------
- */
-
-/**
- * SECTION:GroovedObjectManagerClient
- * @title: GroovedObjectManagerClient
- * @short_description: Generated GDBusObjectManagerClient type
- *
- * This section contains a #GDBusObjectManagerClient that uses grooved_object_manager_client_get_proxy_type() as the #GDBusProxyTypeFunc.
- */
-
-/**
- * GroovedObjectManagerClient:
- *
- * The #GroovedObjectManagerClient structure contains only private data and should only be accessed using the provided API.
- */
-
-/**
- * GroovedObjectManagerClientClass:
- * @parent_class: The parent class.
- *
- * Class structure for #GroovedObjectManagerClient.
- */
-
-G_DEFINE_TYPE (GroovedObjectManagerClient, grooved_object_manager_client, G_TYPE_DBUS_OBJECT_MANAGER_CLIENT);
-
-static void
-grooved_object_manager_client_init (GroovedObjectManagerClient *manager G_GNUC_UNUSED)
-{
-}
-
-static void
-grooved_object_manager_client_class_init (GroovedObjectManagerClientClass *klass G_GNUC_UNUSED)
-{
-}
-
-/**
- * grooved_object_manager_client_get_proxy_type:
- * @manager: A #GDBusObjectManagerClient.
- * @object_path: The object path of the remote object (unused).
- * @interface_name: (allow-none): Interface name of the remote object or %NULL to get the object proxy #GType.
- * @user_data: User data (unused).
- *
- * A #GDBusProxyTypeFunc that maps @interface_name to the generated #GDBusObjectProxy<!-- -->- and #GDBusProxy<!-- -->-derived types.
- *
- * Returns: A #GDBusProxy<!-- -->-derived #GType if @interface_name is not %NULL, otherwise the #GType for #GroovedObjectProxy.
- */
-GType
-grooved_object_manager_client_get_proxy_type (GDBusObjectManagerClient *manager G_GNUC_UNUSED, const gchar *object_path G_GNUC_UNUSED, const gchar *interface_name, gpointer user_data G_GNUC_UNUSED)
-{
-  static gsize once_init_value = 0;
-  static GHashTable *lookup_hash;
-  GType ret;
-
-  if (interface_name == NULL)
-    return GROOVED_TYPE_OBJECT_PROXY;
-  if (g_once_init_enter (&once_init_value))
-    {
-      lookup_hash = g_hash_table_new (g_str_hash, g_str_equal);
-      g_hash_table_insert (lookup_hash, (gpointer) "io.github.ghedo.grooved.Player", GSIZE_TO_POINTER (GROOVED_TYPE_PLAYER_PROXY));
-      g_once_init_leave (&once_init_value, 1);
-    }
-  ret = (GType) GPOINTER_TO_SIZE (g_hash_table_lookup (lookup_hash, interface_name));
-  if (ret == (GType) 0)
-    ret = G_TYPE_DBUS_PROXY;
-  return ret;
-}
-
-/**
- * grooved_object_manager_client_new:
- * @connection: A #GDBusConnection.
- * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.
- * @name: (allow-none): A bus name (well-known or unique) or %NULL if @connection is not a message bus connection.
- * @object_path: An object path.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
- * @user_data: User data to pass to @callback.
- *
- * Asynchronously creates #GDBusObjectManagerClient using grooved_object_manager_client_get_proxy_type() as the #GDBusProxyTypeFunc. See g_dbus_object_manager_client_new() for more details.
- *
- * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.
- * You can then call grooved_object_manager_client_new_finish() to get the result of the operation.
- *
- * See grooved_object_manager_client_new_sync() for the synchronous, blocking version of this constructor.
- */
-void
-grooved_object_manager_client_new (
-    GDBusConnection        *connection,
-    GDBusObjectManagerClientFlags  flags,
-    const gchar            *name,
-    const gchar            *object_path,
-    GCancellable           *cancellable,
-    GAsyncReadyCallback     callback,
-    gpointer                user_data)
-{
-  g_async_initable_new_async (GROOVED_TYPE_OBJECT_MANAGER_CLIENT, G_PRIORITY_DEFAULT, cancellable, callback, user_data, "flags", flags, "name", name, "connection", connection, "object-path", object_path, "get-proxy-type-func", grooved_object_manager_client_get_proxy_type, NULL);
-}
-
-/**
- * grooved_object_manager_client_new_finish:
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_object_manager_client_new().
- * @error: Return location for error or %NULL
- *
- * Finishes an operation started with grooved_object_manager_client_new().
- *
- * Returns: (transfer full) (type GroovedObjectManagerClient): The constructed object manager client or %NULL if @error is set.
- */
-GDBusObjectManager *
-grooved_object_manager_client_new_finish (
-    GAsyncResult        *res,
-    GError             **error)
-{
-  GObject *ret;
-  GObject *source_object;
-  source_object = g_async_result_get_source_object (res);
-  ret = g_async_initable_new_finish (G_ASYNC_INITABLE (source_object), res, error);
-  g_object_unref (source_object);
-  if (ret != NULL)
-    return G_DBUS_OBJECT_MANAGER (ret);
-  else
-    return NULL;
-}
-
-/**
- * grooved_object_manager_client_new_sync:
- * @connection: A #GDBusConnection.
- * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.
- * @name: (allow-none): A bus name (well-known or unique) or %NULL if @connection is not a message bus connection.
- * @object_path: An object path.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL
- *
- * Synchronously creates #GDBusObjectManagerClient using grooved_object_manager_client_get_proxy_type() as the #GDBusProxyTypeFunc. See g_dbus_object_manager_client_new_sync() for more details.
- *
- * The calling thread is blocked until a reply is received.
- *
- * See grooved_object_manager_client_new() for the asynchronous version of this constructor.
- *
- * Returns: (transfer full) (type GroovedObjectManagerClient): The constructed object manager client or %NULL if @error is set.
- */
-GDBusObjectManager *
-grooved_object_manager_client_new_sync (
-    GDBusConnection        *connection,
-    GDBusObjectManagerClientFlags  flags,
-    const gchar            *name,
-    const gchar            *object_path,
-    GCancellable           *cancellable,
-    GError                **error)
-{
-  GInitable *ret;
-  ret = g_initable_new (GROOVED_TYPE_OBJECT_MANAGER_CLIENT, cancellable, error, "flags", flags, "name", name, "connection", connection, "object-path", object_path, "get-proxy-type-func", grooved_object_manager_client_get_proxy_type, NULL);
-  if (ret != NULL)
-    return G_DBUS_OBJECT_MANAGER (ret);
-  else
-    return NULL;
-}
-
-
-/**
- * grooved_object_manager_client_new_for_bus:
- * @bus_type: A #GBusType.
- * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.
- * @name: A bus name (well-known or unique).
- * @object_path: An object path.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
- * @user_data: User data to pass to @callback.
- *
- * Like grooved_object_manager_client_new() but takes a #GBusType instead of a #GDBusConnection.
- *
- * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.
- * You can then call grooved_object_manager_client_new_for_bus_finish() to get the result of the operation.
- *
- * See grooved_object_manager_client_new_for_bus_sync() for the synchronous, blocking version of this constructor.
- */
-void
-grooved_object_manager_client_new_for_bus (
-    GBusType                bus_type,
-    GDBusObjectManagerClientFlags  flags,
-    const gchar            *name,
-    const gchar            *object_path,
-    GCancellable           *cancellable,
-    GAsyncReadyCallback     callback,
-    gpointer                user_data)
-{
-  g_async_initable_new_async (GROOVED_TYPE_OBJECT_MANAGER_CLIENT, G_PRIORITY_DEFAULT, cancellable, callback, user_data, "flags", flags, "name", name, "bus-type", bus_type, "object-path", object_path, "get-proxy-type-func", grooved_object_manager_client_get_proxy_type, NULL);
-}
-
-/**
- * grooved_object_manager_client_new_for_bus_finish:
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_object_manager_client_new_for_bus().
- * @error: Return location for error or %NULL
- *
- * Finishes an operation started with grooved_object_manager_client_new_for_bus().
- *
- * Returns: (transfer full) (type GroovedObjectManagerClient): The constructed object manager client or %NULL if @error is set.
- */
-GDBusObjectManager *
-grooved_object_manager_client_new_for_bus_finish (
-    GAsyncResult        *res,
-    GError             **error)
-{
-  GObject *ret;
-  GObject *source_object;
-  source_object = g_async_result_get_source_object (res);
-  ret = g_async_initable_new_finish (G_ASYNC_INITABLE (source_object), res, error);
-  g_object_unref (source_object);
-  if (ret != NULL)
-    return G_DBUS_OBJECT_MANAGER (ret);
-  else
-    return NULL;
-}
-
-/**
- * grooved_object_manager_client_new_for_bus_sync:
- * @bus_type: A #GBusType.
- * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.
- * @name: A bus name (well-known or unique).
- * @object_path: An object path.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL
- *
- * Like grooved_object_manager_client_new_sync() but takes a #GBusType instead of a #GDBusConnection.
- *
- * The calling thread is blocked until a reply is received.
- *
- * See grooved_object_manager_client_new_for_bus() for the asynchronous version of this constructor.
- *
- * Returns: (transfer full) (type GroovedObjectManagerClient): The constructed object manager client or %NULL if @error is set.
- */
-GDBusObjectManager *
-grooved_object_manager_client_new_for_bus_sync (
-    GBusType                bus_type,
-    GDBusObjectManagerClientFlags  flags,
-    const gchar            *name,
-    const gchar            *object_path,
-    GCancellable           *cancellable,
-    GError                **error)
-{
-  GInitable *ret;
-  ret = g_initable_new (GROOVED_TYPE_OBJECT_MANAGER_CLIENT, cancellable, error, "flags", flags, "name", name, "bus-type", bus_type, "object-path", object_path, "get-proxy-type-func", grooved_object_manager_client_get_proxy_type, NULL);
-  if (ret != NULL)
-    return G_DBUS_OBJECT_MANAGER (ret);
-  else
-    return NULL;
-}
-
 

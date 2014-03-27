@@ -28,6 +28,7 @@ struct _GroovedPlayerIface
 {
   GTypeInterface parent_iface;
 
+
   gboolean (*handle_add_list) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation,
@@ -84,6 +85,18 @@ struct _GroovedPlayerIface
   gboolean (*handle_toggle) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
+
+  void (*option_changed) (
+    GroovedPlayer *object);
+
+  void (*status_changed) (
+    GroovedPlayer *object);
+
+  void (*track_added) (
+    GroovedPlayer *object);
+
+  void (*track_changed) (
+    GroovedPlayer *object);
 
 };
 
@@ -153,6 +166,21 @@ void grooved_player_complete_loop (
 void grooved_player_complete_quit (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
+
+
+
+/* D-Bus signal emissions functions: */
+void grooved_player_emit_status_changed (
+    GroovedPlayer *object);
+
+void grooved_player_emit_track_changed (
+    GroovedPlayer *object);
+
+void grooved_player_emit_track_added (
+    GroovedPlayer *object);
+
+void grooved_player_emit_option_changed (
+    GroovedPlayer *object);
 
 
 
@@ -487,148 +515,6 @@ struct _GroovedPlayerSkeletonClass
 GType grooved_player_skeleton_get_type (void) G_GNUC_CONST;
 
 GroovedPlayer *grooved_player_skeleton_new (void);
-
-
-/* ---- */
-
-#define GROOVED_TYPE_OBJECT (grooved_object_get_type ())
-#define GROOVED_OBJECT(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GROOVED_TYPE_OBJECT, GroovedObject))
-#define GROOVED_IS_OBJECT(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GROOVED_TYPE_OBJECT))
-#define GROOVED_OBJECT_GET_IFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), GROOVED_TYPE_OBJECT, GroovedObject))
-
-struct _GroovedObject;
-typedef struct _GroovedObject GroovedObject;
-typedef struct _GroovedObjectIface GroovedObjectIface;
-
-struct _GroovedObjectIface
-{
-  GTypeInterface parent_iface;
-};
-
-GType grooved_object_get_type (void) G_GNUC_CONST;
-
-GroovedPlayer *grooved_object_get_player (GroovedObject *object);
-GroovedPlayer *grooved_object_peek_player (GroovedObject *object);
-
-#define GROOVED_TYPE_OBJECT_PROXY (grooved_object_proxy_get_type ())
-#define GROOVED_OBJECT_PROXY(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GROOVED_TYPE_OBJECT_PROXY, GroovedObjectProxy))
-#define GROOVED_OBJECT_PROXY_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), GROOVED_TYPE_OBJECT_PROXY, GroovedObjectProxyClass))
-#define GROOVED_OBJECT_PROXY_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GROOVED_TYPE_OBJECT_PROXY, GroovedObjectProxyClass))
-#define GROOVED_IS_OBJECT_PROXY(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GROOVED_TYPE_OBJECT_PROXY))
-#define GROOVED_IS_OBJECT_PROXY_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GROOVED_TYPE_OBJECT_PROXY))
-
-typedef struct _GroovedObjectProxy GroovedObjectProxy;
-typedef struct _GroovedObjectProxyClass GroovedObjectProxyClass;
-typedef struct _GroovedObjectProxyPrivate GroovedObjectProxyPrivate;
-
-struct _GroovedObjectProxy
-{
-  /*< private >*/
-  GDBusObjectProxy parent_instance;
-  GroovedObjectProxyPrivate *priv;
-};
-
-struct _GroovedObjectProxyClass
-{
-  GDBusObjectProxyClass parent_class;
-};
-
-GType grooved_object_proxy_get_type (void) G_GNUC_CONST;
-GroovedObjectProxy *grooved_object_proxy_new (GDBusConnection *connection, const gchar *object_path);
-
-#define GROOVED_TYPE_OBJECT_SKELETON (grooved_object_skeleton_get_type ())
-#define GROOVED_OBJECT_SKELETON(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GROOVED_TYPE_OBJECT_SKELETON, GroovedObjectSkeleton))
-#define GROOVED_OBJECT_SKELETON_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), GROOVED_TYPE_OBJECT_SKELETON, GroovedObjectSkeletonClass))
-#define GROOVED_OBJECT_SKELETON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GROOVED_TYPE_OBJECT_SKELETON, GroovedObjectSkeletonClass))
-#define GROOVED_IS_OBJECT_SKELETON(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GROOVED_TYPE_OBJECT_SKELETON))
-#define GROOVED_IS_OBJECT_SKELETON_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GROOVED_TYPE_OBJECT_SKELETON))
-
-typedef struct _GroovedObjectSkeleton GroovedObjectSkeleton;
-typedef struct _GroovedObjectSkeletonClass GroovedObjectSkeletonClass;
-typedef struct _GroovedObjectSkeletonPrivate GroovedObjectSkeletonPrivate;
-
-struct _GroovedObjectSkeleton
-{
-  /*< private >*/
-  GDBusObjectSkeleton parent_instance;
-  GroovedObjectSkeletonPrivate *priv;
-};
-
-struct _GroovedObjectSkeletonClass
-{
-  GDBusObjectSkeletonClass parent_class;
-};
-
-GType grooved_object_skeleton_get_type (void) G_GNUC_CONST;
-GroovedObjectSkeleton *grooved_object_skeleton_new (const gchar *object_path);
-void grooved_object_skeleton_set_player (GroovedObjectSkeleton *object, GroovedPlayer *interface_);
-
-/* ---- */
-
-#define GROOVED_TYPE_OBJECT_MANAGER_CLIENT (grooved_object_manager_client_get_type ())
-#define GROOVED_OBJECT_MANAGER_CLIENT(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GROOVED_TYPE_OBJECT_MANAGER_CLIENT, GroovedObjectManagerClient))
-#define GROOVED_OBJECT_MANAGER_CLIENT_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), GROOVED_TYPE_OBJECT_MANAGER_CLIENT, GroovedObjectManagerClientClass))
-#define GROOVED_OBJECT_MANAGER_CLIENT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GROOVED_TYPE_OBJECT_MANAGER_CLIENT, GroovedObjectManagerClientClass))
-#define GROOVED_IS_OBJECT_MANAGER_CLIENT(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GROOVED_TYPE_OBJECT_MANAGER_CLIENT))
-#define GROOVED_IS_OBJECT_MANAGER_CLIENT_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GROOVED_TYPE_OBJECT_MANAGER_CLIENT))
-
-typedef struct _GroovedObjectManagerClient GroovedObjectManagerClient;
-typedef struct _GroovedObjectManagerClientClass GroovedObjectManagerClientClass;
-typedef struct _GroovedObjectManagerClientPrivate GroovedObjectManagerClientPrivate;
-
-struct _GroovedObjectManagerClient
-{
-  /*< private >*/
-  GDBusObjectManagerClient parent_instance;
-  GroovedObjectManagerClientPrivate *priv;
-};
-
-struct _GroovedObjectManagerClientClass
-{
-  GDBusObjectManagerClientClass parent_class;
-};
-
-GType grooved_object_manager_client_get_type (void) G_GNUC_CONST;
-
-GType grooved_object_manager_client_get_proxy_type (GDBusObjectManagerClient *manager, const gchar *object_path, const gchar *interface_name, gpointer user_data);
-
-void grooved_object_manager_client_new (
-    GDBusConnection        *connection,
-    GDBusObjectManagerClientFlags  flags,
-    const gchar            *name,
-    const gchar            *object_path,
-    GCancellable           *cancellable,
-    GAsyncReadyCallback     callback,
-    gpointer                user_data);
-GDBusObjectManager *grooved_object_manager_client_new_finish (
-    GAsyncResult        *res,
-    GError             **error);
-GDBusObjectManager *grooved_object_manager_client_new_sync (
-    GDBusConnection        *connection,
-    GDBusObjectManagerClientFlags  flags,
-    const gchar            *name,
-    const gchar            *object_path,
-    GCancellable           *cancellable,
-    GError                **error);
-
-void grooved_object_manager_client_new_for_bus (
-    GBusType                bus_type,
-    GDBusObjectManagerClientFlags  flags,
-    const gchar            *name,
-    const gchar            *object_path,
-    GCancellable           *cancellable,
-    GAsyncReadyCallback     callback,
-    gpointer                user_data);
-GDBusObjectManager *grooved_object_manager_client_new_for_bus_finish (
-    GAsyncResult        *res,
-    GError             **error);
-GDBusObjectManager *grooved_object_manager_client_new_for_bus_sync (
-    GBusType                bus_type,
-    GDBusObjectManagerClientFlags  flags,
-    const gchar            *name,
-    const gchar            *object_path,
-    GCancellable           *cancellable,
-    GError                **error);
 
 
 G_END_DECLS
