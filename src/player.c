@@ -108,18 +108,12 @@ static void *player_start_thread(void *ptr) {
 				playlist_pos = player_playlist_position();
 
 				player_print_playlist_status();
-				player_print_metadata();
 
 				break;
 			}
 
-			case MPV_EVENT_END_FILE: {
-				debug_printf("prev position: %d\n",
-					     playlist_pos + 1);
-				player_print_playlist_status();
-
+			case MPV_EVENT_END_FILE:
 				break;
-			}
 
 			case MPV_EVENT_METADATA_UPDATE: {
 				player_print_metadata();
