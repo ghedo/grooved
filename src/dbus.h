@@ -32,68 +32,68 @@
 #define GROOVED_DBUS_PLAYER_INTERFACE "io.github.ghedo.grooved.Player"
 #define GROOVED_DBUS_PLAYER_PATH      "/io/github/ghedo/grooved/Player"
 
-static const char *intro_xml =
-"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-"<node name=\"" GROOVED_DBUS_PLAYER_PATH "\">\n"
-"  <interface name=\"" GROOVED_DBUS_PLAYER_INTERFACE "\">\n"
-
-"    <method name=\"Status\">"
-"      <arg direction=\"out\" name=\"state\" type=\"s\"/>\n"
-"      <arg direction=\"out\" name=\"path\" type=\"s\"/>\n"
-
-"      <arg direction=\"out\" name=\"length\" type=\"d\"/>\n"
-"      <arg direction=\"out\" name=\"position\" type=\"d\"/>\n"
-"      <arg direction=\"out\" name=\"percent\" type=\"d\"/>\n"
-
-"      <arg direction=\"out\" name=\"metadata\" type=\"a{ss}\"/>\n"
-
-"      <arg direction=\"out\" name=\"replaygain\" type=\"s\"/>\n"
-"      <arg direction=\"out\" name=\"loop\" type=\"b\"/>\n"
-"    </method>\n"
-
-"    <method name=\"Play\">\n"
-"    </method>\n"
-
-"    <method name=\"Pause\">\n"
-"    </method>\n"
-
-"    <method name=\"Toggle\">\n"
-"    </method>\n"
-
-"    <method name=\"Next\">\n"
-"    </method>\n"
-
-"    <method name=\"Prev\">\n"
-"    </method>\n"
-
-"    <method name=\"Stop\">\n"
-"    </method>\n"
-
-"    <method name=\"Seek\">\n"
-"      <arg direction=\"in\" name=\"seconds\" type=\"x\"/>\n"
-"    </method>\n"
-
-"    <method name=\"AddTrack\">\n"
-"      <arg direction=\"in\" name=\"path\" type=\"s\"/>\n"
-"    </method>\n"
-
-"    <method name=\"AddList\">\n"
-"      <arg direction=\"in\" name=\"path\" type=\"s\"/>\n"
-"    </method>\n"
-
-"    <method name=\"Replaygain\">\n"
-"      <arg direction=\"in\" name=\"mode\" type=\"s\"/>\n"
-"    </method>\n"
-
-"    <method name=\"Loop\">\n"
-"      <arg direction=\"in\" name=\"enable\" type=\"b\"/>\n"
-"    </method>\n"
-
-"    <method name=\"Quit\">\n"
-"    </method>\n"
-
-"   </interface>\n"
-"</node>";
+#define GROOVED_DBUS_INTROSPECTION					\
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"				\
+"<node name=\"" GROOVED_DBUS_PLAYER_PATH "\">\n"			\
+"  <interface name=\"" GROOVED_DBUS_PLAYER_INTERFACE "\">\n"		\
+									\
+"    <method name=\"Status\">"						\
+"      <arg direction=\"out\" name=\"state\" type=\"s\"/>\n"		\
+"      <arg direction=\"out\" name=\"path\" type=\"s\"/>\n"		\
+									\
+"      <arg direction=\"out\" name=\"length\" type=\"d\"/>\n"		\
+"      <arg direction=\"out\" name=\"position\" type=\"d\"/>\n"		\
+"      <arg direction=\"out\" name=\"percent\" type=\"d\"/>\n"		\
+									\
+"      <arg direction=\"out\" name=\"metadata\" type=\"a{ss}\"/>\n"	\
+									\
+"      <arg direction=\"out\" name=\"replaygain\" type=\"s\"/>\n"	\
+"      <arg direction=\"out\" name=\"loop\" type=\"b\"/>\n"		\
+"    </method>\n"							\
+									\
+"    <method name=\"Play\">\n"						\
+"    </method>\n"							\
+									\
+"    <method name=\"Pause\">\n"						\
+"    </method>\n"							\
+									\
+"    <method name=\"Toggle\">\n"					\
+"    </method>\n"							\
+									\
+"    <method name=\"Next\">\n"						\
+"    </method>\n"							\
+									\
+"    <method name=\"Prev\">\n"						\
+"    </method>\n"							\
+									\
+"    <method name=\"Stop\">\n"						\
+"    </method>\n"							\
+									\
+"    <method name=\"Seek\">\n"						\
+"      <arg direction=\"in\" name=\"seconds\" type=\"x\"/>\n"		\
+"    </method>\n"							\
+									\
+"    <method name=\"AddTrack\">\n"					\
+"      <arg direction=\"in\" name=\"path\" type=\"s\"/>\n"		\
+"    </method>\n"							\
+									\
+"    <method name=\"AddList\">\n"					\
+"      <arg direction=\"in\" name=\"path\" type=\"s\"/>\n"		\
+"    </method>\n"							\
+									\
+"    <method name=\"Replaygain\">\n"					\
+"      <arg direction=\"in\" name=\"mode\" type=\"s\"/>\n"		\
+"    </method>\n"							\
+									\
+"    <method name=\"Loop\">\n"						\
+"      <arg direction=\"in\" name=\"enable\" type=\"b\"/>\n"		\
+"    </method>\n"							\
+									\
+"    <method name=\"Quit\">\n"						\
+"    </method>\n"							\
+									\
+"   </interface>\n"							\
+"</node>"
 
 extern void dbus_init(void);
 extern void dbus_destroy(void);

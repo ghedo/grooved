@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
 	else if (strcmp("help", argv[1]) == 0)
 		help();
 	else if (strcmp("introspect", argv[1]) == 0)
-		puts(intro_xml);
+		puts(GROOVED_DBUS_INTROSPECTION);
 	else {
 		err_printf("Invalid command '%s'", argv[1]);
 		help();
