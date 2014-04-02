@@ -52,6 +52,7 @@ static void cmd_toggle(GroovedPlayer *proxy);
 static void cmd_stop(GroovedPlayer *proxy);
 static void cmd_next(GroovedPlayer *proxy);
 static void cmd_prev(GroovedPlayer *proxy);
+static void cmd_list(GroovedPlayer *proxy);
 static void cmd_seek(GroovedPlayer *proxy, const char *secs);
 static void cmd_add(GroovedPlayer *proxy, const char *path);
 static void cmd_rgain(GroovedPlayer *proxy, const char *mode);
@@ -86,6 +87,8 @@ int main(int argc, char *argv[]) {
 		cmd_next(proxy);
 	else if (strcmp("prev", argv[1]) == 0)
 		cmd_prev(proxy);
+	else if (strcmp("list", argv[1]) == 0)
+		cmd_list(proxy);
 	else if (strcmp("seek", argv[1]) == 0) {
 		if ((argc < 3))
 			fail_printf("Invalid seek value");
@@ -228,6 +231,21 @@ static void cmd_prev(GroovedPlayer *proxy) {
 
 	if (err != NULL)
 		fail_printf("%s", err -> message);
+}
+
+static void cmd_list(GroovedPlayer *proxy) {
+	GError *err = NULL;
+
+	char **files;
+	int64_t i, count, pos;
+
+	grooved_player_call_list_sync(proxy, &files, &count, &pos, NULL, &err);
+
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+
+	for (i = 0; i < count; i++)
+		printf("%c %s\n", (pos == i) ? '*' : ' ', files[i]);
 }
 
 static void cmd_seek(GroovedPlayer *proxy, const char *secs) {

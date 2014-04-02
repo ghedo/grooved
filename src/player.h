@@ -43,6 +43,7 @@ extern void player_init(void);
 extern void player_destroy(void);
 
 extern void player_make_status(GVariantBuilder *status);
+extern void player_make_list(GVariantBuilder *list);
 
 extern void player_playback_start(void);
 extern void player_playback_play(void);

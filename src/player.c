@@ -250,6 +250,45 @@ void player_make_status(GVariantBuilder *status) {
 	mpv_free(path);
 }
 
+void player_make_list(GVariantBuilder *list) {
+	int i, j;
+
+	int64_t count;
+	mpv_node playlist;
+
+	GVariantBuilder *files = g_variant_builder_new(G_VARIANT_TYPE("as"));
+
+	mpv_get_property(player_ctx, "playlist", MPV_FORMAT_NODE, &playlist);
+	mpv_get_property(player_ctx, "playlist-count", MPV_FORMAT_INT64, &count);
+
+	if (playlist.format == MPV_FORMAT_NODE_ARRAY) {
+		for (i = 0; i < playlist.u.list -> num; i++) {
+			mpv_node *current = &playlist.u.list -> values[i];
+
+			if (current -> format != MPV_FORMAT_NODE_MAP)
+				continue;
+
+			for (j = 0; j < current -> u.list -> num; j++) {
+				mpv_node *val = &current -> u.list -> values[j];
+
+				if (val -> format != MPV_FORMAT_STRING)
+					continue;
+
+				g_variant_builder_add(
+					files, "s", val -> u.string
+				);
+			}
+
+		}
+	}
+
+	g_variant_builder_add_value(list, g_variant_builder_end(files));
+	g_variant_builder_add(list, "x", count);
+	g_variant_builder_add(list, "x", playlist_pos);
+
+	mpv_free_node_contents(&playlist);
+}
+
 void player_playback_start(void) {
 	int rc;
 

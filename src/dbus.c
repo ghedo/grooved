@@ -73,6 +73,18 @@ gboolean on_add_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 	return TRUE;
 }
 
+gboolean on_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	GVariantBuilder *list = g_variant_builder_new(G_VARIANT_TYPE("(asxx)"));
+
+	player_make_list(list);
+
+	g_dbus_method_invocation_return_value(
+		invocation, g_variant_builder_end(list)
+	);
+
+	return TRUE;
+}
+
 gboolean on_loop(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
                  gboolean arg_enable) {
 	player_playback_loop(arg_enable == TRUE ? true : false);
@@ -197,6 +209,7 @@ static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
 	struct handle_signal cbs[] = {
 		{ "handle-add-list",   G_CALLBACK(on_add_list) },
 		{ "handle-add-track",  G_CALLBACK(on_add_track) },
+		{ "handle-list",       G_CALLBACK(on_list) },
 		{ "handle-loop",       G_CALLBACK(on_loop) },
 		{ "handle-next",       G_CALLBACK(on_next) },
 		{ "handle-pause",      G_CALLBACK(on_pause) },

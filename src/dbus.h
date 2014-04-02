@@ -73,6 +73,12 @@
 "      <arg direction=\"in\" name=\"seconds\" type=\"x\"/>\n"		\
 "    </method>\n"							\
 									\
+"    <method name=\"List\">\n"						\
+"      <arg direction=\"out\" name=\"files\" type=\"as\"/>\n"		\
+"      <arg direction=\"out\" name=\"count\" type=\"x\"/>\n"		\
+"      <arg direction=\"out\" name=\"position\" type=\"x\"/>\n"		\
+"    </method>\n"							\
+									\
 "    <method name=\"AddTrack\">\n"					\
 "      <arg direction=\"in\" name=\"path\" type=\"s\"/>\n"		\
 "    </method>\n"							\
