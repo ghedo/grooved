@@ -83,51 +83,16 @@ groved daemon via the DBus session bus.</p>
 
 <h2 id="COMMANDS">COMMANDS</h2>
 
-<p><code>status</code></p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Show the status of the player.</p>
-
-<p><code>play</code></p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Unpause the player.</p>
-
-<p><code>pause</code></p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Pause the player.</p>
-
-<p><code>toggle</code></p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Toggle the player's pause status.</p>
-
-<p><code>stop</code></p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Stop playback and clear tracklist.</p>
-
-<p><code>next</code></p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Skip to the next track.</p>
-
-<p><code>prev</code></p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Skip to the previous track.</p>
-
 <p><code>add TRACK [, TRACK ...]</code></p>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Append tracks to the player's tracklist. Tracks can be either files on the
 filesystem or other kinds of streams (e.g. HTTP streams).</p>
 
-<p><code>rgain track|album|none</code></p>
+<p><code>list</code></p>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Set the player's replaygain mode.</p>
+Show tracklist (the current track is marked with '*').</p>
 
 <p><code>loop on|off</code></p>
 
@@ -139,25 +104,65 @@ Set the player's loop mode.</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Download and show lyrics for the currently playing track.</p>
 
+<p><code>next</code></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Skip to the next track.</p>
+
+<p><code>pause</code></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Pause the player.</p>
+
+<p><code>play</code></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Unpause the player.</p>
+
+<p><code>prev</code></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Skip to the previous track.</p>
+
 <p><code>quit</code></p>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Shutdown the player.</p>
 
+<p><code>rgain track|album|none</code></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Set the player's replaygain mode.</p>
+
+<p><code>status</code></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Show the status of the player.</p>
+
+<p><code>toggle</code></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Toggle the player's pause status.</p>
+
+<p><code>stop</code></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Stop playback and clear tracklist.</p>
+
 <h2 id="AUTHOR">AUTHOR</h2>
 
-<p>Alessandro Ghedini <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#58;&#97;&#x6c;&#101;&#115;&#115;&#97;&#x6e;&#100;&#114;&#111;&#64;&#x67;&#x68;&#101;&#100;&#105;&#x6e;&#105;&#46;&#109;&#101;" data-bare-link="true">&#x61;&#x6c;&#101;&#115;&#115;&#97;&#x6e;&#100;&#114;&#x6f;&#64;&#x67;&#x68;&#x65;&#100;&#x69;&#110;&#105;&#x2e;&#109;&#101;</a></p>
+<p>Alessandro Ghedini <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x61;&#108;&#x65;&#x73;&#115;&#x61;&#x6e;&#100;&#114;&#x6f;&#x40;&#x67;&#104;&#x65;&#x64;&#105;&#110;&#x69;&#46;&#109;&#101;" data-bare-link="true">&#97;&#108;&#101;&#115;&#x73;&#97;&#110;&#x64;&#114;&#x6f;&#x40;&#103;&#x68;&#101;&#100;&#105;&#x6e;&#105;&#46;&#x6d;&#101;</a></p>
 
 <h2 id="COPYRIGHT">COPYRIGHT</h2>
 
-<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#x61;&#108;&#101;&#x73;&#x73;&#97;&#x6e;&#x64;&#x72;&#111;&#x40;&#x67;&#104;&#101;&#x64;&#x69;&#x6e;&#x69;&#x2e;&#x6d;&#x65;" data-bare-link="true">&#97;&#x6c;&#101;&#x73;&#115;&#97;&#x6e;&#x64;&#114;&#x6f;&#64;&#103;&#x68;&#x65;&#x64;&#x69;&#x6e;&#105;&#46;&#x6d;&#x65;</a></p>
+<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x61;&#x6c;&#101;&#x73;&#x73;&#97;&#x6e;&#100;&#x72;&#111;&#64;&#x67;&#x68;&#x65;&#x64;&#105;&#x6e;&#105;&#x2e;&#109;&#101;" data-bare-link="true">&#x61;&#x6c;&#101;&#x73;&#x73;&#x61;&#110;&#100;&#114;&#111;&#64;&#103;&#104;&#x65;&#x64;&#x69;&#x6e;&#105;&#46;&#x6d;&#101;</a></p>
 
 <p>This program is released under the 2 clause BSD license.</p>
 
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>March 2014</li>
+    <li class='tc'>April 2014</li>
     <li class='tr'>groovectl(1)</li>
   </ol>
 
