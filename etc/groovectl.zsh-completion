@@ -12,18 +12,19 @@ case $state in
   subcommand)
     local -a subcommands
     subcommands=(
-      "status:show the status of the player"
-      "play:unpause the player"
-      "pause:pause the player"
-      "toggle:toggle the player's pause status"
-      "stop:stop playback and clear tracklist"
-      "next:skip to next track"
-      "prev:skip to previous track"
       "add:append tracks to the player's tracklist"
-      "rgain:set the player's replaygain mode"
+      "list:show tracklist"
       "loop:set the player's loop mode"
       "lyrics:download and show lyrics for the currently playing track"
+      "next:skip to next track"
+      "pause:pause the player"
+      "play:unpause the player"
+      "prev:skip to previous track"
       "quit:shutdown the player"
+      "rgain:set the player's replaygain mode"
+      "status:show the status of the player"
+      "stop:stop playback and clear tracklist"
+      "toggle:toggle the player's pause status"
     )
 
     _describe -t subcommands 'groovectl subcommand' subcommands

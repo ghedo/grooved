@@ -452,17 +452,19 @@ static inline void help() {
 
 	puts(COLOR_RED " Commands:" COLOR_OFF);
 
-	CMD_HELP("status",	"Show the status of the player");
-	CMD_HELP("play",	"Unpause the player");
-	CMD_HELP("pause",	"Pause the player");
-	CMD_HELP("toggle",	"Toggle the player's pause status");
-	CMD_HELP("next",	"Skip to next track");
-	CMD_HELP("prev",	"Skip to previous track");
 	CMD_HELP("add",		"Append tracks to the player's tracklist");
-	CMD_HELP("rgain",	"Set the player's replaygain mode");
+	CMD_HELP("list",	"Show tracklist");
 	CMD_HELP("loop",	"Set the player's loop mode");
 	CMD_HELP("lyrics",	"Download and show lyrics for the currently playing track");
+	CMD_HELP("next",	"Skip to next track");
+	CMD_HELP("pause",	"Pause the player");
+	CMD_HELP("play",	"Unpause the player");
+	CMD_HELP("prev",	"Skip to previous track");
 	CMD_HELP("quit",	"Shutdown the player");
+	CMD_HELP("rgain",	"Set the player's replaygain mode");
+	CMD_HELP("status",	"Show the status of the player");
+	CMD_HELP("stop",	"Stop playback and clear tracklist");
+	CMD_HELP("toggle",	"Toggle the player's pause status");
 
 	puts("");
 }

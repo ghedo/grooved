@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "GROOVECTL" "1" "March 2014" "" ""
+.TH "GROOVECTL" "1" "April 2014" "" ""
 .
 .SH "NAME"
 \fBgroovectl\fR \- groovy music player client
@@ -13,58 +13,16 @@
 \fBgroovectl\fR is a command\-line client for grooved\. It communicates with the groved daemon via the DBus session bus\.
 .
 .SH "COMMANDS"
-\fBstatus\fR
-.
-.P
-\~\~\~\~\~\~ Show the status of the player\.
-.
-.P
-\fBplay\fR
-.
-.P
-\~\~\~\~\~\~ Unpause the player\.
-.
-.P
-\fBpause\fR
-.
-.P
-\~\~\~\~\~\~ Pause the player\.
-.
-.P
-\fBtoggle\fR
-.
-.P
-\~\~\~\~\~\~ Toggle the player\'s pause status\.
-.
-.P
-\fBstop\fR
-.
-.P
-\~\~\~\~\~\~ Stop playback and clear tracklist\.
-.
-.P
-\fBnext\fR
-.
-.P
-\~\~\~\~\~\~ Skip to the next track\.
-.
-.P
-\fBprev\fR
-.
-.P
-\~\~\~\~\~\~ Skip to the previous track\.
-.
-.P
 \fBadd TRACK [, TRACK \.\.\.]\fR
 .
 .P
 \~\~\~\~\~\~ Append tracks to the player\'s tracklist\. Tracks can be either files on the filesystem or other kinds of streams (e\.g\. HTTP streams)\.
 .
 .P
-\fBrgain track|album|none\fR
+\fBlist\fR
 .
 .P
-\~\~\~\~\~\~ Set the player\'s replaygain mode\.
+\~\~\~\~\~\~ Show tracklist (the current track is marked with \'*\')\.
 .
 .P
 \fBloop on|off\fR
@@ -79,10 +37,58 @@
 \~\~\~\~\~\~ Download and show lyrics for the currently playing track\.
 .
 .P
+\fBnext\fR
+.
+.P
+\~\~\~\~\~\~ Skip to the next track\.
+.
+.P
+\fBpause\fR
+.
+.P
+\~\~\~\~\~\~ Pause the player\.
+.
+.P
+\fBplay\fR
+.
+.P
+\~\~\~\~\~\~ Unpause the player\.
+.
+.P
+\fBprev\fR
+.
+.P
+\~\~\~\~\~\~ Skip to the previous track\.
+.
+.P
 \fBquit\fR
 .
 .P
 \~\~\~\~\~\~ Shutdown the player\.
+.
+.P
+\fBrgain track|album|none\fR
+.
+.P
+\~\~\~\~\~\~ Set the player\'s replaygain mode\.
+.
+.P
+\fBstatus\fR
+.
+.P
+\~\~\~\~\~\~ Show the status of the player\.
+.
+.P
+\fBtoggle\fR
+.
+.P
+\~\~\~\~\~\~ Toggle the player\'s pause status\.
+.
+.P
+\fBstop\fR
+.
+.P
+\~\~\~\~\~\~ Stop playback and clear tracklist\.
 .
 .SH "AUTHOR"
 Alessandro Ghedini \fIalessandro@ghedini\.me\fR

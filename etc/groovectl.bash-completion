@@ -10,9 +10,23 @@ _groovectl() {
 	cur=${COMP_WORDS[COMP_CWORD]}
 	prev=${COMP_WORDS[COMP_CWORD-1]}
 
-	CMDS="status play pause toggle stop next prev add rgain loop lyrics quit"
+	CMDS=(
+		add
+		list
+		loop
+		lyrics
+		next
+		pause
+		play
+		prev
+		quit
+		rgain
+		status
+		stop
+		toggle
+	)
 
-	COMPREPLY=($(compgen -W "$CMDS" -- $cur))
+	COMPREPLY=($(compgen -W "${CMDS[@]}" -- $cur))
 
 	return 0
 }
