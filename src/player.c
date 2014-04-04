@@ -230,10 +230,10 @@ void player_make_status(GVariantBuilder *status) {
 
 	meta_build = g_variant_builder_new(G_VARIANT_TYPE("a{ss}"));
 
-	if (metadata.format == MPV_FORMAT_NODE_ARRAY) {
-		for (i = 0; i < metadata.u.list -> num; i += 2) {
-			char *key = metadata.u.list -> values[i].u.string;
-			char *val = metadata.u.list -> values[i + 1].u.string;
+	if (metadata.format == MPV_FORMAT_NODE_MAP) {
+		for (i = 0; i < metadata.u.list -> num; i++) {
+			char *key = metadata.u.list -> keys[i];
+			char *val = metadata.u.list -> values[i].u.string;
 
 			g_variant_builder_add(meta_build, "{ss}", key, val);
 		}
@@ -534,13 +534,13 @@ static void player_print_metadata(void) {
 	if (rc != MPV_ERROR_SUCCESS)
 		return;
 
-	if (metadata.format != MPV_FORMAT_NODE_ARRAY)
+	if (metadata.format != MPV_FORMAT_NODE_MAP)
 		err_printf("No metadata");
 
 	debug_printf("tags:");
-	for (i = 0; i < metadata.u.list -> num; i += 2) {
-		char *key = metadata.u.list -> values[i].u.string;
-		char *val = metadata.u.list -> values[i + 1].u.string;
+	for (i = 0; i < metadata.u.list -> num; i++) {
+		char *key = metadata.u.list -> keys[i];
+		char *val = metadata.u.list -> values[i].u.string;
 
 		debug_printf(" %s: %s", key, val);
 	}
