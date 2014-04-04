@@ -76,13 +76,13 @@ static void *player_start_thread(void *ptr) {
 	player_status = STARTING;
 
 	while (1) {
+		enum player_status prev_status = player_status;
+
 		mpv_event *event = mpv_wait_event(ctx, 10000);
 		debug_printf("event: %s", mpv_event_name(event -> event_id));
 
 		switch (event -> event_id) {
 			case MPV_EVENT_IDLE: {
-				enum player_status prev_status = player_status;
-
 				player_status = IDLE;
 
 				if ((prev_status == STARTING) ||
@@ -90,7 +90,6 @@ static void *player_start_thread(void *ptr) {
 					break;
 
 				player_playback_play();
-
 				break;
 			}
 
@@ -108,7 +107,6 @@ static void *player_start_thread(void *ptr) {
 				playlist_pos = player_playlist_position();
 
 				player_print_playlist_status();
-
 				break;
 			}
 
@@ -117,7 +115,6 @@ static void *player_start_thread(void *ptr) {
 
 			case MPV_EVENT_METADATA_UPDATE: {
 				player_print_metadata();
-
 				break;
 			}
 
