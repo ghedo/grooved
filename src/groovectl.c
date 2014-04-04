@@ -45,104 +45,20 @@
 #include "dbus-common.h"
 #include "printf.h"
 
-static void cmd_status(GroovedPlayer *proxy);
-static void cmd_play(GroovedPlayer *proxy);
-static void cmd_pause(GroovedPlayer *proxy);
-static void cmd_toggle(GroovedPlayer *proxy);
-static void cmd_stop(GroovedPlayer *proxy);
-static void cmd_next(GroovedPlayer *proxy);
-static void cmd_prev(GroovedPlayer *proxy);
-static void cmd_list(GroovedPlayer *proxy);
-static void cmd_seek(GroovedPlayer *proxy, const char *secs);
-static void cmd_add(GroovedPlayer *proxy, const char *path);
-static void cmd_rgain(GroovedPlayer *proxy, const char *mode);
-static void cmd_loop(GroovedPlayer *proxy, const char *mode);
-static void cmd_lyrics(GroovedPlayer *proxy);
-static void cmd_interactive(GroovedPlayer *proxy);
-static void cmd_quit(GroovedPlayer *proxy);
+typedef void (*cmd_handle)(GroovedPlayer *proxy, int argc, char *argv[]);
 
-static inline void help();
+#define CMD_HANDLE(NAME) \
+	void cmd_##NAME(GroovedPlayer *proxy, int argc, char *argv[])
 
-int main(int argc, char *argv[]) {
-	GError *err = NULL;
+struct handle_cmd {
+	const char *name;
+	cmd_handle fn;
+	const char *desc;
+};
 
-	GroovedPlayer *proxy = grooved_player_proxy_new_for_bus_sync(
-		G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
-		GROOVED_DBUS_NAME, GROOVED_DBUS_PLAYER_PATH, NULL, &err
-	);
+static inline void help(void);
 
-	if (argc < 2)
-		cmd_interactive(proxy);
-	else if (strcmp("status", argv[1]) == 0)
-		cmd_status(proxy);
-	else if (strcmp("play", argv[1]) == 0)
-		cmd_play(proxy);
-	else if (strcmp("pause", argv[1]) == 0)
-		cmd_pause(proxy);
-	else if (strcmp("toggle", argv[1]) == 0)
-		cmd_toggle(proxy);
-	else if (strcmp("stop", argv[1]) == 0)
-		cmd_stop(proxy);
-	else if (strcmp("next", argv[1]) == 0)
-		cmd_next(proxy);
-	else if (strcmp("prev", argv[1]) == 0)
-		cmd_prev(proxy);
-	else if (strcmp("list", argv[1]) == 0)
-		cmd_list(proxy);
-	else if (strcmp("seek", argv[1]) == 0) {
-		if ((argc < 3))
-			fail_printf("Invalid seek value");
-
-		cmd_seek(proxy, argv[2]);
-	} else if (strcmp("add", argv[1]) == 0) {
-		int i;
-
-		for (i = 2; i < argc; i++) {
-			char *path;
-
-			if (access(argv[i], F_OK) == 0)
-				path = realpath(argv[i], NULL);
-			else
-				path = strdup(argv[i]);
-
-			cmd_add(proxy, path);
-
-			printf("Added track '%s'\n", path);
-		}
-	} else if (strcmp("rgain", argv[1]) == 0) {
-		if ((argc < 3) ||
-		    (strcmp("track", argv[2]) &&
-		     strcmp("album", argv[2]) &&
-		     strcmp("none", argv[2])))
-			fail_printf("Invalid replaygain mode");
-
-		cmd_rgain(proxy, argv[2]);
-	} else if (strcmp("loop", argv[1]) == 0) {
-		if ((argc < 3) ||
-		    (strcmp("on", argv[2]) &&
-		     strcmp("off", argv[2])))
-			fail_printf("Invalid replaygain mode");
-
-		cmd_loop(proxy, argv[2]);
-	} else if (strcmp("lyrics", argv[1]) == 0)
-		cmd_lyrics(proxy);
-	else if (strcmp("quit", argv[1]) == 0)
-		cmd_quit(proxy);
-	else if (strcmp("help", argv[1]) == 0)
-		help();
-	else if (strcmp("introspect", argv[1]) == 0)
-		puts(GROOVED_DBUS_INTROSPECTION);
-	else {
-		err_printf("Invalid command '%s'", argv[1]);
-		help();
-	}
-
-	g_object_unref(proxy);
-
-	return 0;
-}
-
-static void cmd_status(GroovedPlayer *proxy) {
+CMD_HANDLE(status) {
 	GError *err = NULL;
 
 	gboolean loop;
@@ -185,7 +101,7 @@ static void cmd_status(GroovedPlayer *proxy) {
 	);
 }
 
-static void cmd_play(GroovedPlayer *proxy) {
+CMD_HANDLE(play) {
 	GError *err = NULL;
 	grooved_player_call_play_sync(proxy, NULL, &err);
 
@@ -193,7 +109,7 @@ static void cmd_play(GroovedPlayer *proxy) {
 		fail_printf("%s", err -> message);
 }
 
-static void cmd_pause(GroovedPlayer *proxy) {
+CMD_HANDLE(pause) {
 	GError *err = NULL;
 	grooved_player_call_pause_sync(proxy, NULL, &err);
 
@@ -201,7 +117,7 @@ static void cmd_pause(GroovedPlayer *proxy) {
 		fail_printf("%s", err -> message);
 }
 
-static void cmd_toggle(GroovedPlayer *proxy) {
+CMD_HANDLE(toggle) {
 	GError *err = NULL;
 	grooved_player_call_toggle_sync(proxy, NULL, &err);
 
@@ -209,7 +125,7 @@ static void cmd_toggle(GroovedPlayer *proxy) {
 		fail_printf("%s", err -> message);
 }
 
-static void cmd_stop(GroovedPlayer *proxy) {
+CMD_HANDLE(stop) {
 	GError *err = NULL;
 	grooved_player_call_stop_sync(proxy, NULL, &err);
 
@@ -217,7 +133,7 @@ static void cmd_stop(GroovedPlayer *proxy) {
 		fail_printf("%s", err -> message);
 }
 
-static void cmd_next(GroovedPlayer *proxy) {
+CMD_HANDLE(next) {
 	GError *err = NULL;
 	grooved_player_call_next_sync(proxy, NULL, &err);
 
@@ -225,7 +141,7 @@ static void cmd_next(GroovedPlayer *proxy) {
 		fail_printf("%s", err -> message);
 }
 
-static void cmd_prev(GroovedPlayer *proxy) {
+CMD_HANDLE(prev) {
 	GError *err = NULL;
 	grooved_player_call_prev_sync(proxy, NULL, &err);
 
@@ -233,7 +149,7 @@ static void cmd_prev(GroovedPlayer *proxy) {
 		fail_printf("%s", err -> message);
 }
 
-static void cmd_list(GroovedPlayer *proxy) {
+CMD_HANDLE(list) {
 	GError *err = NULL;
 
 	char **files;
@@ -248,12 +164,15 @@ static void cmd_list(GroovedPlayer *proxy) {
 		printf("%c %s\n", (pos == i) ? '*' : ' ', files[i]);
 }
 
-static void cmd_seek(GroovedPlayer *proxy, const char *secs) {
+CMD_HANDLE(seek) {
 	int rc;
 	int64_t seconds;
 	GError *err = NULL;
 
-	rc = sscanf(secs, "%" PRId64, &seconds);
+	if ((argc < 3))
+		fail_printf("Invalid seek value");
+
+	rc = sscanf(argv[2], "%" PRId64, &seconds);
 	if (rc != 1)
 		fail_printf("Invalid seek value");
 
@@ -263,32 +182,55 @@ static void cmd_seek(GroovedPlayer *proxy, const char *secs) {
 		fail_printf("%s", err -> message);
 }
 
-static void cmd_add(GroovedPlayer *proxy, const char *path) {
+CMD_HANDLE(add) {
+	int i;
 	GError *err = NULL;
-	grooved_player_call_add_track_sync(proxy, path, NULL, &err);
+
+	for (i = 2; i < argc; i++) {
+		char *path;
+
+		if (access(argv[i], F_OK) == 0)
+			path = realpath(argv[i], NULL);
+		else
+			path = strdup(argv[i]);
+
+		grooved_player_call_add_track_sync(proxy, path, NULL, &err);
+
+		if (err != NULL)
+			fail_printf("%s", err -> message);
+
+		printf("Added track '%s'\n", path);
+	}
+}
+
+CMD_HANDLE(rgain) {
+	GError *err = NULL;
+
+	if ((argc < 3) ||
+	    (strcmp("track", argv[2]) &&
+	     strcmp("album", argv[2]) &&
+	     strcmp("none", argv[2])))
+		fail_printf("Invalid replaygain mode");
+
+	grooved_player_call_replaygain_sync(proxy, argv[2], NULL, &err);
 
 	if (err != NULL)
 		fail_printf("%s", err -> message);
 }
 
-static void cmd_rgain(GroovedPlayer *proxy, const char *mode) {
-	GError *err = NULL;
-	grooved_player_call_replaygain_sync(proxy, mode, NULL, &err);
-
-	if (err != NULL)
-		fail_printf("%s", err -> message);
-}
-
-static void cmd_loop(GroovedPlayer *proxy, const char *mode) {
+CMD_HANDLE(loop) {
 	bool enable;
 	GError *err = NULL;
 
-	if (strcmp("on", mode) == 0)
+	if (argc < 3)
+		fail_printf("Missing loop mode");
+
+	if (strcmp("on", argv[2]) == 0)
 		enable = true;
-	else if (strcmp("off", mode) == 0)
+	else if (strcmp("off", argv[2]) == 0)
 		enable = false;
 	else
-		fail_printf("Invalid value '%s'", mode);
+		fail_printf("Invalid loop mode '%s'", argv[2]);
 
 	grooved_player_call_loop_sync(proxy, enable, NULL, &err);
 
@@ -296,7 +238,7 @@ static void cmd_loop(GroovedPlayer *proxy, const char *mode) {
 		fail_printf("%s", err -> message);
 }
 
-static void cmd_lyrics(GroovedPlayer *proxy) {
+CMD_HANDLE(lyrics) {
 	GVariantIter iter;
 	GError *err = NULL;
 
@@ -362,7 +304,7 @@ static void cmd_lyrics(GroovedPlayer *proxy) {
 	glyr_cleanup();
 }
 
-static void cmd_interactive(GroovedPlayer *proxy) {
+CMD_HANDLE(interactive) {
 	fd_set rfds;
 	struct timeval tv;
 
@@ -385,27 +327,30 @@ static void cmd_interactive(GroovedPlayer *proxy) {
 		if (FD_ISSET(0, &rfds)) {
 			if ((getchar() == 27) && (getchar() == 91)) {
 				int ch = getchar();
+				char *seek_arg[] = { NULL, NULL, "0" };
 
 				switch (ch) {
 					case 65: /* up */
-						cmd_seek(proxy, "15");
+						seek_arg[2] = "15";
 						break;
 
 					case 66: /* down */
-						cmd_seek(proxy, "-15");
+						seek_arg[2] = "-15";
 						break;
 
 					case 67: /* right */
-						cmd_seek(proxy, "5");
+						seek_arg[2] = "5";
 						break;
 
 					case 68: /* left */
-						cmd_seek(proxy, "-5");
+						seek_arg[2] = "-5";
 						break;
 
 					default:
 						break;
 				}
+
+				cmd_seek(proxy, 3, seek_arg);
 			}
 		}
 
@@ -433,7 +378,7 @@ static void cmd_interactive(GroovedPlayer *proxy) {
 	} while (select(1, &rfds, NULL, NULL, &tv) >= 0);
 }
 
-static void cmd_quit(GroovedPlayer *proxy) {
+CMD_HANDLE(quit) {
 	GError *err = NULL;
 	grooved_player_call_quit_sync(proxy, NULL, &err);
 
@@ -443,8 +388,62 @@ static void cmd_quit(GroovedPlayer *proxy) {
 	puts("Bye");
 }
 
-static inline void help() {
-	#define CMD_HELP(CMDL, MSG) printf("  %s      \t%s.\n", COLOR_YELLOW CMDL COLOR_OFF, MSG);
+CMD_HANDLE(help) {
+	help();
+}
+
+struct handle_cmd cmds[] = {
+	{ "add",    cmd_add,    "Append tracks to the player's tracklist" },
+	{ "help",   cmd_help,   "Show this help" },
+	{ "list",   cmd_list,   "Show tracklist" },
+	{ "loop",   cmd_loop,   "Set the player's loop mode" },
+	{ "lyrics", cmd_lyrics, "Download and show lyrics for the currently playing track" },
+	{ "next",   cmd_next,   "Skip to next track" },
+	{ "pause",  cmd_pause,  "Pause the player" },
+	{ "play",   cmd_play,   "Unpause the player" },
+	{ "prev",   cmd_prev,   "Skip to previous track" },
+	{ "quit",   cmd_quit,   "Shutdown the player" },
+	{ "rgain",  cmd_rgain,  "Set the player's replaygain mode" },
+	{ "seek",   cmd_seek,   "Seek to the specified relative position" },
+	{ "status", cmd_status, "Show the status of the player" },
+	{ "stop",   cmd_stop,   "Stop playback and clear tracklist" },
+	{ "toggle", cmd_toggle, "Toggle the player's pause status" },
+};
+
+int main(int argc, char *argv[]) {
+	int i;
+	bool match = false;
+	GError *err = NULL;
+
+	GroovedPlayer *proxy = grooved_player_proxy_new_for_bus_sync(
+		G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
+		GROOVED_DBUS_NAME, GROOVED_DBUS_PLAYER_PATH, NULL, &err
+	);
+
+	if (argc < 2)
+		cmd_interactive(proxy, argc, argv);
+
+	for (i = 0; i < sizeof(cmds) / sizeof(cmds[0]); i++) {
+		if (strcmp(cmds[i].name, argv[1]) == 0) {
+			cmds[i].fn(proxy, argc, argv);
+			match = true;
+			break;
+		}
+	}
+
+	if (!match) {
+		err_printf("Invalid command '%s'", argv[1]);
+		cmd_help(NULL, 0, NULL);
+	}
+
+	g_object_unref(proxy);
+
+	return 0;
+}
+
+static inline void help(void) {
+	#define CMD_HELP(CMDL, MSG) printf("  %s%s%s      \t%s.\n", COLOR_YELLOW, CMDL, COLOR_OFF, MSG);
+	int i;
 
 	printf(COLOR_RED "Usage: " COLOR_OFF);
 	printf(COLOR_GREEN "groovectl " COLOR_OFF);
@@ -452,19 +451,8 @@ static inline void help() {
 
 	puts(COLOR_RED " Commands:" COLOR_OFF);
 
-	CMD_HELP("add",		"Append tracks to the player's tracklist");
-	CMD_HELP("list",	"Show tracklist");
-	CMD_HELP("loop",	"Set the player's loop mode");
-	CMD_HELP("lyrics",	"Download and show lyrics for the currently playing track");
-	CMD_HELP("next",	"Skip to next track");
-	CMD_HELP("pause",	"Pause the player");
-	CMD_HELP("play",	"Unpause the player");
-	CMD_HELP("prev",	"Skip to previous track");
-	CMD_HELP("quit",	"Shutdown the player");
-	CMD_HELP("rgain",	"Set the player's replaygain mode");
-	CMD_HELP("status",	"Show the status of the player");
-	CMD_HELP("stop",	"Stop playback and clear tracklist");
-	CMD_HELP("toggle",	"Toggle the player's pause status");
+	for (i = 0; i < sizeof(cmds) / sizeof(cmds[0]); i++)
+		CMD_HELP(cmds[i].name, cmds[i].desc);
 
 	puts("");
 }
