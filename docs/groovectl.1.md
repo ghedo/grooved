@@ -63,6 +63,12 @@ Shutdown the player.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Set the player's replaygain mode.
 
+`seek SECONDS`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Seek by the given amount of seconds, relative to the current position. A
+negative value seeks backwards.
+
 `status`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

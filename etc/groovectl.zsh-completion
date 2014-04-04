@@ -22,6 +22,7 @@ case $state in
       "prev:skip to previous track"
       "quit:shutdown the player"
       "rgain:set the player's replaygain mode"
+      "seek:seek by a relative amount of seconds"
       "status:show the status of the player"
       "stop:stop playback and clear tracklist"
       "toggle:toggle the player's pause status"

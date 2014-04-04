@@ -404,7 +404,7 @@ struct handle_cmd cmds[] = {
 	{ "prev",   cmd_prev,   "Skip to previous track" },
 	{ "quit",   cmd_quit,   "Shutdown the player" },
 	{ "rgain",  cmd_rgain,  "Set the player's replaygain mode" },
-	{ "seek",   cmd_seek,   "Seek to the specified relative position" },
+	{ "seek",   cmd_seek,   "Seek by a relative amount of seconds" },
 	{ "status", cmd_status, "Show the status of the player" },
 	{ "stop",   cmd_stop,   "Stop playback and clear tracklist" },
 	{ "toggle", cmd_toggle, "Toggle the player's pause status" },

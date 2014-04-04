@@ -21,6 +21,7 @@ _groovectl() {
 		prev
 		quit
 		rgain
+		seek
 		status
 		stop
 		toggle
