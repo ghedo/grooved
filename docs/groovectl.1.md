@@ -8,7 +8,7 @@ groovectl(1) -- groovy music player client
 ## DESCRIPTION
 
 **groovectl** is a command-line client for grooved. It communicates with the
-groved daemon via the DBus session bus.
+grooved daemon via the DBus session bus.
 
 ## COMMANDS
 

@@ -51,7 +51,7 @@ $ groovectl add http://example.com/stream    # add network stream to tracklist
 $ groovectl quit                             # terminate grooved
 ```
 
-See [grooved(1)] [grooved] and [grovectl(1)] [groovectl] for more information.
+See [grooved(1)] [grooved] and [groovectl(1)] [groovectl] for more information.
 
 [beetscfg]: http://beets.readthedocs.org/en/latest/guides/main.html
 [grooved]: http://ghedo.github.io/grooved/grooved.1.html
