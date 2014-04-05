@@ -46,6 +46,7 @@ You can now control it using the `groovectl` command:
 $ groovectl toggle                           # toggle playback
 $ groovectl status                           # print the player's current status
 $ groovectl add file.mp3                     # add files to the tracklist
+$ beet ls -p album:title | groovectl add -   # search and add tracks from beets
 $ groovectl next                             # skip to next track
 $ groovectl add http://example.com/stream    # add network stream to tracklist
 $ groovectl quit                             # terminate grooved
