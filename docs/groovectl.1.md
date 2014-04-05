@@ -18,6 +18,9 @@ groved daemon via the DBus session bus.
 Append tracks to the player's tracklist. Tracks can be either files on the
 filesystem or other kinds of streams (e.g. HTTP streams).
 
+If the first track argument is "-", track names will be read from STDIN (one
+track per line).
+
 `list`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

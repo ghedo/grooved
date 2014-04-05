@@ -182,24 +182,36 @@ CMD_HANDLE(seek) {
 		fail_printf("%s", err -> message);
 }
 
-CMD_HANDLE(add) {
-	int i;
+static void add_track(GroovedPlayer *proxy, char *path) {
 	GError *err = NULL;
 
-	for (i = 2; i < argc; i++) {
-		char *path;
+	if (access(path, F_OK) == 0)
+		path = realpath(path, NULL);
+	else
+		path = strdup(path);
 
-		if (access(argv[i], F_OK) == 0)
-			path = realpath(argv[i], NULL);
-		else
-			path = strdup(argv[i]);
+	grooved_player_call_add_track_sync(proxy, path, NULL, &err);
 
-		grooved_player_call_add_track_sync(proxy, path, NULL, &err);
+	if (err != NULL)
+		fail_printf("%s", err -> message);
 
-		if (err != NULL)
-			fail_printf("%s", err -> message);
+	printf("Added track '%s'\n", path);
+}
 
-		printf("Added track '%s'\n", path);
+CMD_HANDLE(add) {
+	int i;
+
+	if (strcmp(argv[2], "-") == 0) {
+		char *path = NULL;
+		size_t rc, n = 0;
+
+		while ((rc = getline(&path, &n, stdin)) != -1) {
+			path[rc - 1] = '\0';
+			add_track(proxy, path);
+		}
+	} else {
+		for (i = 2; i < argc; i++)
+			add_track(proxy, argv[i]);
 	}
 }
 
