@@ -1,0 +1,9 @@
+[Unit]
+Description=Groovy music player daemon
+Documentation=man:grooved(1)
+
+[Service]
+Type=dbus
+BusName=io.github.ghedo.grooved
+ExecStart=/usr/bin/grooved
+ExecStop=/usr/bin/groovectl quit

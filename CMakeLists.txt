@@ -107,3 +107,8 @@ INSTALL(FILES
 	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/zsh/vendor-completions/
 	RENAME _groovectl
 )
+
+INSTALL(FILES
+	${PROJECT_SOURCE_DIR}/etc/grooved.service
+	DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/user
+)
