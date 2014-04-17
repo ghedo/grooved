@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv='content-type' value='text/html;charset=utf8'>
   <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
-  <title>grooved(1) - groovy music player daemon</title>
+  <title>grooved</title>
   <style type='text/css' media='all'>
   /* style: man */
   body#manpage {margin:0}
@@ -53,79 +53,86 @@
   <div class='mp' id='man'>
 
   <div class='man-navigation' style='display:none'>
-    <a href="#NAME">NAME</a>
-    <a href="#SYNOPSIS">SYNOPSIS</a>
-    <a href="#DESCRIPTION">DESCRIPTION</a>
-    <a href="#OPTIONS">OPTIONS</a>
-    <a href="#CONFIG">CONFIG</a>
-    <a href="#AUTHOR">AUTHOR</a>
+    <a href="#GETTING-STARTED">GETTING STARTED</a>
+    <a href="#BUILDING">BUILDING</a>
     <a href="#COPYRIGHT">COPYRIGHT</a>
   </div>
 
   <ol class='man-decor man-head man head'>
-    <li class='tl'>grooved(1)</li>
+    <li class='tl'>README</li>
     <li class='tc'></li>
-    <li class='tr'>grooved(1)</li>
+    <li class='tr'>README</li>
   </ol>
 
-  <h2 id="NAME">NAME</h2>
-<p class="man-name">
-  <code>grooved</code> - <span class="man-whatis">groovy music player daemon</span>
-</p>
-
-<h2 id="SYNOPSIS">SYNOPSIS</h2>
-
-<p><code>grooved [OPTIONS]</code></p>
-
-<h2 id="DESCRIPTION">DESCRIPTION</h2>
-
+  <h1>grooved</h1>
 <p><strong>grooved</strong> is a stupidly simple music player that runs as a daemon instead of
 showing a fancy GUI. I'm kinda lazy, so instead or re-implementing some of the
 features that make up a music player, I just used stuff someone else already
-built. For example, grooved uses mpv to reproduce audio instead of implementing
-its own half-working audio decoder and player, and piggybacks on tools like
-beets instead of implementing yet another music database. Life gets so much
-better once you let other people do the hard work.</p>
+built. For example, grooved uses <a href="http://mpv.io/">mpv</a> to reproduce audio instead of
+implementing its own half-working audio decoder and player, and piggybacks on
+tools like <a href="http://beets.radbox.org/">beets</a> instead of implementing yet another music database.
+Life gets so much better once you let other people do the hard work.</p>
 
-<h2 id="OPTIONS">OPTIONS</h2>
+<h2 id="GETTING-STARTED">GETTING STARTED</h2>
 
-<p><code>-c, --config=&lt;file></code></p>
+<p>First off, you may want to <a href="http://beets.readthedocs.org/en/latest/guides/main.html">install and configure beets</a>, unless you
+haven't done so already. grooved will use the music library created by beets to
+pick random tracks to play. If no library is available you'll have to provide
+the tracks to play to grooved manually.</p>
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Specify the configuration file (default: <code>~/.config/grooved/config.ini</code>).</p>
+<p>If you want grooved to use your music library, you'll also have to configure
+grooved itself. Here's a simple configuration example:</p>
 
-<p><code>-V, --verbose</code></p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Enable verbose log messages.</p>
-
-<h2 id="CONFIG">CONFIG</h2>
-
-<p>Here is an example configuration that illustrates the available options:</p>
-
-<pre><code>[default]
+<pre><code class="ini">[default]
 library = ~/data/musiclibrary.blb    ; path to beets' database
 verbose = off                        ; enable/disable verbose output
 
 [player]
 replaygain = none                    ; optionally enable replaygain, can be
+                                     ; "track", "album" or "none"
 </code></pre>
 
-<h2 id="AUTHOR">AUTHOR</h2>
+<p>Save that in the file <code>~/.config/grooved/config.ini</code>.</p>
 
-<p>Alessandro Ghedini <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x61;&#108;&#x65;&#x73;&#115;&#x61;&#x6e;&#x64;&#x72;&#111;&#64;&#103;&#104;&#x65;&#x64;&#x69;&#110;&#x69;&#46;&#x6d;&#101;" data-bare-link="true">&#97;&#108;&#101;&#115;&#x73;&#x61;&#110;&#100;&#114;&#111;&#x40;&#x67;&#x68;&#101;&#x64;&#x69;&#x6e;&#105;&#46;&#109;&#101;</a></p>
+<p>That's it for the setup, now start <code>grooved</code>:</p>
+
+<pre><code class="bash">$ grooved
+</code></pre>
+
+<p>You can now control it using the <code>groovectl</code> command:</p>
+
+<pre><code class="bash">$ groovectl toggle                           # toggle playback
+$ groovectl status                           # print the player's current status
+$ groovectl add file.mp3                     # add files to the tracklist
+$ beet ls -p album:title | groovectl add -   # search and add tracks from beets
+$ groovectl next                             # skip to next track
+$ groovectl add http://example.com/stream    # add network stream to tracklist
+$ groovectl quit                             # terminate grooved
+</code></pre>
+
+<p>See <a href="http://ghedo.github.io/grooved/grooved.1.html">grooved(1)</a> and <a href="http://ghedo.github.io/grooved/groovectl.1.html">groovectl(1)</a> for more information.</p>
+
+<h2 id="BUILDING">BUILDING</h2>
+
+<p>grooved is distributed as source code. Install with:</p>
+
+<pre><code class="bash">$ mkdir build &amp;&amp; cd build
+$ cmake ..
+$ make
+$ [sudo] make install
+</code></pre>
 
 <h2 id="COPYRIGHT">COPYRIGHT</h2>
 
-<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#97;&#x6c;&#101;&#115;&#x73;&#97;&#110;&#100;&#x72;&#111;&#x40;&#x67;&#x68;&#101;&#100;&#105;&#x6e;&#x69;&#x2e;&#109;&#x65;" data-bare-link="true">&#97;&#108;&#101;&#x73;&#x73;&#x61;&#x6e;&#x64;&#x72;&#x6f;&#x40;&#103;&#x68;&#x65;&#x64;&#x69;&#110;&#105;&#46;&#109;&#x65;</a></p>
+<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x61;&#x6c;&#101;&#x73;&#x73;&#x61;&#x6e;&#x64;&#x72;&#111;&#64;&#103;&#x68;&#x65;&#100;&#105;&#x6e;&#105;&#46;&#x6d;&#101;" data-bare-link="true">&#x61;&#x6c;&#101;&#x73;&#115;&#97;&#110;&#100;&#114;&#x6f;&#64;&#x67;&#x68;&#x65;&#100;&#105;&#110;&#105;&#46;&#x6d;&#101;</a></p>
 
-<p>This program is released under the 2 clause BSD license.</p>
+<p>See COPYING for the license.</p>
 
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
     <li class='tc'>April 2014</li>
-    <li class='tr'>grooved(1)</li>
+    <li class='tr'>README</li>
   </ol>
 
   </div>
