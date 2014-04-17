@@ -39,6 +39,8 @@
 
 #include <sys/select.h>
 
+#include <glib.h>
+#include <gio/gio.h>
 #include <glyr/glyr.h>
 
 #include "dbus.h"
@@ -147,6 +149,23 @@ CMD_HANDLE(prev) {
 
 	if (err != NULL)
 		fail_printf("%s", err -> message);
+}
+
+void stop_on_track_changed(GroovedPlayer *obj, void *data) {
+	GMainLoop *loop = data;
+
+	cmd_stop(obj, 0, NULL);
+
+	g_main_loop_quit(loop);
+}
+
+CMD_HANDLE(last) {
+	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
+
+	g_signal_connect(proxy, "track_changed",
+	                 G_CALLBACK(stop_on_track_changed), loop);
+
+	g_main_loop_run(loop);
 }
 
 CMD_HANDLE(list) {
@@ -407,6 +426,7 @@ CMD_HANDLE(help) {
 struct handle_cmd cmds[] = {
 	{ "add",    cmd_add,    "Append tracks to the player's tracklist" },
 	{ "help",   cmd_help,   "Show this help" },
+	{ "last",   cmd_last,   "Stop playback after currently playing track" },
 	{ "list",   cmd_list,   "Show tracklist" },
 	{ "loop",   cmd_loop,   "Set the player's loop mode" },
 	{ "lyrics", cmd_lyrics, "Download and show lyrics for the currently playing track" },

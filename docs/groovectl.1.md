@@ -21,6 +21,11 @@ filesystem or other kinds of streams (e.g. HTTP streams).
 If the first track argument is "-", track names will be read from STDIN (one
 track per line).
 
+`last`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Stop playback after the currently playing track has ended.
+
 `list`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
