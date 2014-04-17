@@ -22,6 +22,7 @@ _groovectl() {
 		prev
 		quit
 		rgain
+		rm
 		seek
 		status
 		stop

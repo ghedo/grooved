@@ -234,6 +234,19 @@ CMD_HANDLE(add) {
 	}
 }
 
+CMD_HANDLE(rm) {
+	int64_t index;
+	GError *err = NULL;
+
+	if ((argc < 3) || (sscanf(argv[2], "%" PRId64, &index) <= 0))
+		fail_printf("Invalid track index");
+
+	grooved_player_call_remove_track_sync(proxy, index, NULL, &err);
+
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+}
+
 CMD_HANDLE(rgain) {
 	GError *err = NULL;
 
@@ -436,6 +449,7 @@ struct handle_cmd cmds[] = {
 	{ "prev",   cmd_prev,   "Skip to previous track" },
 	{ "quit",   cmd_quit,   "Shutdown the player" },
 	{ "rgain",  cmd_rgain,  "Set the player's replaygain mode" },
+	{ "rm",     cmd_rm,     "Remove a track from the tracklist" },
 	{ "seek",   cmd_seek,   "Seek by a relative amount of seconds" },
 	{ "status", cmd_status, "Show the status of the player" },
 	{ "stop",   cmd_stop,   "Stop playback and clear tracklist" },

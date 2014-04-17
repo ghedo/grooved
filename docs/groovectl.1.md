@@ -71,6 +71,11 @@ Shutdown the player.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Set the player's replaygain mode.
 
+`rm INDEX`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Remove a track (identified by its index in the tracklist) from the tracklist.
+
 `seek SECONDS`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
