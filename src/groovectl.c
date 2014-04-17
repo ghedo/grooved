@@ -33,11 +33,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <termios.h>
 
 #include <inttypes.h>
-
-#include <sys/select.h>
 
 #include <glib.h>
 #include <gio/gio.h>
@@ -348,80 +345,6 @@ CMD_HANDLE(lyrics) {
 	glyr_cleanup();
 }
 
-CMD_HANDLE(interactive) {
-	fd_set rfds;
-	struct timeval tv;
-
-	GError *err = NULL;
-
-	char *state;
-	double len, pos, percent;
-
-	struct termios tio_new;
-	tcgetattr(0, &tio_new);
-
-	tio_new.c_lflag &= ~(ICANON|ECHO); /* Clear ICANON and ECHO. */
-	tio_new.c_cc[VMIN] = 1;
-	tio_new.c_cc[VTIME] = 0;
-	tcsetattr(0,TCSANOW,&tio_new);
-
-	FD_ZERO(&rfds);
-
-	do {
-		if (FD_ISSET(0, &rfds)) {
-			if ((getchar() == 27) && (getchar() == 91)) {
-				int ch = getchar();
-				char *seek_arg[] = { NULL, NULL, "0" };
-
-				switch (ch) {
-					case 65: /* up */
-						seek_arg[2] = "15";
-						break;
-
-					case 66: /* down */
-						seek_arg[2] = "-15";
-						break;
-
-					case 67: /* right */
-						seek_arg[2] = "5";
-						break;
-
-					case 68: /* left */
-						seek_arg[2] = "-5";
-						break;
-
-					default:
-						break;
-				}
-
-				cmd_seek(proxy, 3, seek_arg);
-			}
-		}
-
-		grooved_player_call_status_sync(
-			proxy, &state, NULL, &len, &pos, &percent,
-			NULL, NULL, NULL, NULL, &err
-		);
-
-		int pos_min = pos / 60;
-		int pos_sec = (int) pos % 60;
-
-		int len_min = len / 60;
-		int len_sec = (int) len % 60;
-
-		printf(
-			"\r[%s]   %d:%02d/%d:%02d   (%d%%)",
-			state, pos_min, pos_sec, len_min, len_sec, (int) percent
-		);
-		fflush(stdout);
-
-		tv.tv_sec = 0;
-		tv.tv_usec = 100000;
-
-		FD_SET(0, &rfds);
-	} while (select(1, &rfds, NULL, NULL, &tv) >= 0);
-}
-
 CMD_HANDLE(quit) {
 	GError *err = NULL;
 	grooved_player_call_quit_sync(proxy, NULL, &err);
@@ -466,10 +389,7 @@ int main(int argc, char *argv[]) {
 		GROOVED_DBUS_NAME, GROOVED_DBUS_PLAYER_PATH, NULL, &err
 	);
 
-	if (argc < 2)
-		cmd_interactive(proxy, argc, argv);
-
-	for (i = 0; i < sizeof(cmds) / sizeof(cmds[0]); i++) {
+	for (i = 0; argv[1] && i < sizeof(cmds) / sizeof(cmds[0]); i++) {
 		if (strcmp(cmds[i].name, argv[1]) == 0) {
 			cmds[i].fn(proxy, argc, argv);
 			match = true;
