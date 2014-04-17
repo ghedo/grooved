@@ -87,6 +87,10 @@
 "      <arg direction=\"in\" name=\"path\" type=\"s\"/>\n"		\
 "    </method>\n"							\
 									\
+"    <method name=\"RemoveTrack\">\n"					\
+"      <arg direction=\"in\" name=\"index\" type=\"x\"/>\n"		\
+"    </method>\n"							\
+									\
 "    <method name=\"Replaygain\">\n"					\
 "      <arg direction=\"in\" name=\"mode\" type=\"s\"/>\n"		\
 "    </method>\n"							\

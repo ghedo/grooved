@@ -60,5 +60,6 @@ extern void player_playback_loop(bool enable);
 
 extern void player_playlist_append_file(const char *path);
 extern void player_playlist_append_list(const char *path);
+extern void player_playlist_remove_index(int64_t index);
 extern void player_playlist_next(void);
 extern void player_playlist_prev(void);

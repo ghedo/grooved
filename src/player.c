@@ -501,6 +501,23 @@ void player_playlist_append_list(const char *path) {
 	player_check_error("Could not load file", rc);
 }
 
+void player_playlist_remove_index(int64_t index) {
+	int rc;
+	char *index_str = NULL;
+
+	rc = asprintf(&index_str, "%" PRId64, index);
+	if (rc < 0) fail_printf("OOM");
+
+	const char *cmd[] = { "playlist_remove", index_str, NULL };
+
+	rc = mpv_command(player_ctx, cmd);
+	player_check_error("Could not load file", rc);
+
+	playlist_pos = player_playlist_position();
+
+	free(index_str);
+}
+
 void player_playlist_next(void) {
 	int rc;
 	const char *cmd[] = { "playlist_next", "force", NULL };

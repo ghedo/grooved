@@ -156,6 +156,15 @@ gboolean on_quit(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 	return TRUE;
 }
 
+gboolean on_remove_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
+                         gint64 arg_index) {
+	player_playlist_remove_index(arg_index);
+
+	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
 gboolean on_replaygain(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
                        const char *arg_mode) {
 	if (g_strcmp0(arg_mode, "track") == 0) {
@@ -239,6 +248,7 @@ static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
 		{ "handle-play",       G_CALLBACK(on_play) },
 		{ "handle-prev",       G_CALLBACK(on_prev) },
 		{ "handle-quit",       G_CALLBACK(on_quit) },
+		{ "handle-remove-track",G_CALLBACK(on_remove_track) },
 		{ "handle-replaygain", G_CALLBACK(on_replaygain) },
 		{ "handle-seek",       G_CALLBACK(on_seek) },
 		{ "handle-status",     G_CALLBACK(on_status) },
