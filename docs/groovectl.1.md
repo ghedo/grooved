@@ -101,4 +101,3 @@ Alessandro Ghedini <alessandro@ghedini.me>
 Copyright (C) 2014 Alessandro Ghedini <alessandro@ghedini.me>
 
 This program is released under the 2 clause BSD license.
-

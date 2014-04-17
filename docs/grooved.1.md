@@ -31,13 +31,14 @@ Enable verbose log messages.
 
 Here is an example configuration that illustrates the available options:
 
-    [default]
-    library = ~/data/musiclibrary.blb    ; path to beets' database
-    verbose = off                        ; enable/disable verbose output
+```
+[default]
+library = ~/data/musiclibrary.blb    ; path to beets' database
+verbose = off                        ; enable/disable verbose output
 
-    [player]
-    replaygain = none                    ; optionally enable replaygain, can be
-                                         ; "track", "album" or "none"
+[player]
+replaygain = none                    ; optionally enable replaygain, can be
+```                                     ; "track", "album" or "none"
 
 ## AUTHOR ##
 
