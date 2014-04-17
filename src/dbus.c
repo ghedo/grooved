@@ -38,6 +38,8 @@
 #include "player.h"
 #include "printf.h"
 
+GroovedPlayer *iface = NULL;
+
 static unsigned int owner_id;
 
 static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p);
@@ -53,6 +55,26 @@ void dbus_init(void) {
 
 void dbus_destroy(void) {
 	g_bus_unown_name(owner_id);
+}
+
+void dbus_emit_signal(enum dbus_signal sig) {
+	switch (sig) {
+		case STATUS_CHANGED:
+			grooved_player_emit_status_changed(iface);
+			break;
+
+		case TRACK_CHANGED:
+			grooved_player_emit_track_changed(iface);
+			break;
+
+		case TRACK_ADDED:
+			grooved_player_emit_track_added(iface);
+			break;
+
+		case OPTION_CHANGED:
+			grooved_player_emit_option_changed(iface);
+			break;
+	}
 }
 
 gboolean on_add_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
@@ -204,7 +226,8 @@ struct handle_signal {
 static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
 	int i;
 	GError *err = NULL;
-	GroovedPlayer *iface = grooved_player_skeleton_new();
+
+	iface = grooved_player_skeleton_new();
 
 	struct handle_signal cbs[] = {
 		{ "handle-add-list",   G_CALLBACK(on_add_list) },

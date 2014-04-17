@@ -37,6 +37,7 @@
 
 #include <mpv/client.h>
 
+#include "dbus.h"
 #include "library.h"
 #include "player.h"
 #include "config.h"
@@ -89,22 +90,27 @@ static void *player_start_thread(void *ptr) {
 				    (prev_status == STOPPED))
 					break;
 
+				dbus_emit_signal(STATUS_CHANGED);
+
 				player_playback_play();
 				break;
 			}
 
 			case MPV_EVENT_PAUSE: {
 				player_status = PAUSED;
+				dbus_emit_signal(STATUS_CHANGED);
 				break;
 			}
 
 			case MPV_EVENT_UNPAUSE: {
 				player_status = PLAYING;
+				dbus_emit_signal(STATUS_CHANGED);
 				break;
 			}
 
 			case MPV_EVENT_START_FILE: {
 				playlist_pos = player_playlist_position();
+				dbus_emit_signal(TRACK_CHANGED);
 
 				player_print_playlist_status();
 				break;

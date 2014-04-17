@@ -113,5 +113,14 @@
 "  </interface>\n"							\
 "</node>"
 
+enum dbus_signal {
+	STATUS_CHANGED,
+	TRACK_CHANGED,
+	TRACK_ADDED,
+	OPTION_CHANGED,
+};
+
 extern void dbus_init(void);
 extern void dbus_destroy(void);
+
+extern void dbus_emit_signal(enum dbus_signal sig);
