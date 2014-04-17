@@ -180,7 +180,7 @@ CMD_HANDLE(list) {
 		fail_printf("%s", err -> message);
 
 	for (i = 0; i < count; i++)
-		printf("%c %s\n", (pos == i) ? '*' : ' ', files[i]);
+		printf("%c %" PRId64 ":%s\n", (pos == i) ? '*' : ' ', i, files[i]);
 }
 
 CMD_HANDLE(seek) {
