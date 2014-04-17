@@ -168,7 +168,7 @@ CMD_HANDLE(last) {
 	g_main_loop_run(loop);
 }
 
-CMD_HANDLE(list) {
+CMD_HANDLE(ls) {
 	GError *err = NULL;
 
 	char **files;
@@ -440,7 +440,7 @@ struct handle_cmd cmds[] = {
 	{ "add",    cmd_add,    "Append tracks to the player's tracklist" },
 	{ "help",   cmd_help,   "Show this help" },
 	{ "last",   cmd_last,   "Stop playback after currently playing track" },
-	{ "list",   cmd_list,   "Show tracklist" },
+	{ "ls",     cmd_ls,   "Show tracklist" },
 	{ "loop",   cmd_loop,   "Set the player's loop mode" },
 	{ "lyrics", cmd_lyrics, "Download and show lyrics for the currently playing track" },
 	{ "next",   cmd_next,   "Skip to next track" },

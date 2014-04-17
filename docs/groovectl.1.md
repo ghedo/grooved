@@ -26,7 +26,7 @@ track per line).
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Stop playback after the currently playing track has ended.
 
-`list`
+`ls`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Show tracklist (the current track is marked with '*').

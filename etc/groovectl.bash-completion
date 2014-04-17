@@ -13,7 +13,7 @@ _groovectl() {
 	CMDS=(
 		add
 		last
-		list
+		ls
 		loop
 		lyrics
 		next

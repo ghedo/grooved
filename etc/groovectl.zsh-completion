@@ -14,7 +14,7 @@ case $state in
     subcommands=(
       "add:append tracks to the player's tracklist"
       "last:stop playback after currently playing track"
-      "list:show tracklist"
+      "ls:show tracklist"
       "loop:set the player's loop mode"
       "lyrics:download and show lyrics for the currently playing track"
       "next:skip to next track"
