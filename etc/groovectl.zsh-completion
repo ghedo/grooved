@@ -53,8 +53,9 @@ case $state in
       loop)
         local -a values
         values=(
-          "on:enable loop mode"
-          "off:disable loop mode"
+          "track:loop current track"
+          "list:loop whole tracklist"
+          "none:disable looping"
         )
 
         _describe -t values 'groovectl loop values' values

@@ -108,11 +108,25 @@ gboolean on_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 }
 
 gboolean on_loop(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
-                 gboolean arg_enable) {
-	player_playback_loop(arg_enable == TRUE ? true : false);
+                 const char *arg_mode) {
+	if (g_strcmp0(arg_mode, "track") == 0) {
+		player_playback_loop(PLAYER_LOOP_TRACK);
+	} else if (g_strcmp0(arg_mode, "list") == 0) {
+		player_playback_loop(PLAYER_LOOP_LIST);
+	} else if (g_strcmp0(arg_mode, "none") == 0) {
+		player_playback_loop(PLAYER_LOOP_NONE);
+	} else {
+		g_dbus_method_invocation_return_dbus_error(
+			invocation, DBUS_ERROR_INVALID_ARGS,
+			"Invalid loop mode"
+		);
+
+		goto exit;
+	}
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
+exit:
 	return TRUE;
 }
 
@@ -199,7 +213,7 @@ gboolean on_seek(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 
 gboolean on_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 	GVariantBuilder *status = g_variant_builder_new(
-		G_VARIANT_TYPE("(ssddda{ss}sb)")
+		G_VARIANT_TYPE("(ssddda{ss}ss)")
 	);
 
 	player_make_status(status);

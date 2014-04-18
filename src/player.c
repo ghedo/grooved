@@ -57,7 +57,7 @@ static mpv_handle *player_ctx;
 static enum player_status player_status;
 
 static enum replaygain player_replaygain = PLAYER_REPLAYGAIN_TRACK;
-static bool player_loop = false;
+static enum loop player_loop = PLAYER_LOOP_NONE;
 
 static int64_t playlist_pos = -1;
 
@@ -248,7 +248,7 @@ void player_make_status(GVariantBuilder *status) {
 
 	g_variant_builder_add(status, "s", player_playback_replaygain_tostr());
 
-	g_variant_builder_add(status, "b", player_loop);
+	g_variant_builder_add(status, "s", player_playback_loop_tostr());
 
 	mpv_free(path);
 }
@@ -453,13 +453,54 @@ char *player_playback_replaygain_tostr(void) {
 	return NULL;
 }
 
-void player_playback_loop(bool enable) {
+void player_playback_loop(enum loop mode) {
 	int rc;
 
-	player_loop = enable;
+	switch (mode) {
+		case PLAYER_LOOP_TRACK:
+			player_playback_loop(PLAYER_LOOP_NONE);
 
-	rc = mpv_set_property_string(player_ctx, "loop", enable ? "inf" : "no");
-	player_check_error("Could not set loop", rc);
+			rc = mpv_set_property_string(
+				player_ctx, "loop-file", "yes"
+			);
+			player_check_error("Could not set loop mode", rc);
+			break;
+
+		case PLAYER_LOOP_LIST:
+			player_playback_loop(PLAYER_LOOP_NONE);
+
+			rc = mpv_set_property_string(player_ctx, "loop", "inf");
+			player_check_error("Could not set loop mode", rc);
+			break;
+
+		case PLAYER_LOOP_NONE:
+			rc = mpv_set_property_string(
+				player_ctx, "loop-file", "no"
+			);
+			player_check_error("Could not set loop mode", rc);
+
+			rc = mpv_set_property_string(player_ctx, "loop", "no");
+			player_check_error("Could not set loop mode", rc);
+			break;
+	}
+
+	player_loop = mode;
+}
+
+char *player_playback_loop_tostr(void) {
+	switch (player_loop) {
+		case PLAYER_LOOP_TRACK:
+			return "track";
+
+		case PLAYER_LOOP_LIST:
+			return "list";
+
+		case PLAYER_LOOP_NONE:
+			return "none";
+			break;
+	}
+
+	return NULL;
 }
 
 int64_t player_playlist_count(void) {

@@ -31,7 +31,7 @@ Stop playback after the currently playing track has ended.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Show tracklist (the current track is marked with '*').
 
-`loop on|off`
+`loop track|list|none`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Set the player's loop mode.

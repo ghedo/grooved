@@ -245,7 +245,7 @@ static const _ExtendedGDBusArgInfo _grooved_player_method_info_status_OUT_ARG_lo
   {
     -1,
     (gchar *) "loop",
-    (gchar *) "b",
+    (gchar *) "s",
     NULL
   },
   FALSE
@@ -559,12 +559,12 @@ static const _ExtendedGDBusMethodInfo _grooved_player_method_info_replaygain =
   FALSE
 };
 
-static const _ExtendedGDBusArgInfo _grooved_player_method_info_loop_IN_ARG_enable =
+static const _ExtendedGDBusArgInfo _grooved_player_method_info_loop_IN_ARG_mode =
 {
   {
     -1,
-    (gchar *) "enable",
-    (gchar *) "b",
+    (gchar *) "mode",
+    (gchar *) "s",
     NULL
   },
   FALSE
@@ -572,7 +572,7 @@ static const _ExtendedGDBusArgInfo _grooved_player_method_info_loop_IN_ARG_enabl
 
 static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_loop_IN_ARG_pointers[] =
 {
-  &_grooved_player_method_info_loop_IN_ARG_enable,
+  &_grooved_player_method_info_loop_IN_ARG_mode,
   NULL
 };
 
@@ -1054,7 +1054,7 @@ grooved_player_default_init (GroovedPlayerIface *iface)
    * GroovedPlayer::handle-loop:
    * @object: A #GroovedPlayer.
    * @invocation: A #GDBusMethodInvocation.
-   * @arg_enable: Argument passed by remote caller.
+   * @arg_mode: Argument passed by remote caller.
    *
    * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.Loop">Loop()</link> D-Bus method.
    *
@@ -1071,7 +1071,7 @@ grooved_player_default_init (GroovedPlayerIface *iface)
     g_cclosure_marshal_generic,
     G_TYPE_BOOLEAN,
     2,
-    G_TYPE_DBUS_METHOD_INVOCATION, G_TYPE_BOOLEAN);
+    G_TYPE_DBUS_METHOD_INVOCATION, G_TYPE_STRING);
 
   /**
    * GroovedPlayer::handle-quit:
@@ -1280,7 +1280,7 @@ grooved_player_call_status_finish (
     gdouble *out_percent,
     GVariant **out_metadata,
     gchar **out_replaygain,
-    gboolean *out_loop,
+    gchar **out_loop,
     GAsyncResult *res,
     GError **error)
 {
@@ -1289,7 +1289,7 @@ grooved_player_call_status_finish (
   if (_ret == NULL)
     goto _out;
   g_variant_get (_ret,
-                 "(ssddd@a{ss}sb)",
+                 "(ssddd@a{ss}ss)",
                  out_state,
                  out_path,
                  out_length,
@@ -1333,7 +1333,7 @@ grooved_player_call_status_sync (
     gdouble *out_percent,
     GVariant **out_metadata,
     gchar **out_replaygain,
-    gboolean *out_loop,
+    gchar **out_loop,
     GCancellable *cancellable,
     GError **error)
 {
@@ -1348,7 +1348,7 @@ grooved_player_call_status_sync (
   if (_ret == NULL)
     goto _out;
   g_variant_get (_ret,
-                 "(ssddd@a{ss}sb)",
+                 "(ssddd@a{ss}ss)",
                  out_state,
                  out_path,
                  out_length,
@@ -2517,7 +2517,7 @@ _out:
 /**
  * grooved_player_call_loop:
  * @proxy: A #GroovedPlayerProxy.
- * @arg_enable: Argument to pass with the method invocation.
+ * @arg_mode: Argument to pass with the method invocation.
  * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
  * @user_data: User data to pass to @callback.
@@ -2531,15 +2531,15 @@ _out:
 void
 grooved_player_call_loop (
     GroovedPlayer *proxy,
-    gboolean arg_enable,
+    const gchar *arg_mode,
     GCancellable *cancellable,
     GAsyncReadyCallback callback,
     gpointer user_data)
 {
   g_dbus_proxy_call (G_DBUS_PROXY (proxy),
     "Loop",
-    g_variant_new ("(b)",
-                   arg_enable),
+    g_variant_new ("(s)",
+                   arg_mode),
     G_DBUS_CALL_FLAGS_NONE,
     -1,
     cancellable,
@@ -2577,7 +2577,7 @@ _out:
 /**
  * grooved_player_call_loop_sync:
  * @proxy: A #GroovedPlayerProxy.
- * @arg_enable: Argument to pass with the method invocation.
+ * @arg_mode: Argument to pass with the method invocation.
  * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
@@ -2590,15 +2590,15 @@ _out:
 gboolean
 grooved_player_call_loop_sync (
     GroovedPlayer *proxy,
-    gboolean arg_enable,
+    const gchar *arg_mode,
     GCancellable *cancellable,
     GError **error)
 {
   GVariant *_ret;
   _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
     "Loop",
-    g_variant_new ("(b)",
-                   arg_enable),
+    g_variant_new ("(s)",
+                   arg_mode),
     G_DBUS_CALL_FLAGS_NONE,
     -1,
     cancellable,
@@ -2732,10 +2732,10 @@ grooved_player_complete_status (
     gdouble percent,
     GVariant *metadata,
     const gchar *replaygain,
-    gboolean loop)
+    const gchar *loop)
 {
   g_dbus_method_invocation_return_value (invocation,
-    g_variant_new ("(ssddd@a{ss}sb)",
+    g_variant_new ("(ssddd@a{ss}ss)",
                    state,
                    path,
                    length,

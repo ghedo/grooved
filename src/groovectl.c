@@ -60,8 +60,7 @@ static inline void help(void);
 CMD_HANDLE(status) {
 	GError *err = NULL;
 
-	gboolean loop;
-	char *state, *replaygain, *path;
+	char *state, *replaygain, *loop, *path;
 	double len, pos, percent;
 	GVariant *metadata;
 
@@ -94,10 +93,7 @@ CMD_HANDLE(status) {
 		state, pos_min, pos_sec, len_min, len_sec, (int) percent
 	);
 
-	printf(
-		"replaygain: %s   loop: %s\n",
-		replaygain, loop ? "yes" : "no"
-	);
+	printf("replaygain: %s   loop: %s\n", replaygain, loop);
 }
 
 CMD_HANDLE(play) {
@@ -260,20 +256,15 @@ CMD_HANDLE(rgain) {
 }
 
 CMD_HANDLE(loop) {
-	bool enable;
 	GError *err = NULL;
 
-	if (argc < 3)
-		fail_printf("Missing loop mode");
+	if ((argc < 3) ||
+	    (strcmp("track", argv[2]) &&
+	     strcmp("list", argv[2]) &&
+	     strcmp("none", argv[2])))
+		fail_printf("Invalid loop mode");
 
-	if (strcmp("on", argv[2]) == 0)
-		enable = true;
-	else if (strcmp("off", argv[2]) == 0)
-		enable = false;
-	else
-		fail_printf("Invalid loop mode '%s'", argv[2]);
-
-	grooved_player_call_loop_sync(proxy, enable, NULL, &err);
+	grooved_player_call_loop_sync(proxy, argv[2], NULL, &err);
 
 	if (err != NULL)
 		fail_printf("%s", err -> message);

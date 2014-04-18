@@ -46,7 +46,7 @@ struct _GroovedPlayerIface
   gboolean (*handle_loop) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation,
-    gboolean arg_enable);
+    const gchar *arg_mode);
 
   gboolean (*handle_next) (
     GroovedPlayer *object,
@@ -126,7 +126,7 @@ void grooved_player_complete_status (
     gdouble percent,
     GVariant *metadata,
     const gchar *replaygain,
-    gboolean loop);
+    const gchar *loop);
 
 void grooved_player_complete_play (
     GroovedPlayer *object,
@@ -220,7 +220,7 @@ gboolean grooved_player_call_status_finish (
     gdouble *out_percent,
     GVariant **out_metadata,
     gchar **out_replaygain,
-    gboolean *out_loop,
+    gchar **out_loop,
     GAsyncResult *res,
     GError **error);
 
@@ -233,7 +233,7 @@ gboolean grooved_player_call_status_sync (
     gdouble *out_percent,
     GVariant **out_metadata,
     gchar **out_replaygain,
-    gboolean *out_loop,
+    gchar **out_loop,
     GCancellable *cancellable,
     GError **error);
 
@@ -447,7 +447,7 @@ gboolean grooved_player_call_replaygain_sync (
 
 void grooved_player_call_loop (
     GroovedPlayer *proxy,
-    gboolean arg_enable,
+    const gchar *arg_mode,
     GCancellable *cancellable,
     GAsyncReadyCallback callback,
     gpointer user_data);
@@ -459,7 +459,7 @@ gboolean grooved_player_call_loop_finish (
 
 gboolean grooved_player_call_loop_sync (
     GroovedPlayer *proxy,
-    gboolean arg_enable,
+    const gchar *arg_mode,
     GCancellable *cancellable,
     GError **error);
 

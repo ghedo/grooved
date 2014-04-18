@@ -39,6 +39,12 @@ enum replaygain {
 	PLAYER_REPLAYGAIN_NONE
 };
 
+enum loop {
+	PLAYER_LOOP_TRACK,
+	PLAYER_LOOP_LIST,
+	PLAYER_LOOP_NONE
+};
+
 extern void player_init(void);
 extern void player_destroy(void);
 
@@ -56,7 +62,8 @@ extern void player_playback_seek(int64_t secs);
 extern void player_playback_replaygain(enum replaygain mode);
 extern char *player_playback_replaygain_tostr(void);
 
-extern void player_playback_loop(bool enable);
+extern void player_playback_loop(enum loop mode);
+extern char *player_playback_loop_tostr(void);
 
 extern void player_playlist_append_file(const char *path);
 extern void player_playlist_append_list(const char *path);
