@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="/io/github/ghedo/grooved/Player">
+  <interface name="io.github.ghedo.grooved.Player">
+    <method name="Status">
+      <arg direction="out" name="state" type="s"/>
+      <arg direction="out" name="path" type="s"/>
+      <arg direction="out" name="length" type="d"/>
+      <arg direction="out" name="position" type="d"/>
+      <arg direction="out" name="percent" type="d"/>
+      <arg direction="out" name="metadata" type="a{ss}"/>
+      <arg direction="out" name="replaygain" type="s"/>
+      <arg direction="out" name="loop" type="b"/>
+    </method>
+
+    <method name="Play">
+    </method>
+
+    <method name="Pause">
+    </method>
+
+    <method name="Toggle">
+    </method>
+
+    <method name="Next">
+    </method>
+
+    <method name="Prev">
+    </method>
+
+    <method name="Stop">
+    </method>
+
+    <method name="Seek">
+      <arg direction="in" name="seconds" type="x"/>
+    </method>
+
+    <method name="List">
+      <arg direction="out" name="files" type="as"/>
+      <arg direction="out" name="count" type="x"/>
+      <arg direction="out" name="position" type="x"/>
+    </method>
+
+    <method name="AddTrack">
+      <arg direction="in" name="path" type="s"/>
+    </method>
+
+    <method name="AddList">
+      <arg direction="in" name="path" type="s"/>
+    </method>
+
+    <method name="RemoveTrack">
+      <arg direction="in" name="index" type="x"/>
+    </method>
+
+    <method name="Replaygain">
+      <arg direction="in" name="mode" type="s"/>
+    </method>
+
+    <method name="Loop">
+      <arg direction="in" name="enable" type="b"/>
+    </method>
+
+    <method name="Quit">
+    </method>
+
+    <signal name="StatusChanged">
+    </signal>
+
+    <signal name="TrackChanged">
+    </signal>
+
+    <signal name="TrackAdded">
+    </signal>
+
+    <signal name="OptionChanged">
+    </signal>
+  </interface>
+</node>
