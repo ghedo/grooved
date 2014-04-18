@@ -155,10 +155,10 @@ void player_init(void) {
 	if (player_ctx == NULL)
 		fail_printf("Could not create player");
 
-	rc = mpv_set_option_string(player_ctx, "no-video", "yes");
+	rc = mpv_set_option_string(player_ctx, "no-video", "");
 	player_check_error("Could not set no-video", rc);
 
-	rc = mpv_set_option_string(player_ctx, "no-softvol", "yes");
+	rc = mpv_set_option_string(player_ctx, "no-softvol", "");
 	player_check_error("Could not set no-softvol", rc);
 
 	mpv_request_log_messages(player_ctx, "error");
