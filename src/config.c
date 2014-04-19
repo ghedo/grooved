@@ -41,6 +41,7 @@ struct config cfg = {
 	.library = "/invalid",
 	.verbose = false,
 	.filters = NULL,
+	.output  = NULL,
 };
 
 static int config_cb(void *, const char *, const char *, const char *);
@@ -82,6 +83,8 @@ static int config_cb(void *argp, const char *section,
 			} else {
 				cfg -> filters = strdup(val);
 			}
+		} else if (strcmp(key, "output") == 0) {
+			cfg -> output = strdup(val);
 		} else
 			fail_printf("Invalid config '%s'", key);
 	} else

@@ -33,6 +33,7 @@ struct config {
 	char *library;
 	bool  verbose;
 	char *filters;
+	char *output;
 };
 
 extern struct config cfg;

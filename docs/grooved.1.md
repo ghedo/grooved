@@ -46,7 +46,13 @@ Whether to enable verbose output (optional).
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Filter audio with the given filter. Can be specified multiple times, in which
 case filters get chained one after the other. See mpv(1) for a list of supported
-filters and options.
+filters and options (optional).
+
+`output=<output>`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The output audio driver to use. See mpv(1) for a list of suported audio outputs
+and options (optional).
 
 ## AUTHOR ##
 

@@ -162,7 +162,12 @@ void player_init(void) {
 
 	if (cfg.filters != NULL) {
 		rc = mpv_set_option_string(player_ctx, "af", cfg.filters);
-		player_check_error("Could not set af", rc);
+		player_check_error("Could not set filters", rc);
+	}
+
+	if (cfg.output != NULL) {
+		rc = mpv_set_option_string(player_ctx, "ao", cfg.output);
+		player_check_error("Could not set output", rc);
 	}
 
 	mpv_request_log_messages(player_ctx, "error");
