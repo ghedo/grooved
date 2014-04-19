@@ -73,6 +73,18 @@ implementing its own half-working audio decoder and player, and piggybacks on
 tools like <a href="http://beets.radbox.org/">beets</a> instead of implementing yet another music database.
 Life gets so much better once you let other people do the hard work.</p>
 
+<p>The project is composed of the following components:</p>
+
+<ul>
+<li><a href="http://ghedo.github.io/grooved/grooved.1.html">grooved</a>: the music player daemon.</li>
+<li><a href="http://ghedo.github.io/grooved/groovectl.1.html">groovectl</a>: a command-line client to grooved.</li>
+<li>grooved-mmkeys: an additional daemon that listens for X11 multimedia keys
+events, and changes grooved playback state accordingly.</li>
+<li>grooved-notify: an additional daemon that listens for track changes and
+generates desktop notifications accordingly.</li>
+</ul>
+
+
 <h2 id="GETTING-STARTED">GETTING STARTED</h2>
 
 <p>First off, you may want to <a href="http://beets.readthedocs.org/en/latest/guides/main.html">install and configure beets</a>, unless you
@@ -87,9 +99,7 @@ grooved itself. Here's a simple configuration example:</p>
 library = ~/data/musiclibrary.blb    ; path to beets' database
 verbose = off                        ; enable/disable verbose output
 
-[player]
-replaygain = none                    ; optionally enable replaygain, can be
-                                     ; "track", "album" or "none"
+filter = volume=replaygain-track     ; (optional) set an audio filter
 </code></pre>
 
 <p>Save that in the file <code>~/.config/grooved/config.ini</code>.</p>
@@ -124,7 +134,7 @@ $ [sudo] make install
 
 <h2 id="COPYRIGHT">COPYRIGHT</h2>
 
-<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x61;&#x6c;&#101;&#x73;&#x73;&#x61;&#x6e;&#x64;&#x72;&#111;&#64;&#103;&#x68;&#x65;&#100;&#105;&#x6e;&#105;&#46;&#x6d;&#101;" data-bare-link="true">&#x61;&#x6c;&#101;&#x73;&#115;&#97;&#110;&#100;&#114;&#x6f;&#64;&#x67;&#x68;&#x65;&#100;&#105;&#110;&#105;&#46;&#x6d;&#101;</a></p>
+<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x61;&#x6c;&#x65;&#x73;&#x73;&#97;&#x6e;&#x64;&#x72;&#111;&#x40;&#x67;&#104;&#x65;&#x64;&#105;&#x6e;&#x69;&#46;&#109;&#101;" data-bare-link="true">&#x61;&#108;&#x65;&#115;&#x73;&#x61;&#x6e;&#x64;&#114;&#111;&#x40;&#103;&#x68;&#101;&#x64;&#x69;&#x6e;&#105;&#46;&#x6d;&#101;</a></p>
 
 <p>See COPYING for the license.</p>
 
