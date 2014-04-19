@@ -60,13 +60,13 @@ static inline void help(void);
 CMD_HANDLE(status) {
 	GError *err = NULL;
 
-	char *state, *replaygain, *loop, *path;
+	char *state, *loop, *path;
 	double len, pos, percent;
 	GVariant *metadata;
 
 	grooved_player_call_status_sync(
 		proxy, &state, &path, &len, &pos, &percent,
-		&metadata, &replaygain, &loop, NULL, &err
+		&metadata, &loop, NULL, &err
 	);
 
 	if (err != NULL)
@@ -93,7 +93,7 @@ CMD_HANDLE(status) {
 		state, pos_min, pos_sec, len_min, len_sec, (int) percent
 	);
 
-	printf("replaygain: %s   loop: %s\n", replaygain, loop);
+	printf("loop: %s\n", loop);
 }
 
 CMD_HANDLE(play) {
@@ -240,21 +240,6 @@ CMD_HANDLE(rm) {
 		fail_printf("%s", err -> message);
 }
 
-CMD_HANDLE(rgain) {
-	GError *err = NULL;
-
-	if ((argc < 3) ||
-	    (strcmp("track", argv[2]) &&
-	     strcmp("album", argv[2]) &&
-	     strcmp("none", argv[2])))
-		fail_printf("Invalid replaygain mode");
-
-	grooved_player_call_replaygain_sync(proxy, argv[2], NULL, &err);
-
-	if (err != NULL)
-		fail_printf("%s", err -> message);
-}
-
 CMD_HANDLE(loop) {
 	GError *err = NULL;
 
@@ -291,7 +276,7 @@ CMD_HANDLE(lyrics) {
 
 	grooved_player_call_status_sync(
 		proxy, NULL, NULL, NULL, NULL, NULL,
-		&metadata, NULL, NULL, NULL, &err
+		&metadata, NULL, NULL, &err
 	);
 
 	if (err != NULL)
@@ -362,7 +347,6 @@ struct handle_cmd cmds[] = {
 	{ "play",   cmd_play,   "Unpause the player" },
 	{ "prev",   cmd_prev,   "Skip to previous track" },
 	{ "quit",   cmd_quit,   "Shutdown the player" },
-	{ "rgain",  cmd_rgain,  "Set the player's replaygain mode" },
 	{ "rm",     cmd_rm,     "Remove a track from the tracklist" },
 	{ "seek",   cmd_seek,   "Seek by a relative amount of seconds" },
 	{ "status", cmd_status, "Show the status of the player" },

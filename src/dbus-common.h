@@ -73,11 +73,6 @@ struct _GroovedPlayerIface
     GDBusMethodInvocation *invocation,
     gint64 arg_index);
 
-  gboolean (*handle_replaygain) (
-    GroovedPlayer *object,
-    GDBusMethodInvocation *invocation,
-    const gchar *arg_mode);
-
   gboolean (*handle_seek) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation,
@@ -125,7 +120,6 @@ void grooved_player_complete_status (
     gdouble position,
     gdouble percent,
     GVariant *metadata,
-    const gchar *replaygain,
     const gchar *loop);
 
 void grooved_player_complete_play (
@@ -175,10 +169,6 @@ void grooved_player_complete_remove_track (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
 
-void grooved_player_complete_replaygain (
-    GroovedPlayer *object,
-    GDBusMethodInvocation *invocation);
-
 void grooved_player_complete_loop (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
@@ -219,7 +209,6 @@ gboolean grooved_player_call_status_finish (
     gdouble *out_position,
     gdouble *out_percent,
     GVariant **out_metadata,
-    gchar **out_replaygain,
     gchar **out_loop,
     GAsyncResult *res,
     GError **error);
@@ -232,7 +221,6 @@ gboolean grooved_player_call_status_sync (
     gdouble *out_position,
     gdouble *out_percent,
     GVariant **out_metadata,
-    gchar **out_replaygain,
     gchar **out_loop,
     GCancellable *cancellable,
     GError **error);
@@ -424,24 +412,6 @@ gboolean grooved_player_call_remove_track_finish (
 gboolean grooved_player_call_remove_track_sync (
     GroovedPlayer *proxy,
     gint64 arg_index,
-    GCancellable *cancellable,
-    GError **error);
-
-void grooved_player_call_replaygain (
-    GroovedPlayer *proxy,
-    const gchar *arg_mode,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data);
-
-gboolean grooved_player_call_replaygain_finish (
-    GroovedPlayer *proxy,
-    GAsyncResult *res,
-    GError **error);
-
-gboolean grooved_player_call_replaygain_sync (
-    GroovedPlayer *proxy,
-    const gchar *arg_mode,
     GCancellable *cancellable,
     GError **error);
 

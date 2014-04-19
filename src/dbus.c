@@ -179,29 +179,6 @@ gboolean on_remove_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 	return TRUE;
 }
 
-gboolean on_replaygain(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
-                       const char *arg_mode) {
-	if (g_strcmp0(arg_mode, "track") == 0) {
-		player_playback_replaygain(PLAYER_REPLAYGAIN_TRACK);
-	} else if (g_strcmp0(arg_mode, "album") == 0) {
-		player_playback_replaygain(PLAYER_REPLAYGAIN_ALBUM);
-	} else if (g_strcmp0(arg_mode, "none") == 0) {
-		player_playback_replaygain(PLAYER_REPLAYGAIN_NONE);
-	} else {
-		g_dbus_method_invocation_return_dbus_error(
-			invocation, DBUS_ERROR_INVALID_ARGS,
-			"Invalid Replaygain mode"
-		);
-
-		goto exit;
-	}
-
-	g_dbus_method_invocation_return_value(invocation, NULL);
-
-exit:
-	return TRUE;
-}
-
 gboolean on_seek(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
                  int64_t arg_seconds) {
 	player_playback_seek(arg_seconds);
@@ -213,7 +190,7 @@ gboolean on_seek(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 
 gboolean on_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 	GVariantBuilder *status = g_variant_builder_new(
-		G_VARIANT_TYPE("(ssddda{ss}ss)")
+		G_VARIANT_TYPE("(ssddda{ss}s)")
 	);
 
 	player_make_status(status);
@@ -263,7 +240,6 @@ static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
 		{ "handle-prev",       G_CALLBACK(on_prev) },
 		{ "handle-quit",       G_CALLBACK(on_quit) },
 		{ "handle-remove-track",G_CALLBACK(on_remove_track) },
-		{ "handle-replaygain", G_CALLBACK(on_replaygain) },
 		{ "handle-seek",       G_CALLBACK(on_seek) },
 		{ "handle-status",     G_CALLBACK(on_status) },
 		{ "handle-stop",       G_CALLBACK(on_stop) },

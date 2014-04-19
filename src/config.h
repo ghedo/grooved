@@ -32,9 +32,7 @@ struct config {
 	/* default */
 	char *library;
 	bool  verbose;
-
-	/* player */
-	enum replaygain rgain;
+	char *filters;
 };
 
 extern struct config cfg;

@@ -66,11 +66,6 @@ Skip to the previous track.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Shutdown the player.
 
-`rgain track|album|none`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Set the player's replaygain mode.
-
 `rm INDEX`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

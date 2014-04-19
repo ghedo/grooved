@@ -56,7 +56,6 @@ static mpv_handle *player_ctx;
 
 static enum player_status player_status;
 
-static enum replaygain player_replaygain = PLAYER_REPLAYGAIN_TRACK;
 static enum loop player_loop = PLAYER_LOOP_NONE;
 
 static int64_t playlist_pos = -1;
@@ -163,28 +162,6 @@ void player_init(void) {
 
 	mpv_request_log_messages(player_ctx, "error");
 
-	switch (cfg.rgain) {
-		case PLAYER_REPLAYGAIN_TRACK:
-			rc = mpv_set_option_string(
-				player_ctx, "af",
-				"@replaygain_track:volume=replaygain-track"
-			);
-			break;
-
-		case PLAYER_REPLAYGAIN_ALBUM:
-			rc = mpv_set_option_string(
-				player_ctx, "af",
-				"@replaygain_album:volume=replaygain-album"
-			);
-			break;
-
-		case PLAYER_REPLAYGAIN_NONE:
-			rc = MPV_ERROR_SUCCESS;
-			break;
-	}
-
-	player_check_error("Could not set replaygain", rc);
-
 	rc = mpv_initialize(player_ctx);
 	player_check_error("Could not initialize player", rc);
 
@@ -245,8 +222,6 @@ void player_make_status(GVariantBuilder *status) {
 	g_variant_builder_add_value(status, g_variant_builder_end(meta_build));
 
 	mpv_free_node_contents(&metadata);
-
-	g_variant_builder_add(status, "s", player_playback_replaygain_tostr());
 
 	g_variant_builder_add(status, "s", player_playback_loop_tostr());
 
@@ -404,53 +379,6 @@ void player_playback_seek(int64_t secs) {
 
 	rc = mpv_command(player_ctx, cmd);
 	player_check_error("Could not seek", rc);
-}
-
-void player_playback_replaygain(enum replaygain mode) {
-	int rc;
-	const char *cmd[] = { "af", NULL, NULL, NULL };
-
-	switch (mode) {
-		case PLAYER_REPLAYGAIN_TRACK:
-			player_playback_replaygain(PLAYER_REPLAYGAIN_NONE);
-
-			cmd[1] = "add";
-			cmd[2] = "@replaygain_track:volume=replaygain-track";
-			break;
-
-		case PLAYER_REPLAYGAIN_ALBUM:
-			player_playback_replaygain(PLAYER_REPLAYGAIN_NONE);
-
-			cmd[1] = "add";
-			cmd[2] = "@replaygain_album:volume=replaygain-album";
-			break;
-
-		case PLAYER_REPLAYGAIN_NONE:
-			cmd[1] = "del";
-			cmd[2] = "@replaygain_track,@replaygain_album";
-			break;
-	}
-
-	player_replaygain = mode;
-
-	rc = mpv_command(player_ctx, cmd);
-	player_check_error("Could not change af chain", rc);
-}
-
-char *player_playback_replaygain_tostr(void) {
-	switch (player_replaygain) {
-		case PLAYER_REPLAYGAIN_TRACK:
-			return "track";
-
-		case PLAYER_REPLAYGAIN_ALBUM:
-			return "album";
-
-		case PLAYER_REPLAYGAIN_NONE:
-			return "none";
-			break;
-	}
-
-	return NULL;
 }
 
 void player_playback_loop(enum loop mode) {

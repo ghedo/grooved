@@ -33,12 +33,6 @@
 
 #include <gio/gio.h>
 
-enum replaygain {
-	PLAYER_REPLAYGAIN_TRACK,
-	PLAYER_REPLAYGAIN_ALBUM,
-	PLAYER_REPLAYGAIN_NONE
-};
-
 enum loop {
 	PLAYER_LOOP_TRACK,
 	PLAYER_LOOP_LIST,
@@ -58,9 +52,6 @@ extern void player_playback_toggle(void);
 extern void player_playback_stop(void);
 
 extern void player_playback_seek(int64_t secs);
-
-extern void player_playback_replaygain(enum replaygain mode);
-extern char *player_playback_replaygain_tostr(void);
 
 extern void player_playback_loop(enum loop mode);
 extern char *player_playback_loop_tostr(void);

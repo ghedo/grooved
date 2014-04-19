@@ -8,7 +8,6 @@
       <arg direction="out" name="position" type="d"/>
       <arg direction="out" name="percent" type="d"/>
       <arg direction="out" name="metadata" type="a{ss}"/>
-      <arg direction="out" name="replaygain" type="s"/>
       <arg direction="out" name="loop" type="s"/>
     </method>
 
@@ -50,10 +49,6 @@
 
     <method name="RemoveTrack">
       <arg direction="in" name="index" type="x"/>
-    </method>
-
-    <method name="Replaygain">
-      <arg direction="in" name="mode" type="s"/>
     </method>
 
     <method name="Loop">

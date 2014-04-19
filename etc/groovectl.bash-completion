@@ -21,7 +21,6 @@ _groovectl() {
 		play
 		prev
 		quit
-		rgain
 		rm
 		seek
 		status

@@ -40,8 +40,7 @@
 struct config cfg = {
 	.library = "/invalid",
 	.verbose = false,
-
-	.rgain = PLAYER_REPLAYGAIN_NONE,
+	.filters = NULL,
 };
 
 static int config_cb(void *, const char *, const char *, const char *);
@@ -70,16 +69,6 @@ static int config_cb(void *argp, const char *section,
 				cfg -> verbose = false;
 			else
 				fail_printf("Invalid verbose value");
-		} else
-			fail_printf("Invalid config '%s'", key);
-	} else if (strcmp(section, "player") == 0) {
-		if (strcmp(key, "replaygain") == 0) {
-			if (strcmp(val, "track") == 0)
-				cfg -> rgain = PLAYER_REPLAYGAIN_TRACK;
-			else if (strcmp(val, "album") == 0)
-				cfg -> rgain = PLAYER_REPLAYGAIN_ALBUM;
-			else if (strcmp(val, "none") == 0)
-				cfg -> rgain = PLAYER_REPLAYGAIN_NONE;
 		} else
 			fail_printf("Invalid config '%s'", key);
 	} else

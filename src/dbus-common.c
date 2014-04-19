@@ -229,17 +229,6 @@ static const _ExtendedGDBusArgInfo _grooved_player_method_info_status_OUT_ARG_me
   FALSE
 };
 
-static const _ExtendedGDBusArgInfo _grooved_player_method_info_status_OUT_ARG_replaygain =
-{
-  {
-    -1,
-    (gchar *) "replaygain",
-    (gchar *) "s",
-    NULL
-  },
-  FALSE
-};
-
 static const _ExtendedGDBusArgInfo _grooved_player_method_info_status_OUT_ARG_loop =
 {
   {
@@ -259,7 +248,6 @@ static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_status_OU
   &_grooved_player_method_info_status_OUT_ARG_position,
   &_grooved_player_method_info_status_OUT_ARG_percent,
   &_grooved_player_method_info_status_OUT_ARG_metadata,
-  &_grooved_player_method_info_status_OUT_ARG_replaygain,
   &_grooved_player_method_info_status_OUT_ARG_loop,
   NULL
 };
@@ -529,36 +517,6 @@ static const _ExtendedGDBusMethodInfo _grooved_player_method_info_remove_track =
   FALSE
 };
 
-static const _ExtendedGDBusArgInfo _grooved_player_method_info_replaygain_IN_ARG_mode =
-{
-  {
-    -1,
-    (gchar *) "mode",
-    (gchar *) "s",
-    NULL
-  },
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_replaygain_IN_ARG_pointers[] =
-{
-  &_grooved_player_method_info_replaygain_IN_ARG_mode,
-  NULL
-};
-
-static const _ExtendedGDBusMethodInfo _grooved_player_method_info_replaygain =
-{
-  {
-    -1,
-    (gchar *) "Replaygain",
-    (GDBusArgInfo **) &_grooved_player_method_info_replaygain_IN_ARG_pointers,
-    NULL,
-    NULL
-  },
-  "handle-replaygain",
-  FALSE
-};
-
 static const _ExtendedGDBusArgInfo _grooved_player_method_info_loop_IN_ARG_mode =
 {
   {
@@ -616,7 +574,6 @@ static const _ExtendedGDBusMethodInfo * const _grooved_player_method_info_pointe
   &_grooved_player_method_info_add_track,
   &_grooved_player_method_info_add_list,
   &_grooved_player_method_info_remove_track,
-  &_grooved_player_method_info_replaygain,
   &_grooved_player_method_info_loop,
   &_grooved_player_method_info_quit,
   NULL
@@ -739,7 +696,6 @@ grooved_player_override_properties (GObjectClass *klass, guint property_id_begin
  * @handle_prev: Handler for the #GroovedPlayer::handle-prev signal.
  * @handle_quit: Handler for the #GroovedPlayer::handle-quit signal.
  * @handle_remove_track: Handler for the #GroovedPlayer::handle-remove-track signal.
- * @handle_replaygain: Handler for the #GroovedPlayer::handle-replaygain signal.
  * @handle_seek: Handler for the #GroovedPlayer::handle-seek signal.
  * @handle_status: Handler for the #GroovedPlayer::handle-status signal.
  * @handle_stop: Handler for the #GroovedPlayer::handle-stop signal.
@@ -1028,29 +984,6 @@ grooved_player_default_init (GroovedPlayerIface *iface)
     G_TYPE_DBUS_METHOD_INVOCATION, G_TYPE_INT64);
 
   /**
-   * GroovedPlayer::handle-replaygain:
-   * @object: A #GroovedPlayer.
-   * @invocation: A #GDBusMethodInvocation.
-   * @arg_mode: Argument passed by remote caller.
-   *
-   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.Replaygain">Replaygain()</link> D-Bus method.
-   *
-   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call grooved_player_complete_replaygain() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
-   *
-   * Returns: %TRUE if the invocation was handled, %FALSE to let other signal handlers run.
-   */
-  g_signal_new ("handle-replaygain",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (GroovedPlayerIface, handle_replaygain),
-    g_signal_accumulator_true_handled,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_BOOLEAN,
-    2,
-    G_TYPE_DBUS_METHOD_INVOCATION, G_TYPE_STRING);
-
-  /**
    * GroovedPlayer::handle-loop:
    * @object: A #GroovedPlayer.
    * @invocation: A #GDBusMethodInvocation.
@@ -1261,7 +1194,6 @@ grooved_player_call_status (
  * @out_position: (out): Return location for return parameter or %NULL to ignore.
  * @out_percent: (out): Return location for return parameter or %NULL to ignore.
  * @out_metadata: (out): Return location for return parameter or %NULL to ignore.
- * @out_replaygain: (out): Return location for return parameter or %NULL to ignore.
  * @out_loop: (out): Return location for return parameter or %NULL to ignore.
  * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_player_call_status().
  * @error: Return location for error or %NULL.
@@ -1279,7 +1211,6 @@ grooved_player_call_status_finish (
     gdouble *out_position,
     gdouble *out_percent,
     GVariant **out_metadata,
-    gchar **out_replaygain,
     gchar **out_loop,
     GAsyncResult *res,
     GError **error)
@@ -1289,14 +1220,13 @@ grooved_player_call_status_finish (
   if (_ret == NULL)
     goto _out;
   g_variant_get (_ret,
-                 "(ssddd@a{ss}ss)",
+                 "(ssddd@a{ss}s)",
                  out_state,
                  out_path,
                  out_length,
                  out_position,
                  out_percent,
                  out_metadata,
-                 out_replaygain,
                  out_loop);
   g_variant_unref (_ret);
 _out:
@@ -1312,7 +1242,6 @@ _out:
  * @out_position: (out): Return location for return parameter or %NULL to ignore.
  * @out_percent: (out): Return location for return parameter or %NULL to ignore.
  * @out_metadata: (out): Return location for return parameter or %NULL to ignore.
- * @out_replaygain: (out): Return location for return parameter or %NULL to ignore.
  * @out_loop: (out): Return location for return parameter or %NULL to ignore.
  * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
@@ -1332,7 +1261,6 @@ grooved_player_call_status_sync (
     gdouble *out_position,
     gdouble *out_percent,
     GVariant **out_metadata,
-    gchar **out_replaygain,
     gchar **out_loop,
     GCancellable *cancellable,
     GError **error)
@@ -1348,14 +1276,13 @@ grooved_player_call_status_sync (
   if (_ret == NULL)
     goto _out;
   g_variant_get (_ret,
-                 "(ssddd@a{ss}ss)",
+                 "(ssddd@a{ss}s)",
                  out_state,
                  out_path,
                  out_length,
                  out_position,
                  out_percent,
                  out_metadata,
-                 out_replaygain,
                  out_loop);
   g_variant_unref (_ret);
 _out:
@@ -2417,104 +2344,6 @@ _out:
 }
 
 /**
- * grooved_player_call_replaygain:
- * @proxy: A #GroovedPlayerProxy.
- * @arg_mode: Argument to pass with the method invocation.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
- * @user_data: User data to pass to @callback.
- *
- * Asynchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.Replaygain">Replaygain()</link> D-Bus method on @proxy.
- * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.
- * You can then call grooved_player_call_replaygain_finish() to get the result of the operation.
- *
- * See grooved_player_call_replaygain_sync() for the synchronous, blocking version of this method.
- */
-void
-grooved_player_call_replaygain (
-    GroovedPlayer *proxy,
-    const gchar *arg_mode,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data)
-{
-  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
-    "Replaygain",
-    g_variant_new ("(s)",
-                   arg_mode),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    callback,
-    user_data);
-}
-
-/**
- * grooved_player_call_replaygain_finish:
- * @proxy: A #GroovedPlayerProxy.
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_player_call_replaygain().
- * @error: Return location for error or %NULL.
- *
- * Finishes an operation started with grooved_player_call_replaygain().
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_replaygain_finish (
-    GroovedPlayer *proxy,
-    GAsyncResult *res,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "()");
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * grooved_player_call_replaygain_sync:
- * @proxy: A #GroovedPlayerProxy.
- * @arg_mode: Argument to pass with the method invocation.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
- *
- * Synchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.Replaygain">Replaygain()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
- *
- * See grooved_player_call_replaygain() for the asynchronous version of this method.
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_replaygain_sync (
-    GroovedPlayer *proxy,
-    const gchar *arg_mode,
-    GCancellable *cancellable,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
-    "Replaygain",
-    g_variant_new ("(s)",
-                   arg_mode),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "()");
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
  * grooved_player_call_loop:
  * @proxy: A #GroovedPlayerProxy.
  * @arg_mode: Argument to pass with the method invocation.
@@ -2714,7 +2543,6 @@ _out:
  * @position: Parameter to return.
  * @percent: Parameter to return.
  * @metadata: Parameter to return.
- * @replaygain: Parameter to return.
  * @loop: Parameter to return.
  *
  * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.Status">Status()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
@@ -2731,18 +2559,16 @@ grooved_player_complete_status (
     gdouble position,
     gdouble percent,
     GVariant *metadata,
-    const gchar *replaygain,
     const gchar *loop)
 {
   g_dbus_method_invocation_return_value (invocation,
-    g_variant_new ("(ssddd@a{ss}ss)",
+    g_variant_new ("(ssddd@a{ss}s)",
                    state,
                    path,
                    length,
                    position,
                    percent,
                    metadata,
-                   replaygain,
                    loop));
 }
 
@@ -2946,24 +2772,6 @@ grooved_player_complete_add_list (
  */
 void
 grooved_player_complete_remove_track (
-    GroovedPlayer *object,
-    GDBusMethodInvocation *invocation)
-{
-  g_dbus_method_invocation_return_value (invocation,
-    g_variant_new ("()"));
-}
-
-/**
- * grooved_player_complete_replaygain:
- * @object: A #GroovedPlayer.
- * @invocation: (transfer full): A #GDBusMethodInvocation.
- *
- * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.Replaygain">Replaygain()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
- *
- * This method will free @invocation, you cannot use it afterwards.
- */
-void
-grooved_player_complete_replaygain (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation)
 {

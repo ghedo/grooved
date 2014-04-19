@@ -22,7 +22,6 @@ case $state in
       "play:unpause the player"
       "prev:skip to previous track"
       "quit:shutdown the player"
-      "rgain:set the player's replaygain mode"
       "rm:remove a track from the tracklist"
       "seek:seek by a relative amount of seconds"
       "status:show the status of the player"
@@ -37,17 +36,6 @@ case $state in
     case $words[2] in
       add)
         _files
-      ;;
-
-      rgain)
-        local -a values
-        values=(
-          "track:track mode"
-          "album:album mode"
-          "none:disable replaygain"
-        )
-
-        _describe -t values 'groovectl rgain values' values
       ;;
 
       loop)

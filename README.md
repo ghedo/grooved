@@ -33,10 +33,6 @@ grooved itself. Here's a simple configuration example:
 [default]
 library = ~/data/musiclibrary.blb    ; path to beets' database
 verbose = off                        ; enable/disable verbose output
-
-[player]
-replaygain = none                    ; optionally enable replaygain, can be
-                                     ; "track", "album" or "none"
 ```
 
 Save that in the file `~/.config/grooved/config.ini`.
