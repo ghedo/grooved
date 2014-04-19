@@ -35,11 +35,12 @@
 
 #include <glib.h>
 
+#include "config.h"
 #include "dbus.h"
 #include "library.h"
 #include "player.h"
-#include "config.h"
 #include "printf.h"
+#include "util.h"
 
 GMainLoop *loop;
 
@@ -54,8 +55,9 @@ static struct option long_opts[] = {
 
 int main(int argc, char *argv[]) {
 	int opts, i, rc;
+
 	bool verbose = false;
-	char *config_file = NULL;
+	_free_ char *config_file = NULL;
 
 	while ((opts = getopt_long(argc, argv, "c:Vh", long_opts, &i)) != -1) {
 		switch (opts) {
@@ -85,8 +87,6 @@ int main(int argc, char *argv[]) {
 		cfg_parse(config_file);
 	else
 		err_printf("Config file not found, skipping");
-
-	free(config_file);
 
 	library_open();
 

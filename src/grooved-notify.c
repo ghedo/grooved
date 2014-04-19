@@ -36,6 +36,7 @@
 #include "dbus.h"
 #include "dbus-common.h"
 #include "printf.h"
+#include "util.h"
 
 static GroovedPlayer *proxy;
 
@@ -83,8 +84,8 @@ static void notify_on_track_changed(GroovedPlayer *obj, void *data) {
 static void notify(NotifyNotification *n, GVariant *metadata) {
 	GVariantIter iter;
 
-	char *body = NULL, *key, *val;
-	char *title = NULL, *artist = NULL;
+	char *key, *val;
+	_free_ char *body = NULL, *title = NULL, *artist = NULL;
 
 	g_variant_iter_init(&iter, metadata);
 	while (g_variant_iter_loop(&iter, "{ss}", &key, &val)) {
@@ -114,15 +115,6 @@ static void notify(NotifyNotification *n, GVariant *metadata) {
 
 	notify_notification_update(n, body, NULL, "media-playback-start");
 	notify_notification_show(n, NULL);
-
-	if (title)
-		free(title);
-
-	if (artist)
-		free(artist);
-
-	if (body)
-		free(body);
 
 	g_variant_unref(metadata);
 }

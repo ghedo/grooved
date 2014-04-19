@@ -33,9 +33,10 @@
 
 #include <inih/ini.h>
 
-#include "player.h"
 #include "config.h"
+#include "player.h"
 #include "printf.h"
+#include "util.h"
 
 struct config cfg = {
 	.library = "/invalid",
@@ -73,13 +74,11 @@ static int config_cb(void *argp, const char *section,
 				fail_printf("Invalid verbose value");
 		} else if (strcmp(key, "filter") == 0) {
 			if (cfg -> filters != NULL) {
-				char *tmp = cfg -> filters;
+				_free_ char *tmp = cfg -> filters;
 
 				rc = asprintf(&cfg -> filters, "%s,%s",
 				              cfg -> filters, val);
 				if (rc < 0) fail_printf("OOM");
-
-				free(tmp);
 			} else {
 				cfg -> filters = strdup(val);
 			}

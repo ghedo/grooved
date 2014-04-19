@@ -43,6 +43,7 @@
 #include "dbus.h"
 #include "dbus-common.h"
 #include "printf.h"
+#include "util.h"
 
 typedef void (*cmd_handle)(GroovedPlayer *proxy, int argc, char *argv[]);
 
@@ -208,6 +209,8 @@ static void add_track(GroovedPlayer *proxy, char *path) {
 		fail_printf("%s", err -> message);
 
 	printf("Added track '%s'\n", path);
+
+	freep(&path);
 }
 
 CMD_HANDLE(add) {

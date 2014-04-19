@@ -37,11 +37,12 @@
 
 #include <mpv/client.h>
 
+#include "config.h"
 #include "dbus.h"
 #include "library.h"
 #include "player.h"
-#include "config.h"
 #include "printf.h"
+#include "util.h"
 
 enum player_status {
 	STARTING,
@@ -67,7 +68,6 @@ int64_t player_playlist_position(void);
 	if (RC < 0)						\
 		fail_printf(MSG ": %s", mpv_error_string(RC));
 
-static void player_print_metadata(void);
 static void player_print_playlist_status(void);
 
 static void *player_start_thread(void *ptr) {
@@ -280,7 +280,7 @@ void player_make_list(GVariantBuilder *list) {
 void player_playback_start(void) {
 	int rc;
 
-	char *path = NULL;
+	_free_ char *path = NULL;
 
 	int64_t pos   = playlist_pos;
 	int64_t count = player_playlist_count();
@@ -482,7 +482,8 @@ void player_playlist_append_list(const char *path) {
 
 void player_playlist_remove_index(int64_t index) {
 	int rc;
-	char *index_str = NULL;
+
+	_free_ char *index_str = NULL;
 
 	rc = asprintf(&index_str, "%" PRId64, index);
 	if (rc < 0) fail_printf("OOM");
@@ -493,8 +494,6 @@ void player_playlist_remove_index(int64_t index) {
 	player_check_error("Could not load file", rc);
 
 	playlist_pos = player_playlist_position();
-
-	free(index_str);
 }
 
 void player_playlist_next(void) {
@@ -523,28 +522,6 @@ void player_destroy(void) {
 	pthread_join(player_thr, NULL);
 
 	mpv_destroy(player_ctx);
-}
-
-static void player_print_metadata(void) {
-	int rc, i;
-	mpv_node metadata;
-
-	rc = mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
-	if (rc != MPV_ERROR_SUCCESS)
-		return;
-
-	if (metadata.format != MPV_FORMAT_NODE_MAP)
-		err_printf("No metadata");
-
-	debug_printf("tags:");
-	for (i = 0; i < metadata.u.list -> num; i++) {
-		char *key = metadata.u.list -> keys[i];
-		char *val = metadata.u.list -> values[i].u.string;
-
-		debug_printf(" %s: %s", key, val);
-	}
-
-	mpv_free_node_contents(&metadata);
 }
 
 static void player_print_playlist_status(void) {
