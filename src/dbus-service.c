@@ -67,10 +67,6 @@ void dbus_emit_signal(enum dbus_signal sig) {
 			grooved_player_emit_track_changed(iface);
 			break;
 
-		case TRACK_ADDED:
-			grooved_player_emit_track_added(iface);
-			break;
-
 		case OPTION_CHANGED:
 			grooved_player_emit_option_changed(iface);
 			break;

@@ -35,7 +35,6 @@
 enum dbus_signal {
 	STATUS_CHANGED,
 	TRACK_CHANGED,
-	TRACK_ADDED,
 	OPTION_CHANGED,
 };
 

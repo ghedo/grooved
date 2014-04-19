@@ -96,9 +96,6 @@ struct _GroovedPlayerIface
   void (*status_changed) (
     GroovedPlayer *object);
 
-  void (*track_added) (
-    GroovedPlayer *object);
-
   void (*track_changed) (
     GroovedPlayer *object);
 
@@ -184,9 +181,6 @@ void grooved_player_emit_status_changed (
     GroovedPlayer *object);
 
 void grooved_player_emit_track_changed (
-    GroovedPlayer *object);
-
-void grooved_player_emit_track_added (
     GroovedPlayer *object);
 
 void grooved_player_emit_option_changed (

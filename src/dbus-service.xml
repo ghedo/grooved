@@ -64,9 +64,6 @@
     <signal name="TrackChanged">
     </signal>
 
-    <signal name="TrackAdded">
-    </signal>
-
     <signal name="OptionChanged">
     </signal>
   </interface>
