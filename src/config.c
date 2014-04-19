@@ -52,6 +52,7 @@ void cfg_parse(const char *file) {
 
 static int config_cb(void *argp, const char *section,
                      const char *key, const char *val) {
+	int rc;
 	struct config *cfg = argp;
 
 	if (strcmp(section, "default") == 0) {
@@ -69,6 +70,18 @@ static int config_cb(void *argp, const char *section,
 				cfg -> verbose = false;
 			else
 				fail_printf("Invalid verbose value");
+		} else if (strcmp(key, "filter") == 0) {
+			if (cfg -> filters != NULL) {
+				char *tmp = cfg -> filters;
+
+				rc = asprintf(&cfg -> filters, "%s,%s",
+				              cfg -> filters, val);
+				if (rc < 0) fail_printf("OOM");
+
+				free(tmp);
+			} else {
+				cfg -> filters = strdup(val);
+			}
 		} else
 			fail_printf("Invalid config '%s'", key);
 	} else

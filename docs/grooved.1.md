@@ -35,7 +35,9 @@ Here is an example configuration that illustrates the available options:
 [default]
 library = ~/data/musiclibrary.blb    ; path to beets' database
 verbose = off                        ; enable/disable verbose output
-```                                     ; "track", "album" or "none"
+
+filter = volume=replaygain-track     ; (optional) set an audio filter
+```
 
 ## AUTHOR ##
 

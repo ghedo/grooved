@@ -160,6 +160,11 @@ void player_init(void) {
 	rc = mpv_set_option_string(player_ctx, "no-softvol", "");
 	player_check_error("Could not set no-softvol", rc);
 
+	if (cfg.filters != NULL) {
+		rc = mpv_set_option_string(player_ctx, "af", cfg.filters);
+		player_check_error("Could not set af", rc);
+	}
+
 	mpv_request_log_messages(player_ctx, "error");
 
 	rc = mpv_initialize(player_ctx);
