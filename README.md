@@ -15,6 +15,8 @@ The project is composed of the following components:
 * [groovectl] [groovectl]: a command-line client to grooved.
 * grooved-mmkeys: an additional daemon that listens for X11 multimedia keys
   events, and changes grooved playback state accordingly.
+* grooved-notify: an additional daemon that listens for track changes and
+  generates desktop notifications accordingly.
 
 [mpv]: http://mpv.io/
 [beets]: http://beets.radbox.org/
