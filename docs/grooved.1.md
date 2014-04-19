@@ -20,7 +20,7 @@ better once you let other people do the hard work.
 `-c, --config=<file>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Specify the configuration file (default: `~/.config/grooved/config.ini`).
+Specify the configuration file. (default: `~/.config/grooved/config.ini`)
 
 `-V, --verbose`
 
@@ -29,7 +29,7 @@ Enable verbose log messages.
 
 ## CONFIG
 
-Here is a list of valid configuration values:
+Here is a list of valid configuration options:
 
 `library=<path>`
 
@@ -39,20 +39,20 @@ The path to beets' database.
 `verbose=on|off`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Whether to enable verbose output (optional).
+Whether to enable verbose output. (optional)
 
 `filter=<filter>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Filter audio with the given filter. Can be specified multiple times, in which
 case filters get chained one after the other. See mpv(1) for a list of supported
-filters and options (optional).
+filters and options. (optional)
 
 `output=<output>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The output audio driver to use. See mpv(1) for a list of suported audio outputs
-and options (optional).
+and options. (optional)
 
 ## AUTHOR ##
 
