@@ -25,22 +25,25 @@
 \~\~\~\~\~\~ Enable verbose log messages\.
 .
 .SH "CONFIG"
-Here is an example configuration that illustrates the available options:
+Here is a list of valid configuration values:
 .
-.IP "" 4
+.P
+\fBlibrary=<path>\fR
 .
-.nf
-
-[default]
-library = ~/data/musiclibrary\.blb    ; path to beets\' database
-verbose = off                        ; enable/disable verbose output
-
-[player]
-replaygain = none                    ; optionally enable replaygain, can be
+.P
+\~\~\~\~\~\~ The path to beets\' database\.
 .
-.fi
+.P
+\fBverbose=on|off\fR
 .
-.IP "" 0
+.P
+\~\~\~\~\~\~ Whether to enable verbose output (optional)\.
+.
+.P
+\fBfilter=<filter>\fR
+.
+.P
+\~\~\~\~\~\~ Filter audio with the given filter\. Can be specified multiple times, in which case filters get chained one after the other\. See mpv(1) for a list of supported filters and options\.
 .
 .SH "AUTHOR"
 Alessandro Ghedini \fIalessandro@ghedini\.me\fR

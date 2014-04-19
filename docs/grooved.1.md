@@ -29,15 +29,24 @@ Enable verbose log messages.
 
 ## CONFIG
 
-Here is an example configuration that illustrates the available options:
+Here is a list of valid configuration values:
 
-```
-[default]
-library = ~/data/musiclibrary.blb    ; path to beets' database
-verbose = off                        ; enable/disable verbose output
+`library=<path>`
 
-filter = volume=replaygain-track     ; (optional) set an audio filter
-```
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The path to beets' database.
+
+`verbose=on|off`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Whether to enable verbose output (optional).
+
+`filter=<filter>`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Filter audio with the given filter. Can be specified multiple times, in which
+case filters get chained one after the other. See mpv(1) for a list of supported
+filters and options.
 
 ## AUTHOR ##
 
