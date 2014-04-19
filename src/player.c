@@ -119,7 +119,7 @@ static void *player_start_thread(void *ptr) {
 				break;
 
 			case MPV_EVENT_METADATA_UPDATE: {
-				player_print_metadata();
+				dbus_emit_signal(TRACK_CHANGED);
 				break;
 			}
 
