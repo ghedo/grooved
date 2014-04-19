@@ -40,7 +40,6 @@
 #include "player.h"
 #include "config.h"
 #include "printf.h"
-#include "x11.h"
 
 GMainLoop *loop;
 
@@ -93,8 +92,6 @@ int main(int argc, char *argv[]) {
 
 	dbus_init();
 
-	x11_init();
-
 	player_init();
 
 	loop = g_main_loop_new(NULL, FALSE);
@@ -104,8 +101,6 @@ int main(int argc, char *argv[]) {
 	g_main_destroy(loop);
 
 	player_destroy();
-
-	x11_destroy();
 
 	dbus_destroy();
 

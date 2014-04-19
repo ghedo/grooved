@@ -39,10 +39,15 @@
 
 #include <glib.h>
 
-#include "player.h"
+#include "dbus.h"
+#include "dbus-common.h"
 #include "printf.h"
 
 static Display *dpy;
+static GroovedPlayer *proxy;
+
+static void x11_init(void);
+static void x11_destroy(void);
 
 static gboolean x11_loop_fd_prepare(GSource *source, int *timeout);
 static gboolean x11_loop_fd_check(GSource * source);
@@ -54,7 +59,27 @@ static void x11_handle_key(Display *dpy, XEvent ev);
 static void x11_setup_error_handler(void);
 static void x11_teardown_error_handler(void);
 
-void x11_init(void) {
+int main(int argc, char *argv[]) {
+	GMainLoop *loop;
+	GError *err = NULL;
+
+	proxy = grooved_player_proxy_new_for_bus_sync(
+		G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
+		GROOVED_DBUS_NAME, GROOVED_DBUS_PLAYER_PATH, NULL, &err
+	);
+
+	x11_init();
+
+	loop = g_main_loop_new(NULL, FALSE);
+
+	g_main_loop_run(loop);
+
+	g_main_destroy(loop);
+
+	x11_destroy();
+}
+
+static void x11_init(void) {
 	KeySym *map, *iter;
 	int i, key_min, key_max, key_num;
 
@@ -120,7 +145,7 @@ void x11_init(void) {
 	g_source_attach(x11_source, NULL);
 }
 
-void x11_destroy(void) {
+static void x11_destroy(void) {
 	XCloseDisplay(dpy);
 }
 
@@ -157,19 +182,25 @@ static void x11_grab_key(Display *dpy, const KeySym keysym) {
 }
 
 static void x11_handle_key(Display *dpy, XEvent ev) {
+	GError *err = NULL;
+
 	switch (XkbKeycodeToKeysym(dpy, ev.xkey.keycode, 0, 0)) {
 		case XF86XK_AudioPlay:
-			player_playback_toggle();
+			grooved_player_call_toggle_sync(proxy, NULL, &err);
 			break;
 		case XF86XK_AudioNext:
-			player_playlist_next();
+			grooved_player_call_next_sync(proxy, NULL, &err);
 			break;
 		case XF86XK_AudioPrev:
-			player_playlist_prev();
+			grooved_player_call_prev_sync(proxy, NULL, &err);
 			break;
 		case XF86XK_AudioStop:
+			grooved_player_call_stop_sync(proxy, NULL, &err);
 			break;
 	}
+
+	if (err != NULL)
+		err_printf("%s", err -> message);
 }
 
 static int GrabXErrorHandler(Display *dpy, XErrorEvent *ev) {

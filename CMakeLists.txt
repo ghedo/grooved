@@ -33,7 +33,14 @@ ADD_EXECUTABLE(grooved
 	src/library.c
 	src/player.c
 	src/printf.c
-	src/x11.c
+)
+
+ADD_EXECUTABLE(grooved-mmkeys
+	deps/inih/ini.c
+	src/config.c
+	src/dbus-common.c
+	src/grooved-mmkeys.c
+	src/printf.c
 )
 
 ADD_EXECUTABLE(groovectl
@@ -64,8 +71,14 @@ TARGET_LINK_LIBRARIES(grooved
 	${GIO_LIBRARIES}
 	${MPV_LIBRARIES}
 	${SQLITE_LIBRARIES}
-	${X11_LIBRARIES}
 	-lpthread
+)
+
+TARGET_LINK_LIBRARIES(grooved-mmkeys
+	${GLIB_LIBRARIES}
+	${GIO_LIBRARIES}
+	${GOBJECT_LIBRARIES}
+	${X11_LIBRARIES}
 )
 
 TARGET_LINK_LIBRARIES(groovectl
