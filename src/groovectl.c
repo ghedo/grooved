@@ -40,8 +40,8 @@
 #include <gio/gio.h>
 #include <glyr/glyr.h>
 
-#include "dbus.h"
 #include "dbus-common.h"
+#include "dbus-service.h"
 #include "printf.h"
 #include "util.h"
 

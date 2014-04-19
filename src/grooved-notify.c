@@ -33,8 +33,8 @@
 
 #include <libnotify/notify.h>
 
-#include "dbus.h"
 #include "dbus-common.h"
+#include "dbus-service.h"
 #include "printf.h"
 #include "util.h"
 

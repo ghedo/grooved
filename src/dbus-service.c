@@ -32,8 +32,8 @@
 #include <gio/gio.h>
 #include <dbus/dbus.h>
 
-#include "dbus.h"
 #include "dbus-common.h"
+#include "dbus-service.h"
 #include "grooved.h"
 #include "player.h"
 #include "printf.h"

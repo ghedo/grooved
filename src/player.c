@@ -38,7 +38,7 @@
 #include <mpv/client.h>
 
 #include "config.h"
-#include "dbus.h"
+#include "dbus-service.h"
 #include "library.h"
 #include "player.h"
 #include "printf.h"

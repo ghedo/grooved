@@ -29,8 +29,8 @@ PKG_CHECK_MODULES(SQLITE sqlite3 REQUIRED)
 ADD_EXECUTABLE(grooved
   deps/inih/ini.c
   src/config.c
-  src/dbus.c
   src/dbus-common.c
+  src/dbus-service.c
   src/grooved.c
   src/library.c
   src/player.c
