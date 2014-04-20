@@ -97,9 +97,10 @@ grooved itself. Here's a simple configuration example:</p>
 
 <pre><code class="ini">[default]
 library = ~/data/musiclibrary.blb    ; path to beets' database
-verbose = off                        ; enable/disable verbose output
+verbose = off                        ; (optional) enable/disable verbose output
 
-filter = volume=replaygain-track     ; (optional) set an audio filter
+filter = volume=replaygain-track     ; (optional) apply an audio filter
+output = alsa                        ; (optional) select a specific audio output
 </code></pre>
 
 <p>Save that in the file <code>~/.config/grooved/config.ini</code>.</p>
@@ -134,7 +135,7 @@ $ [sudo] make install
 
 <h2 id="COPYRIGHT">COPYRIGHT</h2>
 
-<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x61;&#x6c;&#x65;&#x73;&#x73;&#97;&#x6e;&#x64;&#x72;&#111;&#x40;&#x67;&#104;&#x65;&#x64;&#105;&#x6e;&#x69;&#46;&#109;&#101;" data-bare-link="true">&#x61;&#108;&#x65;&#115;&#x73;&#x61;&#x6e;&#x64;&#114;&#111;&#x40;&#103;&#x68;&#101;&#x64;&#x69;&#x6e;&#105;&#46;&#x6d;&#101;</a></p>
+<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#97;&#108;&#101;&#115;&#x73;&#x61;&#110;&#100;&#x72;&#x6f;&#64;&#x67;&#104;&#101;&#100;&#x69;&#x6e;&#x69;&#46;&#x6d;&#x65;" data-bare-link="true">&#x61;&#x6c;&#101;&#115;&#x73;&#x61;&#110;&#100;&#114;&#111;&#x40;&#103;&#x68;&#x65;&#x64;&#105;&#x6e;&#x69;&#x2e;&#109;&#x65;</a></p>
 
 <p>See COPYING for the license.</p>
 
