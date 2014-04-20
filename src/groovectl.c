@@ -367,6 +367,9 @@ int main(int argc, char *argv[]) {
 		GROOVED_DBUS_NAME, GROOVED_DBUS_PLAYER_PATH, NULL, &err
 	);
 
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+
 	for (i = 0; argv[1] && i < sizeof(cmds) / sizeof(cmds[0]); i++) {
 		if (strcmp(cmds[i].name, argv[1]) == 0) {
 			cmds[i].fn(proxy, argc, argv);
