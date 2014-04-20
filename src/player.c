@@ -358,7 +358,6 @@ void player_playback_toggle(void) {
 void player_playback_stop(void) {
 	int rc;
 	const char *cmd_clear[]  = { "playlist_clear", NULL };
-	const char *cmd_remove[] = { "playlist_remove", "current", NULL };
 
 	switch (player_status) {
 		case PLAYING:
@@ -366,8 +365,7 @@ void player_playback_stop(void) {
 			rc = mpv_command(player_ctx, cmd_clear);
 			player_check_error("Could not stop", rc);
 
-			rc = mpv_command(player_ctx, cmd_remove);
-			player_check_error("Could not stop", rc);
+			player_playlist_remove_index(-1);
 
 			playlist_pos = -1;
 
@@ -485,7 +483,11 @@ void player_playlist_remove_index(int64_t index) {
 
 	_free_ char *index_str = NULL;
 
-	rc = asprintf(&index_str, "%" PRId64, index);
+	if (index == -1)
+		rc = asprintf(&index_str, "%s", "current");
+	else
+		rc = asprintf(&index_str, "%" PRId64, index);
+
 	if (rc < 0) fail_printf("OOM");
 
 	const char *cmd[] = { "playlist_remove", index_str, NULL };

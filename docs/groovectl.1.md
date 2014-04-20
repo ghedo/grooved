@@ -69,7 +69,8 @@ Shutdown the player.
 `rm INDEX`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Remove a track (identified by its index in the tracklist) from the tracklist.
+Remove a track identified by its index in the tracklist, from the tracklist. The
+special value `-1` corresponds to the current track.
 
 `seek SECONDS`
 
