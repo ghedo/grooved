@@ -34,9 +34,10 @@ grooved itself. Here's a simple configuration example:
 ```ini
 [default]
 library = ~/data/musiclibrary.blb    ; path to beets' database
-verbose = off                        ; enable/disable verbose output
+verbose = off                        ; (optional) enable/disable verbose output
 
-filter = volume=replaygain-track     ; (optional) set an audio filter
+filter = volume=replaygain-track     ; (optional) apply an audio filter
+output = alsa                        ; (optional) select a specific audio output
 ```
 
 Save that in the file `~/.config/grooved/config.ini`.
