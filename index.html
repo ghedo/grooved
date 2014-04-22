@@ -73,6 +73,16 @@ implementing its own half-working audio decoder and player, and piggybacks on
 tools like <a href="http://beets.radbox.org/">beets</a> instead of implementing yet another music database.
 Life gets so much better once you let other people do the hard work.</p>
 
+<p>grooved's operation is very simple: there's a single tracklist (or track queue,
+or call-it-however-you-want) which can be filled manually by the user by adding
+any kind of track (local files, network streams, YouTube videos, ..., you can
+throw pretty much anything at it), which will be played in order. Once the
+player reaches the end of the list, depending on the configuration it either
+stops, loops to the beginning of the list, or picks a random track from the user
+library and appends it to the list. And that's just about it. If you need
+anything more complex, you can build a custom client on top of grooved's DBus
+interface.</p>
+
 <p>The project is composed of the following components:</p>
 
 <ul>
@@ -135,7 +145,7 @@ $ [sudo] make install
 
 <h2 id="COPYRIGHT">COPYRIGHT</h2>
 
-<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#97;&#108;&#101;&#115;&#x73;&#x61;&#110;&#100;&#x72;&#x6f;&#64;&#x67;&#104;&#101;&#100;&#x69;&#x6e;&#x69;&#46;&#x6d;&#x65;" data-bare-link="true">&#x61;&#x6c;&#101;&#115;&#x73;&#x61;&#110;&#100;&#114;&#111;&#x40;&#103;&#x68;&#x65;&#x64;&#105;&#x6e;&#x69;&#x2e;&#109;&#x65;</a></p>
+<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#97;&#108;&#101;&#115;&#115;&#97;&#110;&#x64;&#x72;&#111;&#x40;&#103;&#104;&#x65;&#100;&#105;&#x6e;&#x69;&#x2e;&#109;&#101;" data-bare-link="true">&#x61;&#108;&#101;&#115;&#x73;&#97;&#110;&#x64;&#x72;&#111;&#x40;&#103;&#x68;&#x65;&#100;&#x69;&#110;&#x69;&#46;&#109;&#101;</a></p>
 
 <p>See COPYING for the license.</p>
 
