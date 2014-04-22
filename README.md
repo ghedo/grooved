@@ -9,6 +9,16 @@ implementing its own half-working audio decoder and player, and piggybacks on
 tools like [beets] [beets] instead of implementing yet another music database.
 Life gets so much better once you let other people do the hard work.
 
+grooved's operation is very simple: there's a single tracklist (or track queue,
+or call-it-however-you-want) which can be filled manually by the user by adding
+any kind of track (local files, network streams, YouTube videos, ..., you can
+throw pretty much anything at it), which will be played in order. Once the
+player reaches the end of the list, depending on the configuration it either
+stops, loops to the beginning of the list, or picks a random track from the user
+library and appends it to the list. And that's just about it. If you need
+anything more complex, you can build a custom client on top of grooved's DBus
+interface.
+
 The project is composed of the following components:
 
 * [grooved] [grooved]: the music player daemon.
