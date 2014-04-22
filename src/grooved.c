@@ -87,9 +87,9 @@ int main(int argc, char *argv[]) {
 
 	library_open();
 
-	dbus_init();
-
 	player_init();
+
+	dbus_init();
 
 	loop = g_main_loop_new(NULL, FALSE);
 
