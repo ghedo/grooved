@@ -56,7 +56,6 @@ static struct option long_opts[] = {
 int main(int argc, char *argv[]) {
 	int opts, i, rc;
 
-	bool verbose = false;
 	_free_ char *config_file = NULL;
 
 	while ((opts = getopt_long(argc, argv, "c:Vh", long_opts, &i)) != -1) {
@@ -66,7 +65,7 @@ int main(int argc, char *argv[]) {
 				break;
 
 			case 'V':
-				verbose = true;
+				cfg.verbose = true;
 				break;
 
 			case 'h':
@@ -75,11 +74,9 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	cfg.verbose = verbose;
-
 	if (config_file == NULL) {
-		rc = asprintf(&config_file, "%s/.config/grooved/config.ini",
-							getenv("HOME"));
+		rc = asprintf(&config_file,
+		              "%s/.config/grooved/config.ini", getenv("HOME"));
 		if (rc < 0) fail_printf("Could not allocate memory");
 	}
 
