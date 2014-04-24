@@ -367,8 +367,6 @@ void player_playback_stop(void) {
 
 			player_playlist_remove_index(-1);
 
-			playlist_pos = -1;
-
 			break;
 
 		default:
