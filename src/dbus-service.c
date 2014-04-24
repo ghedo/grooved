@@ -42,6 +42,14 @@ GroovedPlayer *iface = NULL;
 
 static unsigned int owner_id;
 
+#define dbus_check_error(I, RC)						\
+	if (rc < 0) {							\
+		g_dbus_method_invocation_return_dbus_error(		\
+			I, DBUS_ERROR_FAILED, player_error_string(RC)	\
+		);							\
+		return TRUE;						\
+	}
+
 static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p);
 static void on_name_acquired(GDBusConnection *conn, const char *name, void *p);
 static void on_name_lost(GDBusConnection *conn, const char *name, void *ptr);
@@ -75,7 +83,8 @@ void dbus_emit_signal(enum dbus_signal sig) {
 
 gboolean on_add_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
                      const char *arg_path) {
-	player_playlist_append_list(arg_path);
+	int rc = player_playlist_append_list(arg_path);
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -84,7 +93,8 @@ gboolean on_add_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 
 gboolean on_add_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
                       const char *arg_path) {
-	player_playlist_append_file(arg_path);
+	int rc = player_playlist_append_file(arg_path);
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -93,7 +103,8 @@ gboolean on_add_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 
 gboolean on_goto_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
                        gint64 arg_index) {
-	player_playlist_goto_index(arg_index);
+	int rc = player_playlist_goto_index(arg_index);
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -114,12 +125,14 @@ gboolean on_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 
 gboolean on_loop(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
                  const char *arg_mode) {
+	int rc;
+
 	if (g_strcmp0(arg_mode, "track") == 0) {
-		player_playback_loop(PLAYER_LOOP_TRACK);
+		rc = player_playback_loop(PLAYER_LOOP_TRACK);
 	} else if (g_strcmp0(arg_mode, "list") == 0) {
-		player_playback_loop(PLAYER_LOOP_LIST);
+		rc = player_playback_loop(PLAYER_LOOP_LIST);
 	} else if (g_strcmp0(arg_mode, "none") == 0) {
-		player_playback_loop(PLAYER_LOOP_NONE);
+		rc = player_playback_loop(PLAYER_LOOP_NONE);
 	} else {
 		g_dbus_method_invocation_return_dbus_error(
 			invocation, DBUS_ERROR_INVALID_ARGS,
@@ -128,6 +141,7 @@ gboolean on_loop(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 
 		goto exit;
 	}
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -136,7 +150,8 @@ exit:
 }
 
 gboolean on_next(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	player_playlist_next();
+	int rc = player_playlist_next();
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -144,7 +159,8 @@ gboolean on_next(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 }
 
 gboolean on_pause(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	player_playback_pause();
+	int rc = player_playback_pause();
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -152,7 +168,8 @@ gboolean on_pause(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 }
 
 gboolean on_play(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	player_playback_play();
+	int rc = player_playback_play();
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -160,7 +177,8 @@ gboolean on_play(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 }
 
 gboolean on_prev(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	player_playlist_prev();
+	int rc = player_playlist_prev();
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -177,7 +195,8 @@ gboolean on_quit(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 
 gboolean on_remove_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
                          gint64 arg_index) {
-	player_playlist_remove_index(arg_index);
+	int rc = player_playlist_remove_index(arg_index);
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -186,7 +205,8 @@ gboolean on_remove_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 
 gboolean on_seek(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
                  int64_t arg_seconds) {
-	player_playback_seek(arg_seconds);
+	int rc = player_playback_seek(arg_seconds);
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -208,7 +228,8 @@ gboolean on_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 }
 
 gboolean on_stop(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	player_playback_stop();
+	int rc = player_playback_stop();
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -216,7 +237,8 @@ gboolean on_stop(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 }
 
 gboolean on_toggle(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	player_playback_toggle();
+	int rc = player_playback_toggle();
+	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 

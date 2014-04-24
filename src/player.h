@@ -42,26 +42,28 @@ enum loop {
 extern void player_init(void);
 extern void player_destroy(void);
 
+extern const char *player_error_string(int error);
+
 extern void player_make_status(GVariantBuilder *status);
 extern void player_make_list(GVariantBuilder *list);
 
-extern void player_playback_start(void);
-extern void player_playback_play(void);
-extern void player_playback_pause(void);
-extern void player_playback_toggle(void);
-extern void player_playback_stop(void);
+extern int player_playback_start(void);
+extern int player_playback_play(void);
+extern int player_playback_pause(void);
+extern int player_playback_toggle(void);
+extern int player_playback_stop(void);
 
-extern void player_playback_seek(int64_t secs);
+extern int player_playback_seek(int64_t secs);
 
-extern void player_playback_loop(enum loop mode);
+extern int player_playback_loop(enum loop mode);
 extern char *player_playback_loop_tostr(void);
 
-extern void player_playlist_append_file(const char *path);
-extern void player_playlist_append_list(const char *path);
-extern void player_playlist_goto_index(int64_t index);
-extern void player_playlist_remove_index(int64_t index);
-extern void player_playlist_next(void);
-extern void player_playlist_prev(void);
+extern int player_playlist_append_file(const char *path);
+extern int player_playlist_append_list(const char *path);
+extern int player_playlist_goto_index(int64_t index);
+extern int player_playlist_remove_index(int64_t index);
+extern int player_playlist_next(void);
+extern int player_playlist_prev(void);
 
 extern int64_t player_playlist_count(void);
 extern int64_t player_playlist_position(void);

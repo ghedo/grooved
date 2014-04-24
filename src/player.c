@@ -175,6 +175,10 @@ void player_init(void) {
 	pthread_create(&player_thr, NULL, player_start_thread, player_ctx);
 }
 
+const char *player_error_string(int error) {
+	return mpv_error_string(error);
+}
+
 void player_make_status(GVariantBuilder *status) {
 	int i;
 
@@ -274,7 +278,7 @@ void player_make_list(GVariantBuilder *list) {
 	mpv_free_node_contents(&playlist);
 }
 
-void player_playback_start(void) {
+int player_playback_start(void) {
 	int rc;
 
 	_free_ char *path = NULL;
@@ -290,17 +294,14 @@ void player_playback_start(void) {
 	rc = mpv_set_property(
 		player_ctx, "playlist-pos", MPV_FORMAT_INT64, &pos
 	);
-
-	if (rc < 0) {
-		err_printf("Could not set playlist position: %s",
-		           mpv_error_string(rc));
-		return;
-	}
+	if (rc < 0) return rc;
 
 	player_status = PLAYING;
+
+	return 0;
 }
 
-void player_playback_play(void) {
+int player_playback_play(void) {
 	int rc;
 
 	switch (player_status) {
@@ -310,59 +311,70 @@ void player_playback_play(void) {
 		case PLAYING:
 		case PAUSED:
 			rc = mpv_set_property_string(player_ctx, "pause", "no");
-			player_check_error("Could not unpause", rc);
+			if (rc < 0) return rc;
 			break;
 
 		default:
 			err_printf("Invalid state");
 			break;
 	}
+
+	return 0;
 }
 
-void player_playback_pause(void) {
+int player_playback_pause(void) {
 	int rc;
 
 	switch (player_status) {
 		case PLAYING:
 		case PAUSED:
 			rc = mpv_set_property_string(player_ctx, "pause", "yes");
-			player_check_error("Could not pause", rc);
+			if (rc < 0) return rc;
 			break;
 
 		default:
 			err_printf("Invalid state");
 			break;
 	}
+
+	return 0;
 }
 
-void player_playback_toggle(void) {
+int player_playback_toggle(void) {
+	int rc;
+
 	switch (player_status) {
 		case IDLE:
 		case PAUSED:
-			player_playback_play();
+			rc = player_playback_play();
+			if (rc < 0) return rc;
 			break;
 
 		case PLAYING:
-			player_playback_pause();
+			rc = player_playback_pause();
+			if (rc < 0) return rc;
 			break;
 
 		default:
 			err_printf("Invalid state");
 			break;
 	}
+
+	return 0;
 }
 
-void player_playback_stop(void) {
-	int rc;
+int player_playback_stop(void) {
+	int rc = 0;
 	const char *cmd_clear[]  = { "playlist_clear", NULL };
 
 	switch (player_status) {
 		case PLAYING:
 		case PAUSED:
 			rc = mpv_command(player_ctx, cmd_clear);
-			player_check_error("Could not stop", rc);
+			if (rc < 0) return rc;
 
-			player_playlist_remove_index(-1);
+			rc = player_playlist_remove_index(-1);
+			if (rc < 0) return rc;
 
 			break;
 
@@ -371,9 +383,11 @@ void player_playback_stop(void) {
 	}
 
 	player_status = STOPPED;
+
+	return 0;
 }
 
-void player_playback_seek(int64_t secs) {
+int player_playback_seek(int64_t secs) {
 	int rc;
 	char secs_arg[9];
 	const char *cmd[] = { "seek", secs_arg, NULL };
@@ -381,10 +395,12 @@ void player_playback_seek(int64_t secs) {
 	sprintf(secs_arg, "%" PRId64, secs);
 
 	rc = mpv_command(player_ctx, cmd);
-	player_check_error("Could not seek", rc);
+	if (rc < 0) return rc;
+
+	return 0;
 }
 
-void player_playback_loop(enum loop mode) {
+int player_playback_loop(enum loop mode) {
 	int rc;
 
 	switch (mode) {
@@ -394,28 +410,30 @@ void player_playback_loop(enum loop mode) {
 			rc = mpv_set_property_string(
 				player_ctx, "loop-file", "yes"
 			);
-			player_check_error("Could not set loop mode", rc);
+			if (rc < 0) return rc;
 			break;
 
 		case PLAYER_LOOP_LIST:
 			player_playback_loop(PLAYER_LOOP_NONE);
 
 			rc = mpv_set_property_string(player_ctx, "loop", "inf");
-			player_check_error("Could not set loop mode", rc);
+			if (rc < 0) return rc;
 			break;
 
 		case PLAYER_LOOP_NONE:
 			rc = mpv_set_property_string(
 				player_ctx, "loop-file", "no"
 			);
-			player_check_error("Could not set loop mode", rc);
+			if (rc < 0) return rc;
 
 			rc = mpv_set_property_string(player_ctx, "loop", "no");
-			player_check_error("Could not set loop mode", rc);
+			if (rc < 0) return rc;
 			break;
 	}
 
 	player_loop = mode;
+
+	return 0;
 }
 
 char *player_playback_loop_tostr(void) {
@@ -439,52 +457,55 @@ int64_t player_playlist_count(void) {
 	int64_t count = -1;
 
 	rc = mpv_get_property(player_ctx, "playlist-count", MPV_FORMAT_INT64, &count);
-	player_check_error("Could not get playlist count", rc);
+	if (rc < 0) return rc;
 
 	return count;
 }
 
 int64_t player_playlist_position(void) {
+	int rc;
 	int64_t pos = -1;
 
-	int rc = mpv_get_property(
-		player_ctx, "playlist-pos", MPV_FORMAT_INT64, &pos
-	);
-
-	if (rc < 0)
-		return -1;
+	rc = mpv_get_property(player_ctx, "playlist-pos", MPV_FORMAT_INT64, &pos);
+	if (rc < 0) return rc;
 
 	return pos;
 }
 
-void player_playlist_append_file(const char *path) {
+int player_playlist_append_file(const char *path) {
 	int rc;
 	const char *cmd[] = { "loadfile", path, "append", NULL };
 
 	rc = mpv_command(player_ctx, cmd);
-	player_check_error("Could not load file", rc);
+	if (rc < 0) return rc;
+
+	return 0;
 }
 
-void player_playlist_append_list(const char *path) {
+int player_playlist_append_list(const char *path) {
 	int rc;
 	const char *cmd[] = { "loadlist", path, "append", NULL };
 
 	rc = mpv_command(player_ctx, cmd);
-	player_check_error("Could not load file", rc);
+	if (rc < 0) return rc;
+
+	return 0;
 }
 
-void player_playlist_goto_index(int64_t index) {
+int player_playlist_goto_index(int64_t index) {
 	int rc;
 
 	rc = mpv_set_property(
 		player_ctx, "playlist-pos", MPV_FORMAT_INT64, &index
 	);
-	player_check_error("Could not go to track '%" PRId64 "'", index, rc);
+	if (rc < 0) return rc;
 
 	playlist_pos = player_playlist_position();
+
+	return 0;
 }
 
-void player_playlist_remove_index(int64_t index) {
+int player_playlist_remove_index(int64_t index) {
 	int rc;
 
 	_free_ char *index_str = NULL;
@@ -499,25 +520,31 @@ void player_playlist_remove_index(int64_t index) {
 	const char *cmd[] = { "playlist_remove", index_str, NULL };
 
 	rc = mpv_command(player_ctx, cmd);
-	player_check_error("Could not load file", rc);
+	if (rc < 0) return rc;
 
 	playlist_pos = player_playlist_position();
+
+	return 0;
 }
 
-void player_playlist_next(void) {
+int player_playlist_next(void) {
 	int rc;
 	const char *cmd[] = { "playlist_next", "force", NULL };
 
 	rc = mpv_command(player_ctx, cmd);
-	player_check_error("Could not skip to the next playlist entry", rc);
+	if (rc < 0) return rc;
+
+	return 0;
 }
 
-void player_playlist_prev(void) {
+int player_playlist_prev(void) {
 	int rc;
 	const char *cmd[] = { "playlist_prev", "weak", NULL };
 
 	rc = mpv_command(player_ctx, cmd);
-	player_check_error("Could not skip to the prev playlist entry", rc);
+	if (rc < 0) return rc;
+
+	return 0;
 }
 
 void player_destroy(void) {
