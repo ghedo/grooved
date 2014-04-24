@@ -12,6 +12,7 @@ _groovectl() {
 
 	CMDS=(
 		add
+		goto
 		last
 		ls
 		loop

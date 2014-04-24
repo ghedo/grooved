@@ -102,7 +102,7 @@ gboolean on_add_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 }
 
 gboolean on_goto_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
-                       gint64 arg_index) {
+                       guint64 arg_index) {
 	int rc = player_playlist_goto_index(arg_index);
 	dbus_check_error(invocation, rc);
 

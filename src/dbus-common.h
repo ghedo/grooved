@@ -42,7 +42,7 @@ struct _GroovedPlayerIface
   gboolean (*handle_goto_track) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation,
-    gint64 arg_index);
+    guint64 arg_index);
 
   gboolean (*handle_list) (
     GroovedPlayer *object,
@@ -402,7 +402,7 @@ gboolean grooved_player_call_add_list_sync (
 
 void grooved_player_call_goto_track (
     GroovedPlayer *proxy,
-    gint64 arg_index,
+    guint64 arg_index,
     GCancellable *cancellable,
     GAsyncReadyCallback callback,
     gpointer user_data);
@@ -414,7 +414,7 @@ gboolean grooved_player_call_goto_track_finish (
 
 gboolean grooved_player_call_goto_track_sync (
     GroovedPlayer *proxy,
-    gint64 arg_index,
+    guint64 arg_index,
     GCancellable *cancellable,
     GError **error);
 

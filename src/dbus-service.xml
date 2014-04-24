@@ -48,7 +48,7 @@
     </method>
 
     <method name="GotoTrack">
-      <arg direction="in" name="index" type="x"/>
+      <arg direction="in" name="index" type="t"/>
     </method>
 
     <method name="RemoveTrack">

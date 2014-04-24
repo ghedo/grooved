@@ -21,6 +21,11 @@ filesystem or other kinds of streams (e.g. HTTP streams).
 If the first track argument is "-", track names will be read from STDIN (one
 track per line).
 
+`goto`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Skip to a specific track, identified by its index, in the tracklist.
+
 `last`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

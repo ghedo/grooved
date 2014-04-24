@@ -13,6 +13,7 @@ case $state in
     local -a subcommands
     subcommands=(
       "add:append tracks to the player's tracklist"
+      "goto:skip to a specific track in the tracklist"
       "last:stop playback after currently playing track"
       "ls:show tracklist"
       "loop:set the player's loop mode"

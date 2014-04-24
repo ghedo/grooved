@@ -492,7 +492,7 @@ static const _ExtendedGDBusArgInfo _grooved_player_method_info_goto_track_IN_ARG
   {
     -1,
     (gchar *) "index",
-    (gchar *) "x",
+    (gchar *) "t",
     NULL
   },
   FALSE
@@ -1000,7 +1000,7 @@ grooved_player_default_init (GroovedPlayerIface *iface)
     g_cclosure_marshal_generic,
     G_TYPE_BOOLEAN,
     2,
-    G_TYPE_DBUS_METHOD_INVOCATION, G_TYPE_INT64);
+    G_TYPE_DBUS_METHOD_INVOCATION, G_TYPE_UINT64);
 
   /**
    * GroovedPlayer::handle-remove-track:
@@ -2273,14 +2273,14 @@ _out:
 void
 grooved_player_call_goto_track (
     GroovedPlayer *proxy,
-    gint64 arg_index,
+    guint64 arg_index,
     GCancellable *cancellable,
     GAsyncReadyCallback callback,
     gpointer user_data)
 {
   g_dbus_proxy_call (G_DBUS_PROXY (proxy),
     "GotoTrack",
-    g_variant_new ("(x)",
+    g_variant_new ("(t)",
                    arg_index),
     G_DBUS_CALL_FLAGS_NONE,
     -1,
@@ -2332,14 +2332,14 @@ _out:
 gboolean
 grooved_player_call_goto_track_sync (
     GroovedPlayer *proxy,
-    gint64 arg_index,
+    guint64 arg_index,
     GCancellable *cancellable,
     GError **error)
 {
   GVariant *_ret;
   _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
     "GotoTrack",
-    g_variant_new ("(x)",
+    g_variant_new ("(t)",
                    arg_index),
     G_DBUS_CALL_FLAGS_NONE,
     -1,

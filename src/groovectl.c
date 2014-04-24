@@ -230,6 +230,19 @@ CMD_HANDLE(add) {
 	}
 }
 
+CMD_HANDLE(goto) {
+	uint64_t index;
+	GError *err = NULL;
+
+	if ((argc < 3) || (sscanf(argv[2], "%" PRIu64, &index) <= 0))
+		fail_printf("Invalid track index");
+
+	grooved_player_call_goto_track_sync(proxy, index, NULL, &err);
+
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+}
+
 CMD_HANDLE(rm) {
 	int64_t index;
 	GError *err = NULL;
@@ -341,6 +354,7 @@ CMD_HANDLE(help) {
 struct handle_cmd cmds[] = {
 	{ "add",    cmd_add,    "Append tracks to the player's tracklist" },
 	{ "help",   cmd_help,   "Show this help" },
+	{ "goto",   cmd_goto,   "Skip to a specific track in the tracklist" },
 	{ "last",   cmd_last,   "Stop playback after currently playing track" },
 	{ "loop",   cmd_loop,   "Set the player's loop mode" },
 	{ "ls",     cmd_ls,     "Show tracklist" },
