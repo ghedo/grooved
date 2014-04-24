@@ -47,6 +47,10 @@
       <arg direction="in" name="path" type="s"/>
     </method>
 
+    <method name="GotoTrack">
+      <arg direction="in" name="index" type="x"/>
+    </method>
+
     <method name="RemoveTrack">
       <arg direction="in" name="index" type="x"/>
     </method>

@@ -487,6 +487,36 @@ static const _ExtendedGDBusMethodInfo _grooved_player_method_info_add_list =
   FALSE
 };
 
+static const _ExtendedGDBusArgInfo _grooved_player_method_info_goto_track_IN_ARG_index =
+{
+  {
+    -1,
+    (gchar *) "index",
+    (gchar *) "x",
+    NULL
+  },
+  FALSE
+};
+
+static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_goto_track_IN_ARG_pointers[] =
+{
+  &_grooved_player_method_info_goto_track_IN_ARG_index,
+  NULL
+};
+
+static const _ExtendedGDBusMethodInfo _grooved_player_method_info_goto_track =
+{
+  {
+    -1,
+    (gchar *) "GotoTrack",
+    (GDBusArgInfo **) &_grooved_player_method_info_goto_track_IN_ARG_pointers,
+    NULL,
+    NULL
+  },
+  "handle-goto-track",
+  FALSE
+};
+
 static const _ExtendedGDBusArgInfo _grooved_player_method_info_remove_track_IN_ARG_index =
 {
   {
@@ -573,6 +603,7 @@ static const _ExtendedGDBusMethodInfo * const _grooved_player_method_info_pointe
   &_grooved_player_method_info_list,
   &_grooved_player_method_info_add_track,
   &_grooved_player_method_info_add_list,
+  &_grooved_player_method_info_goto_track,
   &_grooved_player_method_info_remove_track,
   &_grooved_player_method_info_loop,
   &_grooved_player_method_info_quit,
@@ -676,6 +707,7 @@ grooved_player_override_properties (GObjectClass *klass, guint property_id_begin
  * @parent_iface: The parent interface.
  * @handle_add_list: Handler for the #GroovedPlayer::handle-add-list signal.
  * @handle_add_track: Handler for the #GroovedPlayer::handle-add-track signal.
+ * @handle_goto_track: Handler for the #GroovedPlayer::handle-goto-track signal.
  * @handle_list: Handler for the #GroovedPlayer::handle-list signal.
  * @handle_loop: Handler for the #GroovedPlayer::handle-loop signal.
  * @handle_next: Handler for the #GroovedPlayer::handle-next signal.
@@ -946,6 +978,29 @@ grooved_player_default_init (GroovedPlayerIface *iface)
     G_TYPE_BOOLEAN,
     2,
     G_TYPE_DBUS_METHOD_INVOCATION, G_TYPE_STRING);
+
+  /**
+   * GroovedPlayer::handle-goto-track:
+   * @object: A #GroovedPlayer.
+   * @invocation: A #GDBusMethodInvocation.
+   * @arg_index: Argument passed by remote caller.
+   *
+   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.GotoTrack">GotoTrack()</link> D-Bus method.
+   *
+   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call grooved_player_complete_goto_track() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
+   *
+   * Returns: %TRUE if the invocation was handled, %FALSE to let other signal handlers run.
+   */
+  g_signal_new ("handle-goto-track",
+    G_TYPE_FROM_INTERFACE (iface),
+    G_SIGNAL_RUN_LAST,
+    G_STRUCT_OFFSET (GroovedPlayerIface, handle_goto_track),
+    g_signal_accumulator_true_handled,
+    NULL,
+    g_cclosure_marshal_generic,
+    G_TYPE_BOOLEAN,
+    2,
+    G_TYPE_DBUS_METHOD_INVOCATION, G_TYPE_INT64);
 
   /**
    * GroovedPlayer::handle-remove-track:
@@ -2202,6 +2257,104 @@ _out:
 }
 
 /**
+ * grooved_player_call_goto_track:
+ * @proxy: A #GroovedPlayerProxy.
+ * @arg_index: Argument to pass with the method invocation.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
+ * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
+ * @user_data: User data to pass to @callback.
+ *
+ * Asynchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.GotoTrack">GotoTrack()</link> D-Bus method on @proxy.
+ * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.
+ * You can then call grooved_player_call_goto_track_finish() to get the result of the operation.
+ *
+ * See grooved_player_call_goto_track_sync() for the synchronous, blocking version of this method.
+ */
+void
+grooved_player_call_goto_track (
+    GroovedPlayer *proxy,
+    gint64 arg_index,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data)
+{
+  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
+    "GotoTrack",
+    g_variant_new ("(x)",
+                   arg_index),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    cancellable,
+    callback,
+    user_data);
+}
+
+/**
+ * grooved_player_call_goto_track_finish:
+ * @proxy: A #GroovedPlayerProxy.
+ * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_player_call_goto_track().
+ * @error: Return location for error or %NULL.
+ *
+ * Finishes an operation started with grooved_player_call_goto_track().
+ *
+ * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
+ */
+gboolean
+grooved_player_call_goto_track_finish (
+    GroovedPlayer *proxy,
+    GAsyncResult *res,
+    GError **error)
+{
+  GVariant *_ret;
+  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
+  if (_ret == NULL)
+    goto _out;
+  g_variant_get (_ret,
+                 "()");
+  g_variant_unref (_ret);
+_out:
+  return _ret != NULL;
+}
+
+/**
+ * grooved_player_call_goto_track_sync:
+ * @proxy: A #GroovedPlayerProxy.
+ * @arg_index: Argument to pass with the method invocation.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
+ * @error: Return location for error or %NULL.
+ *
+ * Synchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.GotoTrack">GotoTrack()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
+ *
+ * See grooved_player_call_goto_track() for the asynchronous version of this method.
+ *
+ * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
+ */
+gboolean
+grooved_player_call_goto_track_sync (
+    GroovedPlayer *proxy,
+    gint64 arg_index,
+    GCancellable *cancellable,
+    GError **error)
+{
+  GVariant *_ret;
+  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
+    "GotoTrack",
+    g_variant_new ("(x)",
+                   arg_index),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    cancellable,
+    error);
+  if (_ret == NULL)
+    goto _out;
+  g_variant_get (_ret,
+                 "()");
+  g_variant_unref (_ret);
+_out:
+  return _ret != NULL;
+}
+
+/**
  * grooved_player_call_remove_track:
  * @proxy: A #GroovedPlayerProxy.
  * @arg_index: Argument to pass with the method invocation.
@@ -2710,6 +2863,24 @@ grooved_player_complete_add_track (
  */
 void
 grooved_player_complete_add_list (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation)
+{
+  g_dbus_method_invocation_return_value (invocation,
+    g_variant_new ("()"));
+}
+
+/**
+ * grooved_player_complete_goto_track:
+ * @object: A #GroovedPlayer.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
+ *
+ * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.GotoTrack">GotoTrack()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
+ *
+ * This method will free @invocation, you cannot use it afterwards.
+ */
+void
+grooved_player_complete_goto_track (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation)
 {

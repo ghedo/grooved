@@ -476,6 +476,17 @@ void player_playlist_append_list(const char *path) {
 	player_check_error("Could not load file", rc);
 }
 
+void player_playlist_goto_index(int64_t index) {
+	int rc;
+
+	rc = mpv_set_property(
+		player_ctx, "playlist-pos", MPV_FORMAT_INT64, &index
+	);
+	player_check_error("Could not go to track '%" PRId64 "'", index, rc);
+
+	playlist_pos = player_playlist_position();
+}
+
 void player_playlist_remove_index(int64_t index) {
 	int rc;
 

@@ -39,6 +39,11 @@ struct _GroovedPlayerIface
     GDBusMethodInvocation *invocation,
     const gchar *arg_path);
 
+  gboolean (*handle_goto_track) (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation,
+    gint64 arg_index);
+
   gboolean (*handle_list) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
@@ -159,6 +164,10 @@ void grooved_player_complete_add_track (
     GDBusMethodInvocation *invocation);
 
 void grooved_player_complete_add_list (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation);
+
+void grooved_player_complete_goto_track (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
 
@@ -388,6 +397,24 @@ gboolean grooved_player_call_add_list_finish (
 gboolean grooved_player_call_add_list_sync (
     GroovedPlayer *proxy,
     const gchar *arg_path,
+    GCancellable *cancellable,
+    GError **error);
+
+void grooved_player_call_goto_track (
+    GroovedPlayer *proxy,
+    gint64 arg_index,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean grooved_player_call_goto_track_finish (
+    GroovedPlayer *proxy,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean grooved_player_call_goto_track_sync (
+    GroovedPlayer *proxy,
+    gint64 arg_index,
     GCancellable *cancellable,
     GError **error);
 

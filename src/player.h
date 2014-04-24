@@ -58,6 +58,7 @@ extern char *player_playback_loop_tostr(void);
 
 extern void player_playlist_append_file(const char *path);
 extern void player_playlist_append_list(const char *path);
+extern void player_playlist_goto_index(int64_t index);
 extern void player_playlist_remove_index(int64_t index);
 extern void player_playlist_next(void);
 extern void player_playlist_prev(void);
