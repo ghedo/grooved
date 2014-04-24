@@ -62,3 +62,6 @@ extern void player_playlist_goto_index(int64_t index);
 extern void player_playlist_remove_index(int64_t index);
 extern void player_playlist_next(void);
 extern void player_playlist_prev(void);
+
+extern int64_t player_playlist_count(void);
+extern int64_t player_playlist_position(void);

@@ -61,9 +61,6 @@ static enum loop player_loop = PLAYER_LOOP_NONE;
 
 static int64_t playlist_pos = -1;
 
-int64_t player_playlist_count(void);
-int64_t player_playlist_position(void);
-
 #define player_check_error(MSG, RC)				\
 	if (RC < 0)						\
 		fail_printf(MSG ": %s", mpv_error_string(RC));
