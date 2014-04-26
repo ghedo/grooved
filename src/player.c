@@ -467,7 +467,7 @@ int64_t player_playlist_position(void) {
 	int64_t pos = -1;
 
 	rc = mpv_get_property(player_ctx, "playlist-pos", MPV_FORMAT_INT64, &pos);
-	if (rc < 0) return rc;
+	if (rc < 0) return -1;
 
 	return pos;
 }
