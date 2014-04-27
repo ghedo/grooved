@@ -370,9 +370,12 @@ int player_playback_toggle(void) {
 
 int player_playback_stop(void) {
 	int rc = 0;
+	enum player_status prev_status = player_status;
 	const char *cmd_clear[]  = { "playlist_clear", NULL };
 
-	switch (player_status) {
+	player_status = STOPPED;
+
+	switch (prev_status) {
 		case STARTING:
 		case STOPPED:
 			break;
@@ -388,8 +391,6 @@ int player_playback_stop(void) {
 
 			break;
 	}
-
-	player_status = STOPPED;
 
 	return 0;
 }
