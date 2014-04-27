@@ -196,6 +196,10 @@ void player_make_status(GVariantBuilder *status) {
 	mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
 
 	switch (player_status) {
+		case STARTING:
+			g_variant_builder_add(status, "s", "start");
+			break;
+
 		case IDLE:
 			g_variant_builder_add(status, "s", "idle");
 			break;
@@ -208,8 +212,8 @@ void player_make_status(GVariantBuilder *status) {
 			g_variant_builder_add(status, "s", "pause");
 			break;
 
-		default:
-			err_printf("Invalid state");
+		case STOPPED:
+			g_variant_builder_add(status, "s", "stop");
 			break;
 	}
 
@@ -305,17 +309,17 @@ int player_playback_play(void) {
 	int rc;
 
 	switch (player_status) {
+		case STARTING:
+		case PLAYING:
+			break;
+
 		case IDLE:
+		case STOPPED:
 			player_playback_start();
 
-		case PLAYING:
 		case PAUSED:
 			rc = mpv_set_property_string(player_ctx, "pause", "no");
 			if (rc < 0) return rc;
-			break;
-
-		default:
-			err_printf("Invalid state");
 			break;
 	}
 
@@ -326,14 +330,15 @@ int player_playback_pause(void) {
 	int rc;
 
 	switch (player_status) {
-		case PLAYING:
+		case STARTING:
+		case IDLE:
 		case PAUSED:
-			rc = mpv_set_property_string(player_ctx, "pause", "yes");
-			if (rc < 0) return rc;
+		case STOPPED:
 			break;
 
-		default:
-			err_printf("Invalid state");
+		case PLAYING:
+			rc = mpv_set_property_string(player_ctx, "pause", "yes");
+			if (rc < 0) return rc;
 			break;
 	}
 
@@ -344,8 +349,12 @@ int player_playback_toggle(void) {
 	int rc;
 
 	switch (player_status) {
+		case STARTING:
+			break;
+
 		case IDLE:
 		case PAUSED:
+		case STOPPED:
 			rc = player_playback_play();
 			if (rc < 0) return rc;
 			break;
@@ -353,10 +362,6 @@ int player_playback_toggle(void) {
 		case PLAYING:
 			rc = player_playback_pause();
 			if (rc < 0) return rc;
-			break;
-
-		default:
-			err_printf("Invalid state");
 			break;
 	}
 
@@ -368,6 +373,11 @@ int player_playback_stop(void) {
 	const char *cmd_clear[]  = { "playlist_clear", NULL };
 
 	switch (player_status) {
+		case STARTING:
+		case STOPPED:
+			break;
+
+		case IDLE:
 		case PLAYING:
 		case PAUSED:
 			rc = mpv_command(player_ctx, cmd_clear);
@@ -376,9 +386,6 @@ int player_playback_stop(void) {
 			rc = player_playlist_remove_index(-1);
 			if (rc < 0) return rc;
 
-			break;
-
-		default:
 			break;
 	}
 
