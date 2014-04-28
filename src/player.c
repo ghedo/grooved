@@ -167,7 +167,7 @@ void player_init(void) {
 		player_check_error("Could not set output", rc);
 	}
 
-	mpv_request_log_messages(player_ctx, "error");
+	mpv_request_log_messages(player_ctx, "warn");
 
 	rc = mpv_initialize(player_ctx);
 	player_check_error("Could not initialize player", rc);
