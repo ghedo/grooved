@@ -203,6 +203,28 @@ CMD_HANDLE(save) {
 		fprintf(list, "File%" PRId64 "=%s\n", i, files[i]);
 }
 
+CMD_HANDLE(load) {
+	GError *err = NULL;
+	_free_ char *path = NULL;
+
+	if ((argc < 3))
+		fail_printf("Invalid playlist file");
+
+	path = realpath(argv[2], NULL);
+	if (path == NULL)
+		sysf_printf("Invalid playlist file");
+
+	grooved_player_call_stop_sync(proxy, NULL, &err);
+
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+
+	grooved_player_call_add_list_sync(proxy, path, NULL, &err);
+
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+}
+
 CMD_HANDLE(seek) {
 	int rc;
 	int64_t seconds;
@@ -382,6 +404,7 @@ struct handle_cmd cmds[] = {
 	{ "help",   cmd_help,   "Show this help" },
 	{ "goto",   cmd_goto,   "Skip to a specific track in the tracklist" },
 	{ "last",   cmd_last,   "Stop playback after currently playing track" },
+	{ "load",   cmd_load,   "Load a playlist file" },
 	{ "loop",   cmd_loop,   "Set the player's loop mode" },
 	{ "ls",     cmd_ls,     "Show tracklist" },
 	{ "lyrics", cmd_lyrics, "Download and show lyrics for the currently playing track" },
