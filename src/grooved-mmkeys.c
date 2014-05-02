@@ -54,7 +54,7 @@ static gboolean x11_loop_fd_check(GSource * source);
 static gboolean x11_loop_fd_dispatch(GSource *source, GSourceFunc cb, void *ptr);
 
 static void x11_grab_key(Display *dpy, const KeySym keysym);
-static void x11_handle_key(Display *dpy, XEvent ev);
+static void x11_handle_key(Display *dpy, XEvent *ev);
 
 static void x11_setup_error_handler(void);
 static void x11_teardown_error_handler(void);
@@ -166,7 +166,7 @@ static gboolean x11_loop_fd_dispatch(GSource *source, GSourceFunc cb, void *ptr)
 
 		switch (ev.type) {
 			case KeyPress:
-				x11_handle_key(dpy, ev);
+				x11_handle_key(dpy, &ev);
 				break;
 		}
 	}
@@ -181,10 +181,10 @@ static void x11_grab_key(Display *dpy, const KeySym keysym) {
 	XGrabKey(dpy, keycode, AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
 }
 
-static void x11_handle_key(Display *dpy, XEvent ev) {
+static void x11_handle_key(Display *dpy, XEvent *ev) {
 	GError *err = NULL;
 
-	switch (XkbKeycodeToKeysym(dpy, ev.xkey.keycode, 0, 0)) {
+	switch (XkbKeycodeToKeysym(dpy, ev -> xkey.keycode, 0, 0)) {
 		case XF86XK_AudioPlay:
 			grooved_player_call_toggle_sync(proxy, NULL, &err);
 			break;
