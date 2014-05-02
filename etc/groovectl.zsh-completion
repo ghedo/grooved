@@ -24,6 +24,7 @@ case $state in
       "prev:skip to previous track"
       "quit:shutdown the player"
       "rm:remove a track from the tracklist"
+      "save:save the tracklist to a playlist file"
       "seek:seek by a relative amount of seconds"
       "status:show the status of the player"
       "stop:stop playback and clear tracklist"
@@ -48,6 +49,10 @@ case $state in
         )
 
         _describe -t values 'groovectl loop values' values
+      ;;
+
+      save)
+        _files
       ;;
     esac
   ;;

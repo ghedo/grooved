@@ -23,6 +23,7 @@ _groovectl() {
 		prev
 		quit
 		rm
+		save
 		seek
 		status
 		stop

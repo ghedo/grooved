@@ -177,6 +177,32 @@ CMD_HANDLE(ls) {
 		printf("%c %3" PRId64 ":%s\n", (pos == i) ? '*' : ' ', i, files[i]);
 }
 
+CMD_HANDLE(save) {
+	GError *err = NULL;
+
+	char **files;
+	int64_t i, count, pos;
+
+	FILE *list = NULL;
+
+	if ((argc < 3))
+		fail_printf("Invalid output file");
+
+	list = fopen(argv[2], "w");
+	if (list == NULL)
+		sysf_printf("Invalid output file");
+
+	grooved_player_call_list_sync(proxy, &files, &count, &pos, NULL, &err);
+
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+
+	fprintf(list, "[playlist]\nNumberOfEntries=%" PRId64 "\n", count);
+
+	for (i = 0; i < count; i++)
+		fprintf(list, "File%" PRId64 "=%s\n", i, files[i]);
+}
+
 CMD_HANDLE(seek) {
 	int rc;
 	int64_t seconds;
@@ -365,6 +391,7 @@ struct handle_cmd cmds[] = {
 	{ "prev",   cmd_prev,   "Skip to previous track" },
 	{ "quit",   cmd_quit,   "Shutdown the player" },
 	{ "rm",     cmd_rm,     "Remove a track from the tracklist" },
+	{ "save",   cmd_save,   "Save the tracklist to a playlist file" },
 	{ "seek",   cmd_seek,   "Seek by a relative amount of seconds" },
 	{ "status", cmd_status, "Show the status of the player" },
 	{ "stop",   cmd_stop,   "Stop playback and clear tracklist" },

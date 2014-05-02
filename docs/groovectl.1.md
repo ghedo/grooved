@@ -77,6 +77,11 @@ Shutdown the player.
 Remove a track identified by its index in the tracklist, from the tracklist. The
 special value `-1` corresponds to the current track.
 
+`save FILE`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Save the tracklist to a playlist file.
+
 `seek SECONDS`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
