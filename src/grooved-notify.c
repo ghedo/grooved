@@ -82,6 +82,7 @@ static void notify_on_track_changed(GroovedPlayer *obj, void *data) {
 }
 
 static void notify(NotifyNotification *n, GVariant *metadata) {
+	int rc;
 	GVariantIter iter;
 
 	char *key, *val;
@@ -105,7 +106,8 @@ static void notify(NotifyNotification *n, GVariant *metadata) {
 	if (artist) {
 		char *tmp = body;
 
-		asprintf(&body, "%s - %s", body, artist);
+		rc = asprintf(&body, "%s - %s", body, artist);
+		if (rc < 0) fail_printf("OOM");
 
 		if (tmp)
 			free(tmp);
