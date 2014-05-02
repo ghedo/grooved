@@ -300,11 +300,11 @@ CMD_HANDLE(lyrics) {
 
 	g_variant_iter_init(&iter, metadata);
 	while (g_variant_iter_loop(&iter, "{ss}", &key, &val)) {
-		if (strcasecmp("title", key) == 0)
+		if (!title && strcasecmp("title", key) == 0)
 			title = strdup(val);
-		else if (strcasecmp("artist", key) == 0)
+		else if (!artist && strcasecmp("artist", key) == 0)
 			artist = strdup(val);
-		else if (strcasecmp("album", key) == 0)
+		else if (!album && strcasecmp("album", key) == 0)
 			album = strdup(val);
 	}
 

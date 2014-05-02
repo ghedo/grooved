@@ -90,13 +90,11 @@ static void notify(NotifyNotification *n, GVariant *metadata) {
 
 	g_variant_iter_init(&iter, metadata);
 	while (g_variant_iter_loop(&iter, "{ss}", &key, &val)) {
-		if (strcasecmp(key, "icy-title") == 0)
+		if (!title && strcasecmp(key, "icy-title") == 0)
 			title = strdup(val);
-
-		if (strcasecmp(key, "title") == 0)
+		else if (!title && strcasecmp(key, "title") == 0)
 			title = strdup(val);
-
-		if (strcasecmp(key, "artist") == 0)
+		else if (!artist && strcasecmp(key, "artist") == 0)
 			artist = strdup(val);
 	}
 
