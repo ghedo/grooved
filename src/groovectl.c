@@ -201,6 +201,8 @@ CMD_HANDLE(save) {
 
 	for (i = 0; i < count; i++)
 		fprintf(list, "File%" PRId64 "=%s\n", i, files[i]);
+
+	fclose(list);
 }
 
 CMD_HANDLE(load) {
