@@ -245,22 +245,22 @@ CMD_HANDLE(seek) {
 		fail_printf("%s", err -> message);
 }
 
-static void add_track(GroovedPlayer *proxy, char *path) {
+static void add_track(GroovedPlayer *proxy, char *input) {
 	GError *err = NULL;
 
-	if (access(path, F_OK) == 0)
-		path = realpath(path, NULL);
-	else
-		path = strdup(path);
+	_free_ char *entry = realpath(input, NULL);
+	if (entry == NULL)
+		entry = strdup(input);
 
-	grooved_player_call_add_track_sync(proxy, path, NULL, &err);
+	if (entry == NULL)
+		fail_printf("OOM");
+
+	grooved_player_call_add_track_sync(proxy, entry, NULL, &err);
 
 	if (err != NULL)
 		fail_printf("%s", err -> message);
 
-	printf("Added track '%s'\n", path);
-
-	freep(&path);
+	printf("Added track '%s'\n", entry);
 }
 
 CMD_HANDLE(add) {
