@@ -47,6 +47,8 @@ library = ~/data/musiclibrary.blb    ; path to beets' database
 verbose = off                        ; (optional) enable/disable verbose output
 
 filter = volume=replaygain-track     ; (optional) apply an audio filter
+filter = bs2b=profile=cmoy           ; (optional) you can have multiple filters
+
 output = alsa                        ; (optional) select a specific audio output
 ```
 
