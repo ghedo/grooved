@@ -66,17 +66,42 @@ You can now control it using the `groovectl` command:
 $ groovectl toggle                           # toggle playback
 $ groovectl status                           # print the player's current status
 $ groovectl add file.mp3                     # add files to the tracklist
-$ beet ls -p album:title | groovectl add -   # search and add tracks from beets
 $ groovectl next                             # skip to next track
 $ groovectl add http://example.com/stream    # add network stream to tracklist
 $ groovectl quit                             # terminate grooved
 ```
+
+You can also use beets to search for songs in your library and add them to the
+grooved tracklist as follows:
+
+```bash
+$ beet ls -p album:title | groovectl add -
+```
+
+Alternatively you can use beets' [play] [beetsplay] plugin to automatically add
+the files. First, [enable the play plugin] [beetsplug] and add the following
+section to your configuration file:
+
+```yaml
+play:
+    command: groovectl load
+```
+
+then use the `beet play` command to search for tracks:
+
+```bash
+$ beet play album:title
+```
+
+the matching tracks will be automatically added to grooved's tracklist.
 
 See [grooved(1)] [grooved] and [groovectl(1)] [groovectl] for more information.
 
 [beetscfg]: http://beets.readthedocs.org/en/latest/guides/main.html
 [grooved]: http://ghedo.github.io/grooved/grooved.1.html
 [groovectl]: http://ghedo.github.io/grooved/groovectl.1.html
+[beetsplay]: http://beets.readthedocs.org/en/latest/plugins/play.html
+[beetsplug]: http://beets.readthedocs.org/en/latest/plugins/index.html#using-plugins
 
 ## BUILDING
 
