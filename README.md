@@ -45,6 +45,7 @@ grooved itself. Here's a simple configuration example:
 [default]
 library = ~/data/musiclibrary.blb    ; path to beets' database
 verbose = off                        ; (optional) enable/disable verbose output
+gapless = on                         ; (optional) enable/disable gapless audio
 
 filter = volume=replaygain-track     ; (optional) apply an audio filter
 filter = bs2b=profile=cmoy           ; (optional) you can have multiple filters

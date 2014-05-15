@@ -157,6 +157,11 @@ void player_init(void) {
 	rc = mpv_set_option_string(player_ctx, "no-softvol", "");
 	player_check_error("Could not set no-softvol", rc);
 
+	if (cfg.gapless) {
+		rc = mpv_set_option_string(player_ctx, "gapless-audio", "");
+		player_check_error("Could not enable gapless audio", rc);
+	}
+
 	if (cfg.filters != NULL) {
 		rc = mpv_set_option_string(player_ctx, "af", cfg.filters);
 		player_check_error("Could not set filters", rc);

@@ -41,6 +41,7 @@
 struct config cfg = {
 	.library = "/invalid",
 	.verbose = false,
+	.gapless = true,
 	.filters = NULL,
 	.output  = NULL,
 };
@@ -70,6 +71,13 @@ static int config_cb(void *argp, const char *section,
 				cfg -> verbose = true;
 			else if (strcmp("off", val) == 0)
 				cfg -> verbose = false;
+			else
+				fail_printf("Invalid verbose value");
+		} else if (strcmp(key, "gapless") == 0) {
+			if (strcmp("on", val) == 0)
+				cfg -> gapless = true;
+			else if (strcmp("off", val) == 0)
+				cfg -> gapless = false;
 			else
 				fail_printf("Invalid verbose value");
 		} else if (strcmp(key, "filter") == 0) {
