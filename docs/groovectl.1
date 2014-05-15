@@ -16,10 +16,7 @@
 \fBadd TRACK [, TRACK \.\.\.]\fR
 .
 .P
-\~\~\~\~\~\~ Append tracks to the player\'s tracklist\. Tracks can be either files on the filesystem or other kinds of streams (e\.g\. HTTP streams)\.
-.
-.P
-If the first track argument is "\-", track names will be read from STDIN (one track per line)\.
+\~\~\~\~\~\~ Append tracks to the player\'s tracklist\. Tracks can be either files on the filesystem or other kinds of streams (e\.g\. HTTP streams)\. If the first track argument is "\-", track names will be read from STDIN (one track per line)\.
 .
 .P
 \fBgoto\fR
@@ -43,7 +40,7 @@ If the first track argument is "\-", track names will be read from STDIN (one tr
 \fBload [\-\-append] FILE\fR
 .
 .P
-\~\~\~\~\~\~ Load a playlist file\. The tracklist will be replaced with content of the given playlist and playback stopped, unless \fB\-\-append\fR is used\.
+\~\~\~\~\~\~ Load a playlist file\. The tracklist will be replaced with the content of the given playlist and playback stopped, unless \fB\-\-append\fR is used\.
 .
 .P
 \fBloop track|list|none\fR
@@ -103,7 +100,7 @@ If the first track argument is "\-", track names will be read from STDIN (one tr
 \fBseek SECONDS\fR
 .
 .P
-\~\~\~\~\~\~ Seek by the given amount of seconds, relative to the current position\. A negative value seeks backwards\.
+\~\~\~\~\~\~ Seek by the given amount of seconds relative to the current position\. A negative value seeks backwards\.
 .
 .P
 \fBstatus\fR

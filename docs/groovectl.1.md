@@ -16,10 +16,8 @@ grooved daemon via the DBus session bus.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Append tracks to the player's tracklist. Tracks can be either files on the
-filesystem or other kinds of streams (e.g. HTTP streams).
-
-If the first track argument is "-", track names will be read from STDIN (one
-track per line).
+filesystem or other kinds of streams (e.g. HTTP streams). If the first track
+argument is "-", track names will be read from STDIN (one track per line).
 
 `goto`
 
@@ -39,8 +37,8 @@ Show tracklist (the current track is marked with '*').
 `load [--append] FILE`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Load a playlist file. The tracklist will be replaced with content of the given
-playlist and playback stopped, unless `--append` is used.
+Load a playlist file. The tracklist will be replaced with the content of the
+given playlist and playback stopped, unless `--append` is used.
 
 `loop track|list|none`
 
@@ -91,8 +89,8 @@ Save the tracklist to a playlist file.
 `seek SECONDS`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Seek by the given amount of seconds, relative to the current position. A
-negative value seeks backwards.
+Seek by the given amount of seconds relative to the current position. A negative
+value seeks backwards.
 
 `status`
 
