@@ -85,7 +85,7 @@ section to your configuration file:
 
 ```yaml
 play:
-    command: groovectl load
+    command: groovectl load --append
 ```
 
 then use the `beet play` command to search for tracks:

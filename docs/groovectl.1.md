@@ -36,11 +36,11 @@ Stop playback after the currently playing track has ended.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Show tracklist (the current track is marked with '*').
 
-`load FILE`
+`load [--append] FILE`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Load a playlist file. The tracklist will be replaced with content of the given
-playlist.
+playlist and playback stopped, unless `--append` is used.
 
 `loop track|list|none`
 

@@ -206,20 +206,31 @@ CMD_HANDLE(save) {
 }
 
 CMD_HANDLE(load) {
+	int i = 2;
+
 	GError *err = NULL;
+
+	bool dont_stop = false;
 	_free_ char *path = NULL;
 
 	if ((argc < 3))
 		fail_printf("Invalid playlist file");
 
-	path = realpath(argv[2], NULL);
+	if (strcmp(argv[i], "--append") == 0) {
+		dont_stop = true;
+		i++;
+	}
+
+	path = realpath(argv[i], NULL);
 	if (path == NULL)
 		sysf_printf("Invalid playlist file");
 
-	grooved_player_call_stop_sync(proxy, NULL, &err);
+	if (!dont_stop) {
+		grooved_player_call_stop_sync(proxy, NULL, &err);
 
-	if (err != NULL)
-		fail_printf("%s", err -> message);
+		if (err != NULL)
+			fail_printf("%s", err -> message);
+	}
 
 	grooved_player_call_add_list_sync(proxy, path, NULL, &err);
 
