@@ -53,6 +53,17 @@ void cfg_parse(const char *file) {
 		fail_printf("Could not load config file '%s'", file);
 }
 
+static bool cfg_decode_bool(const char *key, const char *val) {
+	if (strcmp("on", val) == 0)
+		return true;
+	else if (strcmp("off", val) == 0)
+		return false;
+	else
+		fail_printf("Invalid value for option '%s'", key);
+
+	return false; /* __builtin_unreachable(); */
+}
+
 static int config_cb(void *argp, const char *section,
                      const char *key, const char *val) {
 	int rc;
@@ -63,23 +74,13 @@ static int config_cb(void *argp, const char *section,
 			char *path = realpath(val, NULL);
 
 			if (!path)
-				sysf_printf("Invalid library path");
+				sysf_printf("Invalid value for option '%s'", key);
 
 			cfg -> library = path;
 		} else if (strcmp(key, "verbose") == 0) {
-			if (strcmp("on", val) == 0)
-				cfg -> verbose = true;
-			else if (strcmp("off", val) == 0)
-				cfg -> verbose = false;
-			else
-				fail_printf("Invalid verbose value");
+			cfg -> verbose = cfg_decode_bool(key, val);
 		} else if (strcmp(key, "gapless") == 0) {
-			if (strcmp("on", val) == 0)
-				cfg -> gapless = true;
-			else if (strcmp("off", val) == 0)
-				cfg -> gapless = false;
-			else
-				fail_printf("Invalid verbose value");
+			cfg -> gapless = cfg_decode_bool(key, val);
 		} else if (strcmp(key, "filter") == 0) {
 			if (cfg -> filters != NULL) {
 				_free_ char *tmp = cfg -> filters;
@@ -93,7 +94,7 @@ static int config_cb(void *argp, const char *section,
 		} else if (strcmp(key, "output") == 0) {
 			cfg -> output = strdup(val);
 		} else
-			fail_printf("Invalid config '%s'", key);
+			fail_printf("Invalid option '%s'", key);
 	} else
 		fail_printf("Invalid section '%s'", section);
 
