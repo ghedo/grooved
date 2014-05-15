@@ -108,6 +108,7 @@ grooved itself. Here's a simple configuration example:</p>
 <pre><code class="ini">[default]
 library = ~/data/musiclibrary.blb    ; path to beets' database
 verbose = off                        ; (optional) enable/disable verbose output
+gapless = on                         ; (optional) enable/disable gapless audio
 
 filter = volume=replaygain-track     ; (optional) apply an audio filter
 filter = bs2b=profile=cmoy           ; (optional) you can have multiple filters
@@ -127,11 +128,31 @@ output = alsa                        ; (optional) select a specific audio output
 <pre><code class="bash">$ groovectl toggle                           # toggle playback
 $ groovectl status                           # print the player's current status
 $ groovectl add file.mp3                     # add files to the tracklist
-$ beet ls -p album:title | groovectl add -   # search and add tracks from beets
 $ groovectl next                             # skip to next track
 $ groovectl add http://example.com/stream    # add network stream to tracklist
 $ groovectl quit                             # terminate grooved
 </code></pre>
+
+<p>You can also use beets to search for songs in your library and add them to the
+grooved tracklist as follows:</p>
+
+<pre><code class="bash">$ beet ls -p album:title | groovectl add -
+</code></pre>
+
+<p>Alternatively you can use beets' <a href="http://beets.readthedocs.org/en/latest/plugins/play.html">play</a> plugin to automatically add
+the files. First, <a href="http://beets.readthedocs.org/en/latest/plugins/index.html#using-plugins">enable the play plugin</a> and add the following
+section to your configuration file:</p>
+
+<pre><code class="yaml">play:
+    command: groovectl load --append
+</code></pre>
+
+<p>then use the <code>beet play</code> command to search for tracks:</p>
+
+<pre><code class="bash">$ beet play album:title
+</code></pre>
+
+<p>the matching tracks will be automatically added to grooved's tracklist.</p>
 
 <p>See <a href="http://ghedo.github.io/grooved/grooved.1.html">grooved(1)</a> and <a href="http://ghedo.github.io/grooved/groovectl.1.html">groovectl(1)</a> for more information.</p>
 
@@ -147,7 +168,7 @@ $ [sudo] make install
 
 <h2 id="COPYRIGHT">COPYRIGHT</h2>
 
-<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#97;&#108;&#x65;&#115;&#x73;&#x61;&#110;&#x64;&#114;&#111;&#x40;&#103;&#104;&#x65;&#100;&#x69;&#110;&#x69;&#46;&#x6d;&#x65;" data-bare-link="true">&#97;&#x6c;&#101;&#x73;&#115;&#x61;&#x6e;&#x64;&#x72;&#x6f;&#x40;&#x67;&#104;&#x65;&#100;&#105;&#110;&#x69;&#46;&#109;&#101;</a></p>
+<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#97;&#108;&#x65;&#x73;&#115;&#97;&#x6e;&#x64;&#x72;&#x6f;&#64;&#x67;&#104;&#101;&#x64;&#105;&#x6e;&#105;&#x2e;&#x6d;&#x65;" data-bare-link="true">&#x61;&#x6c;&#x65;&#115;&#115;&#97;&#x6e;&#100;&#x72;&#111;&#64;&#x67;&#x68;&#x65;&#x64;&#x69;&#110;&#x69;&#46;&#x6d;&#x65;</a></p>
 
 <p>See COPYING for the license.</p>
 
