@@ -41,7 +41,7 @@
 struct config cfg = {
 	.library = "/invalid",
 	.verbose = false,
-	.gapless = true,
+	.gapless = false,
 	.filters = NULL,
 	.output  = NULL,
 };
