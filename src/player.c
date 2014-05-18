@@ -228,7 +228,13 @@ void player_make_status(GVariantBuilder *status) {
 			break;
 	}
 
-	g_variant_builder_add(status, "s", path);
+	if (path != NULL) {
+		g_variant_builder_add(status, "s", path);
+	} else {
+		char *tmp = strdup("");
+		g_variant_builder_add(status, "s", tmp);
+		free(tmp);
+	}
 
 	g_variant_builder_add(status, "d", length);
 	g_variant_builder_add(status, "d", position);
