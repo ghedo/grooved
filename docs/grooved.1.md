@@ -60,6 +60,11 @@ filters and options. (optional)
 The output audio driver to use. See mpv(1) for a list of suported audio outputs
 and options. (optional)
 
+`cache=<kBytes|no|auto>`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The size of the cache in kilobytes. (optional)
+
 ## AUTHOR ##
 
 Alessandro Ghedini <alessandro@ghedini.me>

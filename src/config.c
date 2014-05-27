@@ -44,6 +44,7 @@ struct config cfg = {
 	.gapless = false,
 	.filters = NULL,
 	.output  = NULL,
+	.cache   = NULL,
 };
 
 static int config_cb(void *, const char *, const char *, const char *);
@@ -93,6 +94,8 @@ static int config_cb(void *argp, const char *section,
 			}
 		} else if (strcmp(key, "output") == 0) {
 			cfg -> output = strdup(val);
+		} else if (strcmp(key, "cache") == 0) {
+			cfg -> cache = strdup(val);
 		} else
 			fail_printf("Invalid option '%s'", key);
 	} else

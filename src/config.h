@@ -37,6 +37,7 @@ struct config {
 	bool  gapless;
 	char *filters;
 	char *output;
+	char *cache;
 };
 
 extern struct config cfg;

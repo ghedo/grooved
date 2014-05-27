@@ -178,6 +178,11 @@ void player_init(void) {
 		player_check_error("Could not set output", rc);
 	}
 
+	if (cfg.cache != NULL) {
+		rc = mpv_set_option_string(player_ctx, "cache", cfg.cache);
+		player_check_error("Could not set cache", rc);
+	}
+
 	mpv_request_log_messages(player_ctx, "warn");
 
 	rc = mpv_initialize(player_ctx);
