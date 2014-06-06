@@ -43,21 +43,33 @@
 #include "dbus-service.h"
 #include "printf.h"
 
-static Display *dpy;
+typedef struct {
+	GSource  src;
+	Display *dpy;
+	gpointer fd;
+} GX11Source;
+
 static GroovedPlayer *proxy;
 
 static void x11_init(void);
-static void x11_destroy(void);
 
-static gboolean x11_loop_fd_prepare(GSource *source, int *timeout);
-static gboolean x11_loop_fd_check(GSource * source);
-static gboolean x11_loop_fd_dispatch(GSource *source, GSourceFunc cb, void *ptr);
+static gboolean x11_loop_fd_prepare(GSource *src, int *timeout);
+static gboolean x11_loop_fd_check(GSource *src);
+static gboolean x11_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *ptr);
+static void     x11_loop_fd_finalize(GSource *src);
+
+static GSourceFuncs x11_funcs = {
+	x11_loop_fd_prepare,
+	x11_loop_fd_check,
+	x11_loop_fd_dispatch,
+	x11_loop_fd_finalize
+};
 
 static void x11_grab_key(Display *dpy, const KeySym keysym);
 static void x11_handle_key(Display *dpy, XEvent *ev);
 
-static void x11_setup_error_handler(void);
-static void x11_teardown_error_handler(void);
+static void x11_setup_error_handler(Display *dpy);
+static void x11_teardown_error_handler(Display *dpy);
 
 int main(int argc, char *argv[]) {
 	GMainLoop *loop;
@@ -75,36 +87,22 @@ int main(int argc, char *argv[]) {
 	g_main_loop_run(loop);
 
 	g_main_destroy(loop);
-
-	x11_destroy();
 }
 
 static void x11_init(void) {
 	KeySym *map, *iter;
 	int i, key_min, key_max, key_num;
 
-	GSource *x11_source;
+	GX11Source *x11_src;
 
-	dpy = XOpenDisplay(0);
-
-	GPollFD *dpy_pollfd = malloc(sizeof(GPollFD));
-
-	GSourceFuncs *x11_source_funcs = calloc(1, sizeof(GSourceFuncs));
-
-	dpy_pollfd -> fd = dpy -> fd;
-	dpy_pollfd -> events = G_IO_IN | G_IO_HUP | G_IO_ERR;
-	dpy_pollfd -> revents = G_IO_IN | G_IO_HUP | G_IO_ERR;
-
-	x11_source_funcs -> prepare  = x11_loop_fd_prepare;
-	x11_source_funcs -> check    = x11_loop_fd_check;
-	x11_source_funcs -> dispatch = x11_loop_fd_dispatch;
+	Display *dpy = XOpenDisplay(0);
 
 	XDisplayKeycodes(dpy, &key_min, &key_max);
 	map = XGetKeyboardMapping(dpy, key_min, (key_max - key_min + 1), &key_num);
 
 	iter = map;
 
-	x11_setup_error_handler();
+	x11_setup_error_handler(dpy);
 
 	for (i = key_min; i <= key_max; i++) {
 		int j;
@@ -133,45 +131,48 @@ static void x11_init(void) {
 		}
 	}
 
-	x11_teardown_error_handler();
+	x11_teardown_error_handler(dpy);
 
 	XFree(map);
 
 	XSelectInput(dpy, DefaultRootWindow(dpy), KeyPressMask);
 
-	x11_source = g_source_new(x11_source_funcs, sizeof(GSource));
-	g_source_add_poll(x11_source, dpy_pollfd);
+	x11_src = (GX11Source *) g_source_new(&x11_funcs, sizeof(GX11Source));
+	x11_src -> dpy = dpy;
+	x11_src -> fd  = g_source_add_unix_fd((GSource *) x11_src, dpy -> fd, G_IO_IN | G_IO_ERR);
 
-	g_source_attach(x11_source, NULL);
+	g_source_attach((GSource *) x11_src, NULL);
 }
 
-static void x11_destroy(void) {
-	XCloseDisplay(dpy);
-}
-
-static gboolean x11_loop_fd_prepare(GSource *source, int *timeout) {
+static gboolean x11_loop_fd_prepare(GSource *src, int *timeout) {
 	*timeout = -1;
 
 	return FALSE;
 }
 
-static gboolean x11_loop_fd_check(GSource *source) {
-	return XPending(dpy) > 0;
+static gboolean x11_loop_fd_check(GSource *src) {
+	return XPending(((GX11Source *) src) -> dpy) > 0;
 }
 
-static gboolean x11_loop_fd_dispatch(GSource *source, GSourceFunc cb, void *ptr) {
-	while (XPending(dpy) > 0) {
+static gboolean x11_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *ptr) {
+	GX11Source *x11_src = (GX11Source *) src;
+
+	while (XPending(x11_src -> dpy) > 0) {
 		XEvent ev;
-		XNextEvent(dpy, &ev);
+		XNextEvent(x11_src -> dpy, &ev);
 
 		switch (ev.type) {
 			case KeyPress:
-				x11_handle_key(dpy, &ev);
+				x11_handle_key(x11_src -> dpy, &ev);
 				break;
 		}
 	}
 
 	return TRUE;
+}
+
+static void x11_loop_fd_finalize(GSource *src) {
+	XCloseDisplay(((GX11Source *) src) -> dpy);
 }
 
 static void x11_grab_key(Display *dpy, const KeySym keysym) {
@@ -213,12 +214,12 @@ static int GrabXErrorHandler(Display *dpy, XErrorEvent *ev) {
 	return 0;
 }
 
-static void x11_setup_error_handler(void) {
+static void x11_setup_error_handler(Display *dpy) {
 	XFlush(dpy);
 	XSetErrorHandler(GrabXErrorHandler);
 }
 
-static void x11_teardown_error_handler(void) {
+static void x11_teardown_error_handler(Display *dpy) {
 	XFlush(dpy);
 	XSync(dpy, false);
 	XSetErrorHandler(NULL);
