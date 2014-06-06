@@ -35,6 +35,8 @@
 
 #include <inttypes.h>
 
+#include <glib.h>
+
 #include <mpv/client.h>
 
 #include "config.h"
@@ -44,6 +46,11 @@
 #include "printf.h"
 #include "util.h"
 
+typedef struct {
+	GSource  src;
+	gpointer fd;
+} GPlayerSource;
+
 enum player_status {
 	STARTING,
 	IDLE,
@@ -52,7 +59,6 @@ enum player_status {
 	STOPPED,
 };
 
-static pthread_t   player_thr;
 static mpv_handle *player_ctx;
 
 static enum player_status player_status;
@@ -65,87 +71,27 @@ static int64_t playlist_pos = -1;
 	if (RC < 0)						\
 		fail_printf(MSG ": %s", mpv_error_string(RC));
 
+static gboolean player_loop_fd_prepare(GSource *src, int *timeout);
+static gboolean player_loop_fd_check(GSource *src);
+static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p);
+static void     player_loop_fd_finalize(GSource *src);
+
+static GSourceFuncs player_funcs = {
+	player_loop_fd_prepare,
+	player_loop_fd_check,
+	player_loop_fd_dispatch,
+	player_loop_fd_finalize
+};
+
 static void player_print_playlist_status(void);
-
-static void *player_start_thread(void *ptr) {
-	mpv_handle *ctx = ptr;
-
-	player_status = STARTING;
-
-	while (1) {
-		enum player_status prev_status = player_status;
-
-		mpv_event *event = mpv_wait_event(ctx, 10000);
-		debug_printf("event: %s", mpv_event_name(event -> event_id));
-
-		switch (event -> event_id) {
-			case MPV_EVENT_IDLE: {
-				player_status = IDLE;
-
-				if ((prev_status == STARTING) ||
-				    (prev_status == STOPPED))
-					break;
-
-				dbus_emit_signal(STATUS_CHANGED);
-
-				player_playback_play();
-				break;
-			}
-
-			case MPV_EVENT_PAUSE: {
-				player_status = PAUSED;
-				dbus_emit_signal(STATUS_CHANGED);
-				break;
-			}
-
-			case MPV_EVENT_UNPAUSE: {
-				player_status = PLAYING;
-				dbus_emit_signal(STATUS_CHANGED);
-				break;
-			}
-
-			case MPV_EVENT_START_FILE: {
-				playlist_pos = player_playlist_position();
-				dbus_emit_signal(TRACK_CHANGED);
-
-				player_print_playlist_status();
-				break;
-			}
-
-			case MPV_EVENT_END_FILE:
-				break;
-
-			case MPV_EVENT_METADATA_UPDATE: {
-				dbus_emit_signal(TRACK_CHANGED);
-				break;
-			}
-
-			case MPV_EVENT_LOG_MESSAGE: {
-				mpv_event_log_message *log = event -> data;
-
-				err_printf(
-					"%s: %s: %s",
-					log -> level,
-					log -> prefix,
-					log -> text
-				);
-
-				break;
-			}
-
-			default:
-				break;
-		}
-
-		if (event -> event_id == MPV_EVENT_SHUTDOWN)
-			break;
-	}
-
-	return NULL;
-}
 
 void player_init(void) {
 	int rc;
+
+	GPlayerSource *player_src = NULL;
+
+	player_status = STARTING;
+
 	player_ctx = mpv_create();
 
 	if (player_ctx == NULL)
@@ -188,7 +134,17 @@ void player_init(void) {
 	rc = mpv_initialize(player_ctx);
 	player_check_error("Could not initialize player", rc);
 
-	pthread_create(&player_thr, NULL, player_start_thread, player_ctx);
+	player_src = (GPlayerSource *) g_source_new(
+		&player_funcs, sizeof(GPlayerSource)
+	);
+
+	player_src -> fd  = g_source_add_unix_fd(
+		(GSource *) player_src,
+		mpv_get_wakeup_pipe(player_ctx),
+		G_IO_IN | G_IO_HUP | G_IO_ERR
+	);
+
+	g_source_attach((GSource *) player_src, NULL);
 }
 
 const char *player_error_string(int error) {
@@ -584,8 +540,6 @@ void player_destroy(void) {
 	rc = mpv_command(player_ctx, cmd);
 	player_check_error("Could not quit player", rc);
 
-	pthread_join(player_thr, NULL);
-
 	mpv_destroy(player_ctx);
 }
 
@@ -598,4 +552,92 @@ static void player_print_playlist_status(void) {
 	debug_printf("position: %d, count: %d, path: %s", pos + 1, count, path);
 
 	mpv_free(path);
+}
+
+static gboolean player_loop_fd_prepare(GSource *src, int *timeout) {
+	*timeout = -1;
+
+	return FALSE;
+}
+
+static gboolean player_loop_fd_check(GSource *src) {
+	return (g_source_query_unix_fd(src, ((GPlayerSource *) src) -> fd) > 0);
+}
+
+static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
+	char byte;
+	enum player_status prev_status = player_status;
+
+	mpv_event *event = mpv_wait_event(player_ctx, 0);
+	debug_printf("event: %s", mpv_event_name(event -> event_id));
+
+	read(mpv_get_wakeup_pipe(player_ctx), &byte, 1);
+
+	switch (event -> event_id) {
+		case MPV_EVENT_IDLE: {
+			player_status = IDLE;
+
+			if ((prev_status == STARTING) ||
+			    (prev_status == STOPPED))
+				break;
+
+			dbus_emit_signal(STATUS_CHANGED);
+
+			player_playback_play();
+			break;
+		}
+
+		case MPV_EVENT_PAUSE: {
+			player_status = PAUSED;
+			dbus_emit_signal(STATUS_CHANGED);
+			break;
+		}
+
+		case MPV_EVENT_UNPAUSE: {
+			player_status = PLAYING;
+			dbus_emit_signal(STATUS_CHANGED);
+			break;
+		}
+
+		case MPV_EVENT_START_FILE: {
+			playlist_pos = player_playlist_position();
+			dbus_emit_signal(TRACK_CHANGED);
+
+			player_print_playlist_status();
+			break;
+		}
+
+		case MPV_EVENT_END_FILE:
+			break;
+
+		case MPV_EVENT_METADATA_UPDATE: {
+			dbus_emit_signal(TRACK_CHANGED);
+			break;
+		}
+
+		case MPV_EVENT_LOG_MESSAGE: {
+			mpv_event_log_message *log = event -> data;
+
+			err_printf(
+				"%s: %s: %s",
+				log -> level,
+				log -> prefix,
+				log -> text
+			);
+
+			break;
+		}
+
+		default:
+			break;
+	}
+
+	if (event -> event_id == MPV_EVENT_SHUTDOWN)
+		return FALSE;
+
+	return TRUE;
+}
+
+static void player_loop_fd_finalize(GSource *src) {
+	player_destroy();
 }

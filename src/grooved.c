@@ -97,8 +97,6 @@ int main(int argc, char *argv[]) {
 
 	g_main_destroy(loop);
 
-	player_destroy();
-
 	dbus_destroy();
 
 	library_close();
