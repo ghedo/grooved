@@ -533,16 +533,6 @@ int player_playlist_prev(void) {
 	return 0;
 }
 
-void player_destroy(void) {
-	int rc;
-	const char *cmd[] = { "quit", NULL };
-
-	rc = mpv_command(player_ctx, cmd);
-	player_check_error("Could not quit player", rc);
-
-	mpv_destroy(player_ctx);
-}
-
 static void player_print_playlist_status(void) {
 	char *path = mpv_get_property_string(player_ctx, "path");
 
@@ -642,9 +632,6 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 		case MPV_EVENT_NONE:
 			return TRUE;
 
-		case MPV_EVENT_SHUTDOWN:
-			return FALSE;
-
 		default:
 			break;
 	}
@@ -653,5 +640,5 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 }
 
 static void player_loop_fd_finalize(GSource *src) {
-	player_destroy();
+	mpv_terminate_destroy(player_ctx);
 }

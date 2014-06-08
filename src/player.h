@@ -40,7 +40,6 @@ enum loop {
 };
 
 extern void player_init(void);
-extern void player_destroy(void);
 
 extern const char *player_error_string(int error);
 
