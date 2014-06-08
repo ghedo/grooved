@@ -131,9 +131,6 @@ void player_init(void) {
 
 	mpv_request_log_messages(player_ctx, "warn");
 
-	rc = mpv_initialize(player_ctx);
-	player_check_error("Could not initialize player", rc);
-
 	player_src = (GPlayerSource *) g_source_new(
 		&player_funcs, sizeof(GPlayerSource)
 	);
@@ -145,6 +142,9 @@ void player_init(void) {
 	);
 
 	g_source_attach((GSource *) player_src, NULL);
+
+	rc = mpv_initialize(player_ctx);
+	player_check_error("Could not initialize player", rc);
 }
 
 const char *player_error_string(int error) {
