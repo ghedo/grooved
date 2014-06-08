@@ -619,11 +619,21 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 		case MPV_EVENT_LOG_MESSAGE: {
 			mpv_event_log_message *log = event -> data;
 
+			size_t       log_len = strlen(log -> text);
+			_free_ char *log_str = strdup(log -> text);
+
+			if (!log_str)
+				break;
+
+			/* TODO: buffer the log if it doesn't end with a \n */
+			if (log_str[log_len - 1] == '\n')
+				log_str[log_len - 1] = '\0';
+
 			err_printf(
 				"%s: %s: %s",
 				log -> level,
 				log -> prefix,
-				log -> text
+				log_str
 			);
 
 			break;
