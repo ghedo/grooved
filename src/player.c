@@ -561,17 +561,18 @@ static gboolean player_loop_fd_prepare(GSource *src, int *timeout) {
 }
 
 static gboolean player_loop_fd_check(GSource *src) {
-	return (g_source_query_unix_fd(src, ((GPlayerSource *) src) -> fd) > 0);
+	GIOCondition cond = g_source_query_unix_fd(src, ((GPlayerSource *) src) -> fd);
+
+	flush_pipe(mpv_get_wakeup_pipe(player_ctx));
+
+	return (cond > 0);
 }
 
 static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
-	char byte;
 	enum player_status prev_status = player_status;
 
 	mpv_event *event = mpv_wait_event(player_ctx, 0);
 	debug_printf("event: %s", mpv_event_name(event -> event_id));
-
-	read(mpv_get_wakeup_pipe(player_ctx), &byte, 1);
 
 	switch (event -> event_id) {
 		case MPV_EVENT_IDLE: {
@@ -628,14 +629,17 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 			break;
 		}
 
+		case MPV_EVENT_NONE:
+			return TRUE;
+
+		case MPV_EVENT_SHUTDOWN:
+			return FALSE;
+
 		default:
 			break;
 	}
 
-	if (event -> event_id == MPV_EVENT_SHUTDOWN)
-		return FALSE;
-
-	return TRUE;
+	return player_loop_fd_dispatch(src, cb, p);
 }
 
 static void player_loop_fd_finalize(GSource *src) {

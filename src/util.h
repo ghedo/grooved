@@ -30,6 +30,7 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
 
 #define _free_ __attribute__((cleanup(freep)))
 #define _close_ __attribute__((cleanup(closep)))
@@ -53,4 +54,18 @@ static inline void closep(int *p) {
 	if (rc < 0) sysf_printf("close()");
 
 	*p = -1;
+}
+
+static inline void flush_pipe(int fd) {
+#define FIFO_BUFFER_SIZE 256
+
+	ssize_t bytes;
+	char    unused[FIFO_BUFFER_SIZE];
+
+	do {
+		bytes = read(fd, unused, FIFO_BUFFER_SIZE);
+	} while ((bytes > 0) && (errno != EINTR));
+
+	if ((bytes < 0) && (errno != EAGAIN))
+		err_printf("Error flushing pipe");
 }
