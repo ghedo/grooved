@@ -36,6 +36,7 @@
 #include <unistd.h>
 #include <syslog.h>
 #include <limits.h>
+#include <stdbool.h>
 
 #include "player.h"
 #include "config.h"
