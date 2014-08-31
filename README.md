@@ -80,8 +80,9 @@ $ beet ls -p album:title | groovectl add -
 ```
 
 Alternatively you can use beets' [play] [beetsplay] plugin to automatically add
-the files. First, [enable the play plugin] [beetsplug] and add the following
-section to your configuration file:
+the files (note that at least beets v1.3.7 is required for this). First, [enable
+the play plugin] [beetsplug] and add the following section to your configuration
+file:
 
 ```yaml
 play:
