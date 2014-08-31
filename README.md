@@ -76,8 +76,11 @@ You can also use beets to search for songs in your library and add them to the
 grooved tracklist as follows:
 
 ```bash
-$ beet ls -p album:title | groovectl add -
+$ beet ls -p song title | groovectl add -
 ```
+
+You can use beets' [query syntax] [beetsqueries] for more advanced queries to
+the database.
 
 Alternatively you can use beets' [play] [beetsplay] plugin to automatically add
 the files (note that at least beets v1.3.7 is required for this). First, [enable
@@ -92,10 +95,12 @@ play:
 then use the `beet play` command to search for tracks:
 
 ```bash
-$ beet play album:title
+$ beet play song title
 ```
 
-the matching tracks will be automatically added to grooved's tracklist.
+the matching tracks will be automatically added to grooved's tracklist. You can
+use beets' [query syntax] [beetsqueries] for more advanced queries to the
+database with the `play` command as well.
 
 See [grooved(1)] [grooved] and [groovectl(1)] [groovectl] for more information.
 
@@ -104,6 +109,7 @@ See [grooved(1)] [grooved] and [groovectl(1)] [groovectl] for more information.
 [groovectl]: http://ghedo.github.io/grooved/groovectl.1.html
 [beetsplay]: http://beets.readthedocs.org/en/latest/plugins/play.html
 [beetsplug]: http://beets.readthedocs.org/en/latest/plugins/index.html#using-plugins
+[beetsqueries]: http://beets.readthedocs.org/en/latest/reference/query.html
 
 ## BUILDING
 
