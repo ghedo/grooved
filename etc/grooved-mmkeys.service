@@ -1,7 +1,0 @@
-[Unit]
-Description=Multimedia keys support for Grooved
-Requires=grooved.service
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/grooved-mmkeys

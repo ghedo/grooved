@@ -23,8 +23,6 @@ The project is composed of the following components:
 
 * [grooved] [grooved]: the music player daemon.
 * [groovectl] [groovectl]: a command-line client to grooved.
-* grooved-mmkeys: an additional daemon that listens for X11 multimedia keys
-  events, and changes grooved playback state accordingly.
 
 [mpv]: http://mpv.io/
 [beets]: http://beets.radbox.org/

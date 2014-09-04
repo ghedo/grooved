@@ -105,40 +105,6 @@ INSTALL(FILES
   RENAME _groovectl
 )
 
-#
-# grooved-mmkeys
-#
-
-PKG_CHECK_MODULES(X11 x11)
-
-IF (X11_FOUND)
-  ADD_EXECUTABLE(grooved-mmkeys
-    deps/inih/ini.c
-    src/config.c
-    src/dbus-common.c
-    src/grooved-mmkeys.c
-    src/printf.c
-  )
-
-  TARGET_LINK_LIBRARIES(grooved-mmkeys
-    ${GLIB_LIBRARIES}
-    ${GIO_LIBRARIES}
-    ${GOBJECT_LIBRARIES}
-    ${X11_LIBRARIES}
-  )
-
-  SET_TARGET_PROPERTIES(grooved-mmkeys PROPERTIES
-    COMPILE_FLAGS "-Wall -g -std=gnu99 -D_GNU_SOURCE"
-  )
-
-  INSTALL(TARGETS grooved-mmkeys DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-
-  INSTALL(FILES
-    ${PROJECT_SOURCE_DIR}/etc/grooved-mmkeys.service
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/user
-  )
-ENDIF (X11_FOUND)
-
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_SOURCE_DIR}/deps
   ${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -150,6 +116,5 @@ INCLUDE_DIRECTORIES(
   ${GOBJECT_INCLUDE_DIRS}
   ${MPV_INCLUDE_DIRS}
   ${SQLITE_INCLUDE_DIRS}
-  ${X11_INCLUDE_DIRS}
   ${CMAKE_CURRENT_BINARY_DIR}
 )
