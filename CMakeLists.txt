@@ -139,40 +139,6 @@ IF (X11_FOUND)
   )
 ENDIF (X11_FOUND)
 
-#
-# grooved-notify
-#
-
-PKG_CHECK_MODULES(NOTIFY libnotify)
-
-IF (NOTIFY_FOUND)
-  ADD_EXECUTABLE(grooved-notify
-    deps/inih/ini.c
-    src/config.c
-    src/dbus-common.c
-    src/grooved-notify.c
-    src/printf.c
-  )
-
-  TARGET_LINK_LIBRARIES(grooved-notify
-    ${GLIB_LIBRARIES}
-    ${GIO_LIBRARIES}
-    ${GOBJECT_LIBRARIES}
-    ${NOTIFY_LIBRARIES}
-  )
-
-  SET_TARGET_PROPERTIES(grooved-notify PROPERTIES
-    COMPILE_FLAGS "-Wall -g -std=gnu99 -D_GNU_SOURCE"
-  )
-
-  INSTALL(TARGETS grooved-notify DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-
-  INSTALL(FILES
-    ${PROJECT_SOURCE_DIR}/etc/grooved-notify.service
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/user
-  )
-ENDIF (NOTIFY_FOUND)
-
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_SOURCE_DIR}/deps
   ${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -183,7 +149,6 @@ INCLUDE_DIRECTORIES(
   ${GIO_UNIX_INCLUDE_DIRS}
   ${GOBJECT_INCLUDE_DIRS}
   ${MPV_INCLUDE_DIRS}
-  ${NOTIFY_INCLUDE_DIRS}
   ${SQLITE_INCLUDE_DIRS}
   ${X11_INCLUDE_DIRS}
   ${CMAKE_CURRENT_BINARY_DIR}
