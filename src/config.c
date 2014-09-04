@@ -45,6 +45,7 @@ struct config cfg = {
 	.filters = NULL,
 	.output  = NULL,
 	.cache   = NULL,
+	.scripts = NULL,
 };
 
 static int config_cb(void *, const char *, const char *, const char *);
@@ -91,6 +92,16 @@ static int config_cb(void *argp, const char *section,
 				if (rc < 0) fail_printf("OOM");
 			} else {
 				cfg -> filters = strdup(val);
+			}
+		} else if (strcmp(key, "script") == 0) {
+			if (cfg -> scripts != NULL) {
+				_free_ char *tmp = cfg -> scripts;
+
+				rc = asprintf(&cfg -> scripts, "%s,%s",
+				              cfg -> scripts, val);
+				if (rc < 0) fail_printf("OOM");
+			} else {
+				cfg -> scripts = strdup(val);
 			}
 		} else if (strcmp(key, "output") == 0) {
 			cfg -> output = strdup(val);

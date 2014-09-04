@@ -38,6 +38,7 @@ struct config {
 	char *filters;
 	char *output;
 	char *cache;
+	char *scripts;
 };
 
 extern struct config cfg;
