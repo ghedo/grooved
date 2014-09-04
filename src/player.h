@@ -43,8 +43,8 @@ extern void player_init(void);
 
 extern const char *player_error_string(int error);
 
-extern void player_make_status(GVariantBuilder *status);
 extern void player_make_list(GVariantBuilder *list);
+extern void player_make_metadata(GVariantBuilder *metadata);
 
 extern int player_playback_start(void);
 extern int player_playback_play(void);
@@ -55,7 +55,14 @@ extern int player_playback_stop(void);
 extern int player_playback_seek(int64_t secs);
 
 extern int player_playback_loop(enum loop mode);
-extern char *player_playback_loop_tostr(void);
+
+extern char *player_playback_status_string(void);
+extern char *player_loop_status_string(void);
+
+extern char *player_playback_track_path(void);
+extern double player_playback_track_length(void);
+extern double player_playback_track_position_time(void);
+extern double player_playback_track_position_percent(void);
 
 extern int player_playlist_append_file(const char *path);
 extern int player_playlist_append_list(const char *path);

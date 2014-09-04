@@ -28,6 +28,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <stdlib.h>
+
 #include <glib.h>
 #include <gio/gio.h>
 #include <dbus/dbus.h>
@@ -149,6 +151,13 @@ exit:
 	return TRUE;
 }
 
+gboolean on_loop_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	char *status = player_loop_status_string();
+	grooved_player_complete_loop_status(obj, invocation, status);
+
+	return TRUE;
+}
+
 gboolean on_next(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 	int rc = player_playlist_next();
 	dbus_check_error(invocation, rc);
@@ -172,6 +181,14 @@ gboolean on_play(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+
+gboolean on_playback_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	char *status = player_playback_status_string();
+	grooved_player_complete_playback_status(obj, invocation, status);
 
 	return TRUE;
 }
@@ -213,25 +230,48 @@ gboolean on_seek(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 	return TRUE;
 }
 
-gboolean on_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	GVariantBuilder *status = g_variant_builder_new(
-		G_VARIANT_TYPE("(ssddda{ss}s)")
-	);
-
-	player_make_status(status);
-
-	g_dbus_method_invocation_return_value(
-		invocation, g_variant_builder_end(status)
-	);
-
-	return TRUE;
-}
-
 gboolean on_stop(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 	int rc = player_playback_stop();
 	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
+
+	return TRUE;
+}
+
+
+gboolean on_track_length(GroovedPlayer *obj, GDBusMethodInvocation *invocation)
+{
+	double length = player_playback_track_length();
+	grooved_player_complete_track_length(obj, invocation, length);
+
+	return TRUE;
+}
+
+gboolean on_track_metadata(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	GVariantBuilder *meta = g_variant_builder_new(G_VARIANT_TYPE("a{ss}"));
+	player_make_metadata(meta);
+
+	grooved_player_complete_track_metadata(
+		obj, invocation, g_variant_builder_end(meta)
+	);
+
+	return TRUE;
+}
+
+gboolean on_track_path(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	char *path = player_playback_track_path();
+	grooved_player_complete_track_path(obj, invocation, path);
+	free(path);
+
+	return TRUE;
+}
+
+gboolean on_track_position(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
+	double time    = player_playback_track_position_time();
+	double percent = player_playback_track_position_percent();
+
+	grooved_player_complete_track_position(obj, invocation, time, percent);
 
 	return TRUE;
 }
@@ -257,21 +297,26 @@ static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
 	iface = grooved_player_skeleton_new();
 
 	struct handle_signal cbs[] = {
-		{ "handle-add-list",   G_CALLBACK(on_add_list) },
-		{ "handle-add-track",  G_CALLBACK(on_add_track) },
-		{ "handle-goto-track", G_CALLBACK(on_goto_track) },
-		{ "handle-list",       G_CALLBACK(on_list) },
-		{ "handle-loop",       G_CALLBACK(on_loop) },
-		{ "handle-next",       G_CALLBACK(on_next) },
-		{ "handle-pause",      G_CALLBACK(on_pause) },
-		{ "handle-play",       G_CALLBACK(on_play) },
-		{ "handle-prev",       G_CALLBACK(on_prev) },
-		{ "handle-quit",       G_CALLBACK(on_quit) },
-		{ "handle-remove-track",G_CALLBACK(on_remove_track) },
-		{ "handle-seek",       G_CALLBACK(on_seek) },
-		{ "handle-status",     G_CALLBACK(on_status) },
-		{ "handle-stop",       G_CALLBACK(on_stop) },
-		{ "handle-toggle",     G_CALLBACK(on_toggle) },
+		{ "handle-add-list",        G_CALLBACK(on_add_list) },
+		{ "handle-add-track",       G_CALLBACK(on_add_track) },
+		{ "handle-goto-track",      G_CALLBACK(on_goto_track) },
+		{ "handle-list",            G_CALLBACK(on_list) },
+		{ "handle-loop",            G_CALLBACK(on_loop) },
+		{ "handle-loop-status",     G_CALLBACK(on_loop_status) },
+		{ "handle-next",            G_CALLBACK(on_next) },
+		{ "handle-pause",           G_CALLBACK(on_pause) },
+		{ "handle-play",            G_CALLBACK(on_play) },
+		{ "handle-playback-status", G_CALLBACK(on_playback_status) },
+		{ "handle-prev",            G_CALLBACK(on_prev) },
+		{ "handle-quit",            G_CALLBACK(on_quit) },
+		{ "handle-remove-track",    G_CALLBACK(on_remove_track) },
+		{ "handle-seek",            G_CALLBACK(on_seek) },
+		{ "handle-stop",            G_CALLBACK(on_stop) },
+		{ "handle-track-length",    G_CALLBACK(on_track_length) },
+		{ "handle-track-metadata",  G_CALLBACK(on_track_metadata) },
+		{ "handle-track-path",      G_CALLBACK(on_track_path) },
+		{ "handle-track-position",  G_CALLBACK(on_track_position) },
+		{ "handle-toggle",          G_CALLBACK(on_toggle) },
 	};
 
 	for (i = 0; i < sizeof(cbs) / sizeof(cbs[0]); i++)

@@ -61,15 +61,27 @@ static inline void help(void);
 CMD_HANDLE(status) {
 	GError *err = NULL;
 
-	char *state, *loop, *path;
+	char *state, *loop;
 	double len, pos, percent;
 	GVariant *metadata;
 
-	grooved_player_call_status_sync(
-		proxy, &state, &path, &len, &pos, &percent,
-		&metadata, &loop, NULL, &err
-	);
+	grooved_player_call_playback_status_sync(proxy, &state, NULL, &err);
+	if (err != NULL)
+		fail_printf("%s", err -> message);
 
+	grooved_player_call_loop_status_sync(proxy, &loop, NULL, &err);
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+
+	grooved_player_call_track_length_sync(proxy, &len, NULL, &err);
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+
+	grooved_player_call_track_metadata_sync(proxy, &metadata, NULL, &err);
+	if (err != NULL)
+		fail_printf("%s", err -> message);
+
+	grooved_player_call_track_position_sync(proxy, &pos, &percent, NULL, &err);
 	if (err != NULL)
 		fail_printf("%s", err -> message);
 
@@ -351,11 +363,7 @@ CMD_HANDLE(lyrics) {
 
 	glyr_opt_type(&q, GLYR_GET_LYRICS);
 
-	grooved_player_call_status_sync(
-		proxy, NULL, NULL, NULL, NULL, NULL,
-		&metadata, NULL, NULL, &err
-	);
-
+	grooved_player_call_track_metadata_sync(proxy, &metadata, NULL, &err);
 	if (err != NULL)
 		fail_printf("%s", err -> message);
 

@@ -53,6 +53,10 @@ struct _GroovedPlayerIface
     GDBusMethodInvocation *invocation,
     const gchar *arg_mode);
 
+  gboolean (*handle_loop_status) (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation);
+
   gboolean (*handle_next) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
@@ -62,6 +66,10 @@ struct _GroovedPlayerIface
     GDBusMethodInvocation *invocation);
 
   gboolean (*handle_play) (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation);
+
+  gboolean (*handle_playback_status) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
 
@@ -83,15 +91,27 @@ struct _GroovedPlayerIface
     GDBusMethodInvocation *invocation,
     gint64 arg_seconds);
 
-  gboolean (*handle_status) (
-    GroovedPlayer *object,
-    GDBusMethodInvocation *invocation);
-
   gboolean (*handle_stop) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
 
   gboolean (*handle_toggle) (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation);
+
+  gboolean (*handle_track_length) (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation);
+
+  gboolean (*handle_track_metadata) (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation);
+
+  gboolean (*handle_track_path) (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation);
+
+  gboolean (*handle_track_position) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
 
@@ -113,16 +133,36 @@ guint grooved_player_override_properties (GObjectClass *klass, guint property_id
 
 
 /* D-Bus method call completion functions: */
-void grooved_player_complete_status (
+void grooved_player_complete_playback_status (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation,
-    const gchar *state,
-    const gchar *path,
-    gdouble length,
+    const gchar *status);
+
+void grooved_player_complete_loop_status (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation,
+    const gchar *status);
+
+void grooved_player_complete_track_metadata (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation,
+    GVariant *metadata);
+
+void grooved_player_complete_track_path (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation,
+    const gchar *path);
+
+void grooved_player_complete_track_length (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation,
+    gdouble length);
+
+void grooved_player_complete_track_position (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation,
     gdouble position,
-    gdouble percent,
-    GVariant *metadata,
-    const gchar *loop);
+    gdouble percent);
 
 void grooved_player_complete_play (
     GroovedPlayer *object,
@@ -198,33 +238,113 @@ void grooved_player_emit_option_changed (
 
 
 /* D-Bus method calls: */
-void grooved_player_call_status (
+void grooved_player_call_playback_status (
     GroovedPlayer *proxy,
     GCancellable *cancellable,
     GAsyncReadyCallback callback,
     gpointer user_data);
 
-gboolean grooved_player_call_status_finish (
+gboolean grooved_player_call_playback_status_finish (
     GroovedPlayer *proxy,
-    gchar **out_state,
-    gchar **out_path,
-    gdouble *out_length,
-    gdouble *out_position,
-    gdouble *out_percent,
-    GVariant **out_metadata,
-    gchar **out_loop,
+    gchar **out_status,
     GAsyncResult *res,
     GError **error);
 
-gboolean grooved_player_call_status_sync (
+gboolean grooved_player_call_playback_status_sync (
     GroovedPlayer *proxy,
-    gchar **out_state,
+    gchar **out_status,
+    GCancellable *cancellable,
+    GError **error);
+
+void grooved_player_call_loop_status (
+    GroovedPlayer *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean grooved_player_call_loop_status_finish (
+    GroovedPlayer *proxy,
+    gchar **out_status,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean grooved_player_call_loop_status_sync (
+    GroovedPlayer *proxy,
+    gchar **out_status,
+    GCancellable *cancellable,
+    GError **error);
+
+void grooved_player_call_track_metadata (
+    GroovedPlayer *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean grooved_player_call_track_metadata_finish (
+    GroovedPlayer *proxy,
+    GVariant **out_metadata,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean grooved_player_call_track_metadata_sync (
+    GroovedPlayer *proxy,
+    GVariant **out_metadata,
+    GCancellable *cancellable,
+    GError **error);
+
+void grooved_player_call_track_path (
+    GroovedPlayer *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean grooved_player_call_track_path_finish (
+    GroovedPlayer *proxy,
     gchar **out_path,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean grooved_player_call_track_path_sync (
+    GroovedPlayer *proxy,
+    gchar **out_path,
+    GCancellable *cancellable,
+    GError **error);
+
+void grooved_player_call_track_length (
+    GroovedPlayer *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean grooved_player_call_track_length_finish (
+    GroovedPlayer *proxy,
     gdouble *out_length,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean grooved_player_call_track_length_sync (
+    GroovedPlayer *proxy,
+    gdouble *out_length,
+    GCancellable *cancellable,
+    GError **error);
+
+void grooved_player_call_track_position (
+    GroovedPlayer *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean grooved_player_call_track_position_finish (
+    GroovedPlayer *proxy,
     gdouble *out_position,
     gdouble *out_percent,
-    GVariant **out_metadata,
-    gchar **out_loop,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean grooved_player_call_track_position_sync (
+    GroovedPlayer *proxy,
+    gdouble *out_position,
+    gdouble *out_percent,
     GCancellable *cancellable,
     GError **error);
 

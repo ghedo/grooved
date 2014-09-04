@@ -156,76 +156,6 @@ const char *player_error_string(int error) {
 	return mpv_error_string(error);
 }
 
-void player_make_status(GVariantBuilder *status) {
-	int i;
-
-	mpv_node metadata;
-
-	GVariantBuilder *meta_build;
-	double length = 0, position = 0, percent = 0;
-
-	char *path  = mpv_get_property_string(player_ctx, "path");
-
-	mpv_get_property(player_ctx, "length", MPV_FORMAT_DOUBLE, &length);
-	mpv_get_property(player_ctx, "time-pos", MPV_FORMAT_DOUBLE, &position);
-	mpv_get_property(player_ctx, "percent-pos", MPV_FORMAT_DOUBLE, &percent);
-
-	mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
-
-	switch (player_status) {
-		case STARTING:
-			g_variant_builder_add(status, "s", "start");
-			break;
-
-		case IDLE:
-			g_variant_builder_add(status, "s", "idle");
-			break;
-
-		case PLAYING:
-			g_variant_builder_add(status, "s", "play");
-			break;
-
-		case PAUSED:
-			g_variant_builder_add(status, "s", "pause");
-			break;
-
-		case STOPPED:
-			g_variant_builder_add(status, "s", "stop");
-			break;
-	}
-
-	if (path != NULL) {
-		g_variant_builder_add(status, "s", path);
-	} else {
-		char *tmp = strdup("");
-		g_variant_builder_add(status, "s", tmp);
-		free(tmp);
-	}
-
-	g_variant_builder_add(status, "d", length);
-	g_variant_builder_add(status, "d", position);
-	g_variant_builder_add(status, "d", percent);
-
-	meta_build = g_variant_builder_new(G_VARIANT_TYPE("a{ss}"));
-
-	if (metadata.format == MPV_FORMAT_NODE_MAP) {
-		for (i = 0; i < metadata.u.list -> num; i++) {
-			char *key = metadata.u.list -> keys[i];
-			char *val = metadata.u.list -> values[i].u.string;
-
-			g_variant_builder_add(meta_build, "{ss}", key, val);
-		}
-	}
-
-	g_variant_builder_add_value(status, g_variant_builder_end(meta_build));
-
-	mpv_free_node_contents(&metadata);
-
-	g_variant_builder_add(status, "s", player_playback_loop_tostr());
-
-	mpv_free(path);
-}
-
 void player_make_list(GVariantBuilder *list) {
 	int i, j;
 
@@ -263,6 +193,23 @@ void player_make_list(GVariantBuilder *list) {
 	g_variant_builder_add(list, "x", playlist_pos);
 
 	mpv_free_node_contents(&playlist);
+}
+
+void player_make_metadata(GVariantBuilder *meta) {
+	int i;
+
+	mpv_node metadata;
+
+	mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
+
+	if (metadata.format == MPV_FORMAT_NODE_MAP) {
+		for (i = 0; i < metadata.u.list -> num; i++) {
+			char *key = metadata.u.list -> keys[i];
+			char *val = metadata.u.list -> values[i].u.string;
+
+			g_variant_builder_add(meta, "{ss}", key, val);
+		}
+	}
 }
 
 int player_playback_start(void) {
@@ -427,7 +374,28 @@ int player_playback_loop(enum loop mode) {
 	return 0;
 }
 
-char *player_playback_loop_tostr(void) {
+char *player_playback_status_string(void) {
+	switch (player_status) {
+		case STARTING:
+			return "starting";
+
+		case IDLE:
+			return "idle";
+
+		case PLAYING:
+			return "play";
+
+		case PAUSED:
+			return "pause";
+
+		case STOPPED:
+			return "stop";
+	}
+
+	return NULL;
+}
+
+char *player_loop_status_string(void) {
 	switch (player_loop) {
 		case PLAYER_LOOP_TRACK:
 			return "track";
@@ -437,29 +405,72 @@ char *player_playback_loop_tostr(void) {
 
 		case PLAYER_LOOP_NONE:
 			return "none";
-			break;
 	}
 
 	return NULL;
 }
 
-int64_t player_playlist_count(void) {
+int player_get_property_double(char *name, double *value) {
 	int rc;
-	int64_t count = -1;
 
-	rc = mpv_get_property(player_ctx, "playlist-count", MPV_FORMAT_INT64, &count);
+	rc = mpv_get_property(player_ctx, name, MPV_FORMAT_DOUBLE, value);
 	if (rc < 0) return rc;
 
+	return 0;
+}
+
+int player_get_property_int64(char *name, int64_t *value) {
+	int rc;
+
+	rc = mpv_get_property(player_ctx, name, MPV_FORMAT_INT64, value);
+	if (rc < 0) return rc;
+
+	return 0;
+}
+
+int player_get_property_string(char *name, char **value) {
+	char *mvalue = mpv_get_property_string(player_ctx, name);
+	*value       = (mvalue != NULL) ? strdup(mvalue) : strdup("");
+
+	mpv_free(mvalue);
+
+	return 0;
+}
+
+double player_playback_track_length(void) {
+	double length = 0.0;
+	player_get_property_double("length", &length);
+	return length;
+}
+
+char *player_playback_track_path(void) {
+	char *path = NULL;
+	player_get_property_string("path", &path);
+
+	return path;
+}
+
+double player_playback_track_position_time(void) {
+	double pos = 0.0;
+	player_get_property_double("time-pos", &pos);
+	return pos;
+}
+
+double player_playback_track_position_percent(void) {
+	double pos = 0.0;
+	player_get_property_double("percent-pos", &pos);
+	return pos;
+}
+
+int64_t player_playlist_count(void) {
+	int64_t count = -1;
+	player_get_property_int64("playlist-count", &count);
 	return count;
 }
 
 int64_t player_playlist_position(void) {
-	int rc;
 	int64_t pos = -1;
-
-	rc = mpv_get_property(player_ctx, "playlist-pos", MPV_FORMAT_INT64, &pos);
-	if (rc < 0) return -1;
-
+	player_get_property_int64("playlist-pos", &pos);
 	return pos;
 }
 
