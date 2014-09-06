@@ -67,14 +67,36 @@ void dbus_destroy(void) {
 	g_bus_unown_name(owner_id);
 }
 
+static void on_track_changed(void) {
+	GVariantBuilder *meta = g_variant_builder_new(G_VARIANT_TYPE("a{ss}"));
+	player_make_metadata(meta);
+	grooved_player_set_track_metadata(iface, g_variant_builder_end(meta));
+
+	char *path = player_playback_track_path();
+	grooved_player_set_track_path(iface, path);
+	free(path);
+
+	double length = player_playback_track_length();
+	grooved_player_set_track_length(iface, length);
+
+	grooved_player_emit_track_changed(iface);
+}
+
+static void on_status_changed(void) {
+	char *status = player_playback_status_string();
+	grooved_player_set_playback_status(iface, status);
+
+	grooved_player_emit_status_changed(iface);
+}
+
 void dbus_emit_signal(enum dbus_signal sig) {
 	switch (sig) {
 		case STATUS_CHANGED:
-			grooved_player_emit_status_changed(iface);
+			on_status_changed();
 			break;
 
 		case TRACK_CHANGED:
-			grooved_player_emit_track_changed(iface);
+			on_track_changed();
 			break;
 
 		case OPTION_CHANGED:
@@ -147,14 +169,10 @@ gboolean on_loop(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
 
+	char *loop = player_loop_status_string();
+	grooved_player_set_loop_status(iface, loop);
+
 exit:
-	return TRUE;
-}
-
-gboolean on_loop_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	char *status = player_loop_status_string();
-	grooved_player_complete_loop_status(obj, invocation, status);
-
 	return TRUE;
 }
 
@@ -181,14 +199,6 @@ gboolean on_play(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 	dbus_check_error(invocation, rc);
 
 	g_dbus_method_invocation_return_value(invocation, NULL);
-
-	return TRUE;
-}
-
-
-gboolean on_playback_status(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	char *status = player_playback_status_string();
-	grooved_player_complete_playback_status(obj, invocation, status);
 
 	return TRUE;
 }
@@ -239,34 +249,6 @@ gboolean on_stop(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 	return TRUE;
 }
 
-
-gboolean on_track_length(GroovedPlayer *obj, GDBusMethodInvocation *invocation)
-{
-	double length = player_playback_track_length();
-	grooved_player_complete_track_length(obj, invocation, length);
-
-	return TRUE;
-}
-
-gboolean on_track_metadata(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	GVariantBuilder *meta = g_variant_builder_new(G_VARIANT_TYPE("a{ss}"));
-	player_make_metadata(meta);
-
-	grooved_player_complete_track_metadata(
-		obj, invocation, g_variant_builder_end(meta)
-	);
-
-	return TRUE;
-}
-
-gboolean on_track_path(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
-	char *path = player_playback_track_path();
-	grooved_player_complete_track_path(obj, invocation, path);
-	free(path);
-
-	return TRUE;
-}
-
 gboolean on_track_position(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 	double time    = player_playback_track_position_time();
 	double percent = player_playback_track_position_percent();
@@ -302,19 +284,14 @@ static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
 		{ "handle-goto-track",      G_CALLBACK(on_goto_track) },
 		{ "handle-list",            G_CALLBACK(on_list) },
 		{ "handle-loop",            G_CALLBACK(on_loop) },
-		{ "handle-loop-status",     G_CALLBACK(on_loop_status) },
 		{ "handle-next",            G_CALLBACK(on_next) },
 		{ "handle-pause",           G_CALLBACK(on_pause) },
 		{ "handle-play",            G_CALLBACK(on_play) },
-		{ "handle-playback-status", G_CALLBACK(on_playback_status) },
 		{ "handle-prev",            G_CALLBACK(on_prev) },
 		{ "handle-quit",            G_CALLBACK(on_quit) },
 		{ "handle-remove-track",    G_CALLBACK(on_remove_track) },
 		{ "handle-seek",            G_CALLBACK(on_seek) },
 		{ "handle-stop",            G_CALLBACK(on_stop) },
-		{ "handle-track-length",    G_CALLBACK(on_track_length) },
-		{ "handle-track-metadata",  G_CALLBACK(on_track_metadata) },
-		{ "handle-track-path",      G_CALLBACK(on_track_path) },
 		{ "handle-track-position",  G_CALLBACK(on_track_position) },
 		{ "handle-toggle",          G_CALLBACK(on_toggle) },
 	};
@@ -329,6 +306,12 @@ static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
 
 	if (err != NULL)
 		fail_printf("%s", err -> message);
+
+	char *status = player_playback_status_string();
+	grooved_player_set_playback_status(iface, status);
+
+	char *loop = player_loop_status_string();
+	grooved_player_set_loop_status(iface, loop);
 }
 
 static void on_name_acquired(GDBusConnection *conn, const char *name, void *p) {

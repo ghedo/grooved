@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="/io/github/ghedo/grooved/Player">
   <interface name="io.github.ghedo.grooved.Player">
-    <method name="PlaybackStatus">
-      <arg direction="out" name="status" type="s"/>
-    </method>
+    <property name="PlaybackStatus" type="s" access="read">
+    </property>
 
-    <method name="LoopStatus">
-      <arg direction="out" name="status" type="s"/>
-    </method>
+    <property name="LoopStatus" type="s" access="read">
+    </property>
 
-    <method name="TrackMetadata">
-      <arg direction="out" name="metadata" type="a{ss}"/>
-    </method>
+    <property name="TrackMetadata" type="a{ss}" access="read">
+    </property>
 
-    <method name="TrackPath">
-      <arg direction="out" name="path" type="s"/>
-    </method>
+    <property name="TrackPath" type="s" access="read">
+    </property>
 
-    <method name="TrackLength">
-      <arg direction="out" name="length" type="d"/>
-    </method>
+    <property name="TrackLength" type="d" access="read">
+    </property>
 
     <method name="TrackPosition">
       <arg direction="out" name="position" type="d"/>

@@ -61,25 +61,13 @@ static inline void help(void);
 CMD_HANDLE(status) {
 	GError *err = NULL;
 
-	char *state, *loop;
-	double len, pos, percent;
-	GVariant *metadata;
+	double pos, percent;
 
-	grooved_player_call_playback_status_sync(proxy, &state, NULL, &err);
-	if (err != NULL)
-		fail_printf("%s", err -> message);
+	const char *state = grooved_player_get_playback_status(proxy);
+	const char *loop  = grooved_player_get_loop_status(proxy);
 
-	grooved_player_call_loop_status_sync(proxy, &loop, NULL, &err);
-	if (err != NULL)
-		fail_printf("%s", err -> message);
-
-	grooved_player_call_track_length_sync(proxy, &len, NULL, &err);
-	if (err != NULL)
-		fail_printf("%s", err -> message);
-
-	grooved_player_call_track_metadata_sync(proxy, &metadata, NULL, &err);
-	if (err != NULL)
-		fail_printf("%s", err -> message);
+	double len  = grooved_player_get_track_length(proxy);
+	GVariant *metadata = grooved_player_get_track_metadata(proxy);
 
 	grooved_player_call_track_position_sync(proxy, &pos, &percent, NULL, &err);
 	if (err != NULL)
@@ -346,7 +334,6 @@ CMD_HANDLE(loop) {
 
 CMD_HANDLE(lyrics) {
 	GVariantIter iter;
-	GError *err = NULL;
 
 	GlyrQuery q;
 	GLYR_ERROR glyr_err;
@@ -363,9 +350,7 @@ CMD_HANDLE(lyrics) {
 
 	glyr_opt_type(&q, GLYR_GET_LYRICS);
 
-	grooved_player_call_track_metadata_sync(proxy, &metadata, NULL, &err);
-	if (err != NULL)
-		fail_printf("%s", err -> message);
+	metadata = grooved_player_get_track_metadata(proxy);
 
 	g_variant_iter_init(&iter, metadata);
 	while (g_variant_iter_loop(&iter, "{ss}", &key, &val)) {

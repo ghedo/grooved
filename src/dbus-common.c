@@ -163,156 +163,6 @@ _g_value_equal (const GValue *a, const GValue *b)
 
 /* ---- Introspection data for io.github.ghedo.grooved.Player ---- */
 
-static const _ExtendedGDBusArgInfo _grooved_player_method_info_playback_status_OUT_ARG_status =
-{
-  {
-    -1,
-    (gchar *) "status",
-    (gchar *) "s",
-    NULL
-  },
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_playback_status_OUT_ARG_pointers[] =
-{
-  &_grooved_player_method_info_playback_status_OUT_ARG_status,
-  NULL
-};
-
-static const _ExtendedGDBusMethodInfo _grooved_player_method_info_playback_status =
-{
-  {
-    -1,
-    (gchar *) "PlaybackStatus",
-    NULL,
-    (GDBusArgInfo **) &_grooved_player_method_info_playback_status_OUT_ARG_pointers,
-    NULL
-  },
-  "handle-playback-status",
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo _grooved_player_method_info_loop_status_OUT_ARG_status =
-{
-  {
-    -1,
-    (gchar *) "status",
-    (gchar *) "s",
-    NULL
-  },
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_loop_status_OUT_ARG_pointers[] =
-{
-  &_grooved_player_method_info_loop_status_OUT_ARG_status,
-  NULL
-};
-
-static const _ExtendedGDBusMethodInfo _grooved_player_method_info_loop_status =
-{
-  {
-    -1,
-    (gchar *) "LoopStatus",
-    NULL,
-    (GDBusArgInfo **) &_grooved_player_method_info_loop_status_OUT_ARG_pointers,
-    NULL
-  },
-  "handle-loop-status",
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo _grooved_player_method_info_track_metadata_OUT_ARG_metadata =
-{
-  {
-    -1,
-    (gchar *) "metadata",
-    (gchar *) "a{ss}",
-    NULL
-  },
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_track_metadata_OUT_ARG_pointers[] =
-{
-  &_grooved_player_method_info_track_metadata_OUT_ARG_metadata,
-  NULL
-};
-
-static const _ExtendedGDBusMethodInfo _grooved_player_method_info_track_metadata =
-{
-  {
-    -1,
-    (gchar *) "TrackMetadata",
-    NULL,
-    (GDBusArgInfo **) &_grooved_player_method_info_track_metadata_OUT_ARG_pointers,
-    NULL
-  },
-  "handle-track-metadata",
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo _grooved_player_method_info_track_path_OUT_ARG_path =
-{
-  {
-    -1,
-    (gchar *) "path",
-    (gchar *) "s",
-    NULL
-  },
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_track_path_OUT_ARG_pointers[] =
-{
-  &_grooved_player_method_info_track_path_OUT_ARG_path,
-  NULL
-};
-
-static const _ExtendedGDBusMethodInfo _grooved_player_method_info_track_path =
-{
-  {
-    -1,
-    (gchar *) "TrackPath",
-    NULL,
-    (GDBusArgInfo **) &_grooved_player_method_info_track_path_OUT_ARG_pointers,
-    NULL
-  },
-  "handle-track-path",
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo _grooved_player_method_info_track_length_OUT_ARG_length =
-{
-  {
-    -1,
-    (gchar *) "length",
-    (gchar *) "d",
-    NULL
-  },
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_track_length_OUT_ARG_pointers[] =
-{
-  &_grooved_player_method_info_track_length_OUT_ARG_length,
-  NULL
-};
-
-static const _ExtendedGDBusMethodInfo _grooved_player_method_info_track_length =
-{
-  {
-    -1,
-    (gchar *) "TrackLength",
-    NULL,
-    (GDBusArgInfo **) &_grooved_player_method_info_track_length_OUT_ARG_pointers,
-    NULL
-  },
-  "handle-track-length",
-  FALSE
-};
-
 static const _ExtendedGDBusArgInfo _grooved_player_method_info_track_position_OUT_ARG_position =
 {
   {
@@ -682,11 +532,6 @@ static const _ExtendedGDBusMethodInfo _grooved_player_method_info_quit =
 
 static const _ExtendedGDBusMethodInfo * const _grooved_player_method_info_pointers[] =
 {
-  &_grooved_player_method_info_playback_status,
-  &_grooved_player_method_info_loop_status,
-  &_grooved_player_method_info_track_metadata,
-  &_grooved_player_method_info_track_path,
-  &_grooved_player_method_info_track_length,
   &_grooved_player_method_info_track_position,
   &_grooved_player_method_info_play,
   &_grooved_player_method_info_pause,
@@ -746,6 +591,81 @@ static const _ExtendedGDBusSignalInfo * const _grooved_player_signal_info_pointe
   NULL
 };
 
+static const _ExtendedGDBusPropertyInfo _grooved_player_property_info_playback_status =
+{
+  {
+    -1,
+    (gchar *) "PlaybackStatus",
+    (gchar *) "s",
+    G_DBUS_PROPERTY_INFO_FLAGS_READABLE,
+    NULL
+  },
+  "playback-status",
+  FALSE
+};
+
+static const _ExtendedGDBusPropertyInfo _grooved_player_property_info_loop_status =
+{
+  {
+    -1,
+    (gchar *) "LoopStatus",
+    (gchar *) "s",
+    G_DBUS_PROPERTY_INFO_FLAGS_READABLE,
+    NULL
+  },
+  "loop-status",
+  FALSE
+};
+
+static const _ExtendedGDBusPropertyInfo _grooved_player_property_info_track_metadata =
+{
+  {
+    -1,
+    (gchar *) "TrackMetadata",
+    (gchar *) "a{ss}",
+    G_DBUS_PROPERTY_INFO_FLAGS_READABLE,
+    NULL
+  },
+  "track-metadata",
+  FALSE
+};
+
+static const _ExtendedGDBusPropertyInfo _grooved_player_property_info_track_path =
+{
+  {
+    -1,
+    (gchar *) "TrackPath",
+    (gchar *) "s",
+    G_DBUS_PROPERTY_INFO_FLAGS_READABLE,
+    NULL
+  },
+  "track-path",
+  FALSE
+};
+
+static const _ExtendedGDBusPropertyInfo _grooved_player_property_info_track_length =
+{
+  {
+    -1,
+    (gchar *) "TrackLength",
+    (gchar *) "d",
+    G_DBUS_PROPERTY_INFO_FLAGS_READABLE,
+    NULL
+  },
+  "track-length",
+  FALSE
+};
+
+static const _ExtendedGDBusPropertyInfo * const _grooved_player_property_info_pointers[] =
+{
+  &_grooved_player_property_info_playback_status,
+  &_grooved_player_property_info_loop_status,
+  &_grooved_player_property_info_track_metadata,
+  &_grooved_player_property_info_track_path,
+  &_grooved_player_property_info_track_length,
+  NULL
+};
+
 static const _ExtendedGDBusInterfaceInfo _grooved_player_interface_info =
 {
   {
@@ -753,7 +673,7 @@ static const _ExtendedGDBusInterfaceInfo _grooved_player_interface_info =
     (gchar *) "io.github.ghedo.grooved.Player",
     (GDBusMethodInfo **) &_grooved_player_method_info_pointers,
     (GDBusSignalInfo **) &_grooved_player_signal_info_pointers,
-    NULL,
+    (GDBusPropertyInfo **) &_grooved_player_property_info_pointers,
     NULL
   },
   "player",
@@ -786,6 +706,11 @@ grooved_player_interface_info (void)
 guint
 grooved_player_override_properties (GObjectClass *klass, guint property_id_begin)
 {
+  g_object_class_override_property (klass, property_id_begin++, "playback-status");
+  g_object_class_override_property (klass, property_id_begin++, "loop-status");
+  g_object_class_override_property (klass, property_id_begin++, "track-metadata");
+  g_object_class_override_property (klass, property_id_begin++, "track-path");
+  g_object_class_override_property (klass, property_id_begin++, "track-length");
   return property_id_begin - 1;
 }
 
@@ -805,21 +730,21 @@ grooved_player_override_properties (GObjectClass *klass, guint property_id_begin
  * @handle_goto_track: Handler for the #GroovedPlayer::handle-goto-track signal.
  * @handle_list: Handler for the #GroovedPlayer::handle-list signal.
  * @handle_loop: Handler for the #GroovedPlayer::handle-loop signal.
- * @handle_loop_status: Handler for the #GroovedPlayer::handle-loop-status signal.
  * @handle_next: Handler for the #GroovedPlayer::handle-next signal.
  * @handle_pause: Handler for the #GroovedPlayer::handle-pause signal.
  * @handle_play: Handler for the #GroovedPlayer::handle-play signal.
- * @handle_playback_status: Handler for the #GroovedPlayer::handle-playback-status signal.
  * @handle_prev: Handler for the #GroovedPlayer::handle-prev signal.
  * @handle_quit: Handler for the #GroovedPlayer::handle-quit signal.
  * @handle_remove_track: Handler for the #GroovedPlayer::handle-remove-track signal.
  * @handle_seek: Handler for the #GroovedPlayer::handle-seek signal.
  * @handle_stop: Handler for the #GroovedPlayer::handle-stop signal.
  * @handle_toggle: Handler for the #GroovedPlayer::handle-toggle signal.
- * @handle_track_length: Handler for the #GroovedPlayer::handle-track-length signal.
- * @handle_track_metadata: Handler for the #GroovedPlayer::handle-track-metadata signal.
- * @handle_track_path: Handler for the #GroovedPlayer::handle-track-path signal.
  * @handle_track_position: Handler for the #GroovedPlayer::handle-track-position signal.
+ * @get_loop_status: Getter for the #GroovedPlayer:loop-status property.
+ * @get_playback_status: Getter for the #GroovedPlayer:playback-status property.
+ * @get_track_length: Getter for the #GroovedPlayer:track-length property.
+ * @get_track_metadata: Getter for the #GroovedPlayer:track-metadata property.
+ * @get_track_path: Getter for the #GroovedPlayer:track-path property.
  * @option_changed: Handler for the #GroovedPlayer::option-changed signal.
  * @status_changed: Handler for the #GroovedPlayer::status-changed signal.
  * @track_changed: Handler for the #GroovedPlayer::track-changed signal.
@@ -834,116 +759,6 @@ static void
 grooved_player_default_init (GroovedPlayerIface *iface)
 {
   /* GObject signals for incoming D-Bus method calls: */
-  /**
-   * GroovedPlayer::handle-playback-status:
-   * @object: A #GroovedPlayer.
-   * @invocation: A #GDBusMethodInvocation.
-   *
-   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.PlaybackStatus">PlaybackStatus()</link> D-Bus method.
-   *
-   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call grooved_player_complete_playback_status() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
-   *
-   * Returns: %TRUE if the invocation was handled, %FALSE to let other signal handlers run.
-   */
-  g_signal_new ("handle-playback-status",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (GroovedPlayerIface, handle_playback_status),
-    g_signal_accumulator_true_handled,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_BOOLEAN,
-    1,
-    G_TYPE_DBUS_METHOD_INVOCATION);
-
-  /**
-   * GroovedPlayer::handle-loop-status:
-   * @object: A #GroovedPlayer.
-   * @invocation: A #GDBusMethodInvocation.
-   *
-   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.LoopStatus">LoopStatus()</link> D-Bus method.
-   *
-   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call grooved_player_complete_loop_status() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
-   *
-   * Returns: %TRUE if the invocation was handled, %FALSE to let other signal handlers run.
-   */
-  g_signal_new ("handle-loop-status",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (GroovedPlayerIface, handle_loop_status),
-    g_signal_accumulator_true_handled,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_BOOLEAN,
-    1,
-    G_TYPE_DBUS_METHOD_INVOCATION);
-
-  /**
-   * GroovedPlayer::handle-track-metadata:
-   * @object: A #GroovedPlayer.
-   * @invocation: A #GDBusMethodInvocation.
-   *
-   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackMetadata">TrackMetadata()</link> D-Bus method.
-   *
-   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call grooved_player_complete_track_metadata() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
-   *
-   * Returns: %TRUE if the invocation was handled, %FALSE to let other signal handlers run.
-   */
-  g_signal_new ("handle-track-metadata",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (GroovedPlayerIface, handle_track_metadata),
-    g_signal_accumulator_true_handled,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_BOOLEAN,
-    1,
-    G_TYPE_DBUS_METHOD_INVOCATION);
-
-  /**
-   * GroovedPlayer::handle-track-path:
-   * @object: A #GroovedPlayer.
-   * @invocation: A #GDBusMethodInvocation.
-   *
-   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackPath">TrackPath()</link> D-Bus method.
-   *
-   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call grooved_player_complete_track_path() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
-   *
-   * Returns: %TRUE if the invocation was handled, %FALSE to let other signal handlers run.
-   */
-  g_signal_new ("handle-track-path",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (GroovedPlayerIface, handle_track_path),
-    g_signal_accumulator_true_handled,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_BOOLEAN,
-    1,
-    G_TYPE_DBUS_METHOD_INVOCATION);
-
-  /**
-   * GroovedPlayer::handle-track-length:
-   * @object: A #GroovedPlayer.
-   * @invocation: A #GDBusMethodInvocation.
-   *
-   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackLength">TrackLength()</link> D-Bus method.
-   *
-   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call grooved_player_complete_track_length() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
-   *
-   * Returns: %TRUE if the invocation was handled, %FALSE to let other signal handlers run.
-   */
-  g_signal_new ("handle-track-length",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (GroovedPlayerIface, handle_track_length),
-    g_signal_accumulator_true_handled,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_BOOLEAN,
-    1,
-    G_TYPE_DBUS_METHOD_INVOCATION);
-
   /**
    * GroovedPlayer::handle-track-position:
    * @object: A #GroovedPlayer.
@@ -1335,6 +1150,287 @@ grooved_player_default_init (GroovedPlayerIface *iface)
     G_TYPE_NONE,
     0);
 
+  /* GObject properties for D-Bus properties: */
+  /**
+   * GroovedPlayer:playback-status:
+   *
+   * Represents the D-Bus property <link linkend="gdbus-property-io-github-ghedo-grooved-Player.PlaybackStatus">"PlaybackStatus"</link>.
+   *
+   * Since the D-Bus property for this #GObject property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+   */
+  g_object_interface_install_property (iface,
+    g_param_spec_string ("playback-status", "PlaybackStatus", "PlaybackStatus", NULL, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  /**
+   * GroovedPlayer:loop-status:
+   *
+   * Represents the D-Bus property <link linkend="gdbus-property-io-github-ghedo-grooved-Player.LoopStatus">"LoopStatus"</link>.
+   *
+   * Since the D-Bus property for this #GObject property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+   */
+  g_object_interface_install_property (iface,
+    g_param_spec_string ("loop-status", "LoopStatus", "LoopStatus", NULL, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  /**
+   * GroovedPlayer:track-metadata:
+   *
+   * Represents the D-Bus property <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackMetadata">"TrackMetadata"</link>.
+   *
+   * Since the D-Bus property for this #GObject property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+   */
+  g_object_interface_install_property (iface,
+    g_param_spec_variant ("track-metadata", "TrackMetadata", "TrackMetadata", G_VARIANT_TYPE ("a{ss}"), NULL, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  /**
+   * GroovedPlayer:track-path:
+   *
+   * Represents the D-Bus property <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackPath">"TrackPath"</link>.
+   *
+   * Since the D-Bus property for this #GObject property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+   */
+  g_object_interface_install_property (iface,
+    g_param_spec_string ("track-path", "TrackPath", "TrackPath", NULL, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  /**
+   * GroovedPlayer:track-length:
+   *
+   * Represents the D-Bus property <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackLength">"TrackLength"</link>.
+   *
+   * Since the D-Bus property for this #GObject property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+   */
+  g_object_interface_install_property (iface,
+    g_param_spec_double ("track-length", "TrackLength", "TrackLength", -G_MAXDOUBLE, G_MAXDOUBLE, 0.0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+}
+
+/**
+ * grooved_player_get_playback_status: (skip)
+ * @object: A #GroovedPlayer.
+ *
+ * Gets the value of the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.PlaybackStatus">"PlaybackStatus"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * <warning>The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where @object was constructed. Use grooved_player_dup_playback_status() if on another thread.</warning>
+ *
+ * Returns: (transfer none): The property value or %NULL if the property is not set. Do not free the returned value, it belongs to @object.
+ */
+const gchar *
+grooved_player_get_playback_status (GroovedPlayer *object)
+{
+  return GROOVED_PLAYER_GET_IFACE (object)->get_playback_status (object);
+}
+
+/**
+ * grooved_player_dup_playback_status: (skip)
+ * @object: A #GroovedPlayer.
+ *
+ * Gets a copy of the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.PlaybackStatus">"PlaybackStatus"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * Returns: (transfer full): The property value or %NULL if the property is not set. The returned value should be freed with g_free().
+ */
+gchar *
+grooved_player_dup_playback_status (GroovedPlayer *object)
+{
+  gchar *value;
+  g_object_get (G_OBJECT (object), "playback-status", &value, NULL);
+  return value;
+}
+
+/**
+ * grooved_player_set_playback_status: (skip)
+ * @object: A #GroovedPlayer.
+ * @value: The value to set.
+ *
+ * Sets the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.PlaybackStatus">"PlaybackStatus"</link> D-Bus property to @value.
+ *
+ * Since this D-Bus property is not writable, it is only meaningful to use this function on the service-side.
+ */
+void
+grooved_player_set_playback_status (GroovedPlayer *object, const gchar *value)
+{
+  g_object_set (G_OBJECT (object), "playback-status", value, NULL);
+}
+
+/**
+ * grooved_player_get_loop_status: (skip)
+ * @object: A #GroovedPlayer.
+ *
+ * Gets the value of the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.LoopStatus">"LoopStatus"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * <warning>The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where @object was constructed. Use grooved_player_dup_loop_status() if on another thread.</warning>
+ *
+ * Returns: (transfer none): The property value or %NULL if the property is not set. Do not free the returned value, it belongs to @object.
+ */
+const gchar *
+grooved_player_get_loop_status (GroovedPlayer *object)
+{
+  return GROOVED_PLAYER_GET_IFACE (object)->get_loop_status (object);
+}
+
+/**
+ * grooved_player_dup_loop_status: (skip)
+ * @object: A #GroovedPlayer.
+ *
+ * Gets a copy of the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.LoopStatus">"LoopStatus"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * Returns: (transfer full): The property value or %NULL if the property is not set. The returned value should be freed with g_free().
+ */
+gchar *
+grooved_player_dup_loop_status (GroovedPlayer *object)
+{
+  gchar *value;
+  g_object_get (G_OBJECT (object), "loop-status", &value, NULL);
+  return value;
+}
+
+/**
+ * grooved_player_set_loop_status: (skip)
+ * @object: A #GroovedPlayer.
+ * @value: The value to set.
+ *
+ * Sets the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.LoopStatus">"LoopStatus"</link> D-Bus property to @value.
+ *
+ * Since this D-Bus property is not writable, it is only meaningful to use this function on the service-side.
+ */
+void
+grooved_player_set_loop_status (GroovedPlayer *object, const gchar *value)
+{
+  g_object_set (G_OBJECT (object), "loop-status", value, NULL);
+}
+
+/**
+ * grooved_player_get_track_metadata: (skip)
+ * @object: A #GroovedPlayer.
+ *
+ * Gets the value of the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackMetadata">"TrackMetadata"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * <warning>The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where @object was constructed. Use grooved_player_dup_track_metadata() if on another thread.</warning>
+ *
+ * Returns: (transfer none): The property value or %NULL if the property is not set. Do not free the returned value, it belongs to @object.
+ */
+GVariant *
+grooved_player_get_track_metadata (GroovedPlayer *object)
+{
+  return GROOVED_PLAYER_GET_IFACE (object)->get_track_metadata (object);
+}
+
+/**
+ * grooved_player_dup_track_metadata: (skip)
+ * @object: A #GroovedPlayer.
+ *
+ * Gets a copy of the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackMetadata">"TrackMetadata"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * Returns: (transfer full): The property value or %NULL if the property is not set. The returned value should be freed with g_variant_unref().
+ */
+GVariant *
+grooved_player_dup_track_metadata (GroovedPlayer *object)
+{
+  GVariant *value;
+  g_object_get (G_OBJECT (object), "track-metadata", &value, NULL);
+  return value;
+}
+
+/**
+ * grooved_player_set_track_metadata: (skip)
+ * @object: A #GroovedPlayer.
+ * @value: The value to set.
+ *
+ * Sets the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackMetadata">"TrackMetadata"</link> D-Bus property to @value.
+ *
+ * Since this D-Bus property is not writable, it is only meaningful to use this function on the service-side.
+ */
+void
+grooved_player_set_track_metadata (GroovedPlayer *object, GVariant *value)
+{
+  g_object_set (G_OBJECT (object), "track-metadata", value, NULL);
+}
+
+/**
+ * grooved_player_get_track_path: (skip)
+ * @object: A #GroovedPlayer.
+ *
+ * Gets the value of the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackPath">"TrackPath"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * <warning>The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where @object was constructed. Use grooved_player_dup_track_path() if on another thread.</warning>
+ *
+ * Returns: (transfer none): The property value or %NULL if the property is not set. Do not free the returned value, it belongs to @object.
+ */
+const gchar *
+grooved_player_get_track_path (GroovedPlayer *object)
+{
+  return GROOVED_PLAYER_GET_IFACE (object)->get_track_path (object);
+}
+
+/**
+ * grooved_player_dup_track_path: (skip)
+ * @object: A #GroovedPlayer.
+ *
+ * Gets a copy of the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackPath">"TrackPath"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * Returns: (transfer full): The property value or %NULL if the property is not set. The returned value should be freed with g_free().
+ */
+gchar *
+grooved_player_dup_track_path (GroovedPlayer *object)
+{
+  gchar *value;
+  g_object_get (G_OBJECT (object), "track-path", &value, NULL);
+  return value;
+}
+
+/**
+ * grooved_player_set_track_path: (skip)
+ * @object: A #GroovedPlayer.
+ * @value: The value to set.
+ *
+ * Sets the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackPath">"TrackPath"</link> D-Bus property to @value.
+ *
+ * Since this D-Bus property is not writable, it is only meaningful to use this function on the service-side.
+ */
+void
+grooved_player_set_track_path (GroovedPlayer *object, const gchar *value)
+{
+  g_object_set (G_OBJECT (object), "track-path", value, NULL);
+}
+
+/**
+ * grooved_player_get_track_length: (skip)
+ * @object: A #GroovedPlayer.
+ *
+ * Gets the value of the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackLength">"TrackLength"</link> D-Bus property.
+ *
+ * Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+ *
+ * Returns: The property value.
+ */
+gdouble
+grooved_player_get_track_length (GroovedPlayer *object)
+{
+  return GROOVED_PLAYER_GET_IFACE (object)->get_track_length (object);
+}
+
+/**
+ * grooved_player_set_track_length: (skip)
+ * @object: A #GroovedPlayer.
+ * @value: The value to set.
+ *
+ * Sets the <link linkend="gdbus-property-io-github-ghedo-grooved-Player.TrackLength">"TrackLength"</link> D-Bus property to @value.
+ *
+ * Since this D-Bus property is not writable, it is only meaningful to use this function on the service-side.
+ */
+void
+grooved_player_set_track_length (GroovedPlayer *object, gdouble value)
+{
+  g_object_set (G_OBJECT (object), "track-length", value, NULL);
 }
 
 /**
@@ -1374,496 +1470,6 @@ grooved_player_emit_option_changed (
     GroovedPlayer *object)
 {
   g_signal_emit_by_name (object, "option-changed");
-}
-
-/**
- * grooved_player_call_playback_status:
- * @proxy: A #GroovedPlayerProxy.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
- * @user_data: User data to pass to @callback.
- *
- * Asynchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.PlaybackStatus">PlaybackStatus()</link> D-Bus method on @proxy.
- * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.
- * You can then call grooved_player_call_playback_status_finish() to get the result of the operation.
- *
- * See grooved_player_call_playback_status_sync() for the synchronous, blocking version of this method.
- */
-void
-grooved_player_call_playback_status (
-    GroovedPlayer *proxy,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data)
-{
-  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
-    "PlaybackStatus",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    callback,
-    user_data);
-}
-
-/**
- * grooved_player_call_playback_status_finish:
- * @proxy: A #GroovedPlayerProxy.
- * @out_status: (out): Return location for return parameter or %NULL to ignore.
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_player_call_playback_status().
- * @error: Return location for error or %NULL.
- *
- * Finishes an operation started with grooved_player_call_playback_status().
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_playback_status_finish (
-    GroovedPlayer *proxy,
-    gchar **out_status,
-    GAsyncResult *res,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(s)",
-                 out_status);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * grooved_player_call_playback_status_sync:
- * @proxy: A #GroovedPlayerProxy.
- * @out_status: (out): Return location for return parameter or %NULL to ignore.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
- *
- * Synchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.PlaybackStatus">PlaybackStatus()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
- *
- * See grooved_player_call_playback_status() for the asynchronous version of this method.
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_playback_status_sync (
-    GroovedPlayer *proxy,
-    gchar **out_status,
-    GCancellable *cancellable,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
-    "PlaybackStatus",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(s)",
-                 out_status);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * grooved_player_call_loop_status:
- * @proxy: A #GroovedPlayerProxy.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
- * @user_data: User data to pass to @callback.
- *
- * Asynchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.LoopStatus">LoopStatus()</link> D-Bus method on @proxy.
- * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.
- * You can then call grooved_player_call_loop_status_finish() to get the result of the operation.
- *
- * See grooved_player_call_loop_status_sync() for the synchronous, blocking version of this method.
- */
-void
-grooved_player_call_loop_status (
-    GroovedPlayer *proxy,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data)
-{
-  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
-    "LoopStatus",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    callback,
-    user_data);
-}
-
-/**
- * grooved_player_call_loop_status_finish:
- * @proxy: A #GroovedPlayerProxy.
- * @out_status: (out): Return location for return parameter or %NULL to ignore.
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_player_call_loop_status().
- * @error: Return location for error or %NULL.
- *
- * Finishes an operation started with grooved_player_call_loop_status().
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_loop_status_finish (
-    GroovedPlayer *proxy,
-    gchar **out_status,
-    GAsyncResult *res,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(s)",
-                 out_status);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * grooved_player_call_loop_status_sync:
- * @proxy: A #GroovedPlayerProxy.
- * @out_status: (out): Return location for return parameter or %NULL to ignore.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
- *
- * Synchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.LoopStatus">LoopStatus()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
- *
- * See grooved_player_call_loop_status() for the asynchronous version of this method.
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_loop_status_sync (
-    GroovedPlayer *proxy,
-    gchar **out_status,
-    GCancellable *cancellable,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
-    "LoopStatus",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(s)",
-                 out_status);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * grooved_player_call_track_metadata:
- * @proxy: A #GroovedPlayerProxy.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
- * @user_data: User data to pass to @callback.
- *
- * Asynchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackMetadata">TrackMetadata()</link> D-Bus method on @proxy.
- * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.
- * You can then call grooved_player_call_track_metadata_finish() to get the result of the operation.
- *
- * See grooved_player_call_track_metadata_sync() for the synchronous, blocking version of this method.
- */
-void
-grooved_player_call_track_metadata (
-    GroovedPlayer *proxy,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data)
-{
-  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
-    "TrackMetadata",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    callback,
-    user_data);
-}
-
-/**
- * grooved_player_call_track_metadata_finish:
- * @proxy: A #GroovedPlayerProxy.
- * @out_metadata: (out): Return location for return parameter or %NULL to ignore.
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_player_call_track_metadata().
- * @error: Return location for error or %NULL.
- *
- * Finishes an operation started with grooved_player_call_track_metadata().
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_track_metadata_finish (
-    GroovedPlayer *proxy,
-    GVariant **out_metadata,
-    GAsyncResult *res,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(@a{ss})",
-                 out_metadata);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * grooved_player_call_track_metadata_sync:
- * @proxy: A #GroovedPlayerProxy.
- * @out_metadata: (out): Return location for return parameter or %NULL to ignore.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
- *
- * Synchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackMetadata">TrackMetadata()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
- *
- * See grooved_player_call_track_metadata() for the asynchronous version of this method.
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_track_metadata_sync (
-    GroovedPlayer *proxy,
-    GVariant **out_metadata,
-    GCancellable *cancellable,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
-    "TrackMetadata",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(@a{ss})",
-                 out_metadata);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * grooved_player_call_track_path:
- * @proxy: A #GroovedPlayerProxy.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
- * @user_data: User data to pass to @callback.
- *
- * Asynchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackPath">TrackPath()</link> D-Bus method on @proxy.
- * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.
- * You can then call grooved_player_call_track_path_finish() to get the result of the operation.
- *
- * See grooved_player_call_track_path_sync() for the synchronous, blocking version of this method.
- */
-void
-grooved_player_call_track_path (
-    GroovedPlayer *proxy,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data)
-{
-  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
-    "TrackPath",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    callback,
-    user_data);
-}
-
-/**
- * grooved_player_call_track_path_finish:
- * @proxy: A #GroovedPlayerProxy.
- * @out_path: (out): Return location for return parameter or %NULL to ignore.
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_player_call_track_path().
- * @error: Return location for error or %NULL.
- *
- * Finishes an operation started with grooved_player_call_track_path().
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_track_path_finish (
-    GroovedPlayer *proxy,
-    gchar **out_path,
-    GAsyncResult *res,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(s)",
-                 out_path);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * grooved_player_call_track_path_sync:
- * @proxy: A #GroovedPlayerProxy.
- * @out_path: (out): Return location for return parameter or %NULL to ignore.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
- *
- * Synchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackPath">TrackPath()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
- *
- * See grooved_player_call_track_path() for the asynchronous version of this method.
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_track_path_sync (
-    GroovedPlayer *proxy,
-    gchar **out_path,
-    GCancellable *cancellable,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
-    "TrackPath",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(s)",
-                 out_path);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * grooved_player_call_track_length:
- * @proxy: A #GroovedPlayerProxy.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
- * @user_data: User data to pass to @callback.
- *
- * Asynchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackLength">TrackLength()</link> D-Bus method on @proxy.
- * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.
- * You can then call grooved_player_call_track_length_finish() to get the result of the operation.
- *
- * See grooved_player_call_track_length_sync() for the synchronous, blocking version of this method.
- */
-void
-grooved_player_call_track_length (
-    GroovedPlayer *proxy,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data)
-{
-  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
-    "TrackLength",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    callback,
-    user_data);
-}
-
-/**
- * grooved_player_call_track_length_finish:
- * @proxy: A #GroovedPlayerProxy.
- * @out_length: (out): Return location for return parameter or %NULL to ignore.
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_player_call_track_length().
- * @error: Return location for error or %NULL.
- *
- * Finishes an operation started with grooved_player_call_track_length().
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_track_length_finish (
-    GroovedPlayer *proxy,
-    gdouble *out_length,
-    GAsyncResult *res,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(d)",
-                 out_length);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * grooved_player_call_track_length_sync:
- * @proxy: A #GroovedPlayerProxy.
- * @out_length: (out): Return location for return parameter or %NULL to ignore.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
- *
- * Synchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackLength">TrackLength()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
- *
- * See grooved_player_call_track_length() for the asynchronous version of this method.
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-grooved_player_call_track_length_sync (
-    GroovedPlayer *proxy,
-    gdouble *out_length,
-    GCancellable *cancellable,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
-    "TrackLength",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(d)",
-                 out_length);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
 }
 
 /**
@@ -3313,111 +2919,6 @@ _out:
 }
 
 /**
- * grooved_player_complete_playback_status:
- * @object: A #GroovedPlayer.
- * @invocation: (transfer full): A #GDBusMethodInvocation.
- * @status: Parameter to return.
- *
- * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.PlaybackStatus">PlaybackStatus()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
- *
- * This method will free @invocation, you cannot use it afterwards.
- */
-void
-grooved_player_complete_playback_status (
-    GroovedPlayer *object,
-    GDBusMethodInvocation *invocation,
-    const gchar *status)
-{
-  g_dbus_method_invocation_return_value (invocation,
-    g_variant_new ("(s)",
-                   status));
-}
-
-/**
- * grooved_player_complete_loop_status:
- * @object: A #GroovedPlayer.
- * @invocation: (transfer full): A #GDBusMethodInvocation.
- * @status: Parameter to return.
- *
- * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.LoopStatus">LoopStatus()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
- *
- * This method will free @invocation, you cannot use it afterwards.
- */
-void
-grooved_player_complete_loop_status (
-    GroovedPlayer *object,
-    GDBusMethodInvocation *invocation,
-    const gchar *status)
-{
-  g_dbus_method_invocation_return_value (invocation,
-    g_variant_new ("(s)",
-                   status));
-}
-
-/**
- * grooved_player_complete_track_metadata:
- * @object: A #GroovedPlayer.
- * @invocation: (transfer full): A #GDBusMethodInvocation.
- * @metadata: Parameter to return.
- *
- * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackMetadata">TrackMetadata()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
- *
- * This method will free @invocation, you cannot use it afterwards.
- */
-void
-grooved_player_complete_track_metadata (
-    GroovedPlayer *object,
-    GDBusMethodInvocation *invocation,
-    GVariant *metadata)
-{
-  g_dbus_method_invocation_return_value (invocation,
-    g_variant_new ("(@a{ss})",
-                   metadata));
-}
-
-/**
- * grooved_player_complete_track_path:
- * @object: A #GroovedPlayer.
- * @invocation: (transfer full): A #GDBusMethodInvocation.
- * @path: Parameter to return.
- *
- * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackPath">TrackPath()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
- *
- * This method will free @invocation, you cannot use it afterwards.
- */
-void
-grooved_player_complete_track_path (
-    GroovedPlayer *object,
-    GDBusMethodInvocation *invocation,
-    const gchar *path)
-{
-  g_dbus_method_invocation_return_value (invocation,
-    g_variant_new ("(s)",
-                   path));
-}
-
-/**
- * grooved_player_complete_track_length:
- * @object: A #GroovedPlayer.
- * @invocation: (transfer full): A #GDBusMethodInvocation.
- * @length: Parameter to return.
- *
- * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.TrackLength">TrackLength()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
- *
- * This method will free @invocation, you cannot use it afterwards.
- */
-void
-grooved_player_complete_track_length (
-    GroovedPlayer *object,
-    GDBusMethodInvocation *invocation,
-    gdouble length)
-{
-  g_dbus_method_invocation_return_value (invocation,
-    g_variant_new ("(d)",
-                   length));
-}
-
-/**
  * grooved_player_complete_track_position:
  * @object: A #GroovedPlayer.
  * @invocation: (transfer full): A #GDBusMethodInvocation.
@@ -3748,6 +3249,45 @@ grooved_player_proxy_get_property (GObject      *object,
   GValue       *value,
   GParamSpec   *pspec G_GNUC_UNUSED)
 {
+  const _ExtendedGDBusPropertyInfo *info;
+  GVariant *variant;
+  g_assert (prop_id != 0 && prop_id - 1 < 5);
+  info = _grooved_player_property_info_pointers[prop_id - 1];
+  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (object), info->parent_struct.name);
+  if (info->use_gvariant)
+    {
+      g_value_set_variant (value, variant);
+    }
+  else
+    {
+      if (variant != NULL)
+        g_dbus_gvariant_to_gvalue (variant, value);
+    }
+  if (variant != NULL)
+    g_variant_unref (variant);
+}
+
+static void
+grooved_player_proxy_set_property_cb (GDBusProxy *proxy,
+  GAsyncResult *res,
+  gpointer      user_data)
+{
+  const _ExtendedGDBusPropertyInfo *info = user_data;
+  GError *error;
+  GVariant *_ret;
+  error = NULL;
+  _ret = g_dbus_proxy_call_finish (proxy, res, &error);
+  if (!_ret)
+    {
+      g_warning ("Error setting property '%s' on interface io.github.ghedo.grooved.Player: %s (%s, %d)",
+                 info->parent_struct.name,
+                 error->message, g_quark_to_string (error->domain), error->code);
+      g_error_free (error);
+    }
+  else
+    {
+      g_variant_unref (_ret);
+    }
 }
 
 static void
@@ -3756,6 +3296,18 @@ grooved_player_proxy_set_property (GObject      *object,
   const GValue *value,
   GParamSpec   *pspec G_GNUC_UNUSED)
 {
+  const _ExtendedGDBusPropertyInfo *info;
+  GVariant *variant;
+  g_assert (prop_id != 0 && prop_id - 1 < 5);
+  info = _grooved_player_property_info_pointers[prop_id - 1];
+  variant = g_dbus_gvalue_to_gvariant (value, G_VARIANT_TYPE (info->parent_struct.signature));
+  g_dbus_proxy_call (G_DBUS_PROXY (object),
+    "org.freedesktop.DBus.Properties.Set",
+    g_variant_new ("(ssv)", "io.github.ghedo.grooved.Player", info->parent_struct.name, variant),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    NULL, (GAsyncReadyCallback) grooved_player_proxy_set_property_cb, (GDBusPropertyInfo *) &info->parent_struct);
+  g_variant_unref (variant);
 }
 
 static void
@@ -3828,6 +3380,79 @@ grooved_player_proxy_g_properties_changed (GDBusProxy *_proxy,
     }
 }
 
+static const gchar *
+grooved_player_proxy_get_playback_status (GroovedPlayer *object)
+{
+  GroovedPlayerProxy *proxy = GROOVED_PLAYER_PROXY (object);
+  GVariant *variant;
+  const gchar *value = NULL;
+  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "PlaybackStatus");
+  if (variant != NULL)
+    {
+      value = g_variant_get_string (variant, NULL);
+      g_variant_unref (variant);
+    }
+  return value;
+}
+
+static const gchar *
+grooved_player_proxy_get_loop_status (GroovedPlayer *object)
+{
+  GroovedPlayerProxy *proxy = GROOVED_PLAYER_PROXY (object);
+  GVariant *variant;
+  const gchar *value = NULL;
+  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "LoopStatus");
+  if (variant != NULL)
+    {
+      value = g_variant_get_string (variant, NULL);
+      g_variant_unref (variant);
+    }
+  return value;
+}
+
+static GVariant *
+grooved_player_proxy_get_track_metadata (GroovedPlayer *object)
+{
+  GroovedPlayerProxy *proxy = GROOVED_PLAYER_PROXY (object);
+  GVariant *variant;
+  GVariant *value = NULL;
+  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "TrackMetadata");
+  value = variant;
+  if (variant != NULL)
+    g_variant_unref (variant);
+  return value;
+}
+
+static const gchar *
+grooved_player_proxy_get_track_path (GroovedPlayer *object)
+{
+  GroovedPlayerProxy *proxy = GROOVED_PLAYER_PROXY (object);
+  GVariant *variant;
+  const gchar *value = NULL;
+  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "TrackPath");
+  if (variant != NULL)
+    {
+      value = g_variant_get_string (variant, NULL);
+      g_variant_unref (variant);
+    }
+  return value;
+}
+
+static gdouble
+grooved_player_proxy_get_track_length (GroovedPlayer *object)
+{
+  GroovedPlayerProxy *proxy = GROOVED_PLAYER_PROXY (object);
+  GVariant *variant;
+  gdouble value = 0;
+  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "TrackLength");
+  if (variant != NULL)
+    {
+      value = g_variant_get_double (variant);
+      g_variant_unref (variant);
+    }
+  return value;
+}
+
 static void
 grooved_player_proxy_init (GroovedPlayerProxy *proxy)
 {
@@ -3855,6 +3480,8 @@ grooved_player_proxy_class_init (GroovedPlayerProxyClass *klass)
   proxy_class->g_signal = grooved_player_proxy_g_signal;
   proxy_class->g_properties_changed = grooved_player_proxy_g_properties_changed;
 
+  grooved_player_override_properties (gobject_class, 1);
+
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_38
   g_type_class_add_private (klass, sizeof (GroovedPlayerProxyPrivate));
 #endif
@@ -3863,6 +3490,11 @@ grooved_player_proxy_class_init (GroovedPlayerProxyClass *klass)
 static void
 grooved_player_proxy_iface_init (GroovedPlayerIface *iface)
 {
+  iface->get_playback_status = grooved_player_proxy_get_playback_status;
+  iface->get_loop_status = grooved_player_proxy_get_loop_status;
+  iface->get_track_metadata = grooved_player_proxy_get_track_metadata;
+  iface->get_track_path = grooved_player_proxy_get_track_path;
+  iface->get_track_length = grooved_player_proxy_get_track_length;
 }
 
 /**
@@ -4252,9 +3884,25 @@ out:
   return g_variant_builder_end (&builder);
 }
 
+static gboolean _grooved_player_emit_changed (gpointer user_data);
+
 static void
 grooved_player_skeleton_dbus_interface_flush (GDBusInterfaceSkeleton *_skeleton)
 {
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (_skeleton);
+  gboolean emit_changed = FALSE;
+
+  g_mutex_lock (&skeleton->priv->lock);
+  if (skeleton->priv->changed_properties_idle_source != NULL)
+    {
+      g_source_destroy (skeleton->priv->changed_properties_idle_source);
+      skeleton->priv->changed_properties_idle_source = NULL;
+      emit_changed = TRUE;
+    }
+  g_mutex_unlock (&skeleton->priv->lock);
+
+  if (emit_changed)
+    _grooved_player_emit_changed (skeleton);
 }
 
 static void
@@ -4338,12 +3986,154 @@ static void
 grooved_player_skeleton_finalize (GObject *object)
 {
   GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+  guint n;
+  for (n = 0; n < 5; n++)
+    g_value_unset (&skeleton->priv->properties[n]);
+  g_free (skeleton->priv->properties);
   g_list_free_full (skeleton->priv->changed_properties, (GDestroyNotify) _changed_property_free);
   if (skeleton->priv->changed_properties_idle_source != NULL)
     g_source_destroy (skeleton->priv->changed_properties_idle_source);
   g_main_context_unref (skeleton->priv->context);
   g_mutex_clear (&skeleton->priv->lock);
   G_OBJECT_CLASS (grooved_player_skeleton_parent_class)->finalize (object);
+}
+
+static void
+grooved_player_skeleton_get_property (GObject      *object,
+  guint         prop_id,
+  GValue       *value,
+  GParamSpec   *pspec G_GNUC_UNUSED)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+  g_assert (prop_id != 0 && prop_id - 1 < 5);
+  g_mutex_lock (&skeleton->priv->lock);
+  g_value_copy (&skeleton->priv->properties[prop_id - 1], value);
+  g_mutex_unlock (&skeleton->priv->lock);
+}
+
+static gboolean
+_grooved_player_emit_changed (gpointer user_data)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (user_data);
+  GList *l;
+  GVariantBuilder builder;
+  GVariantBuilder invalidated_builder;
+  guint num_changes;
+
+  g_mutex_lock (&skeleton->priv->lock);
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init (&invalidated_builder, G_VARIANT_TYPE ("as"));
+  for (l = skeleton->priv->changed_properties, num_changes = 0; l != NULL; l = l->next)
+    {
+      ChangedProperty *cp = l->data;
+      GVariant *variant;
+      const GValue *cur_value;
+
+      cur_value = &skeleton->priv->properties[cp->prop_id - 1];
+      if (!_g_value_equal (cur_value, &cp->orig_value))
+        {
+          variant = g_dbus_gvalue_to_gvariant (cur_value, G_VARIANT_TYPE (cp->info->parent_struct.signature));
+          g_variant_builder_add (&builder, "{sv}", cp->info->parent_struct.name, variant);
+          g_variant_unref (variant);
+          num_changes++;
+        }
+    }
+  if (num_changes > 0)
+    {
+      GList *connections, *ll;
+      GVariant *signal_variant;
+      signal_variant = g_variant_ref_sink (g_variant_new ("(sa{sv}as)", "io.github.ghedo.grooved.Player",
+                                           &builder, &invalidated_builder));
+      connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
+      for (ll = connections; ll != NULL; ll = ll->next)
+        {
+          GDBusConnection *connection = ll->data;
+
+          g_dbus_connection_emit_signal (connection,
+                                         NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)),
+                                         "org.freedesktop.DBus.Properties",
+                                         "PropertiesChanged",
+                                         signal_variant,
+                                         NULL);
+        }
+      g_variant_unref (signal_variant);
+      g_list_free_full (connections, g_object_unref);
+    }
+  else
+    {
+      g_variant_builder_clear (&builder);
+      g_variant_builder_clear (&invalidated_builder);
+    }
+  g_list_free_full (skeleton->priv->changed_properties, (GDestroyNotify) _changed_property_free);
+  skeleton->priv->changed_properties = NULL;
+  skeleton->priv->changed_properties_idle_source = NULL;
+  g_mutex_unlock (&skeleton->priv->lock);
+  return FALSE;
+}
+
+static void
+_grooved_player_schedule_emit_changed (GroovedPlayerSkeleton *skeleton, const _ExtendedGDBusPropertyInfo *info, guint prop_id, const GValue *orig_value)
+{
+  ChangedProperty *cp;
+  GList *l;
+  cp = NULL;
+  for (l = skeleton->priv->changed_properties; l != NULL; l = l->next)
+    {
+      ChangedProperty *i_cp = l->data;
+      if (i_cp->info == info)
+        {
+          cp = i_cp;
+          break;
+        }
+    }
+  if (cp == NULL)
+    {
+      cp = g_new0 (ChangedProperty, 1);
+      cp->prop_id = prop_id;
+      cp->info = info;
+      skeleton->priv->changed_properties = g_list_prepend (skeleton->priv->changed_properties, cp);
+      g_value_init (&cp->orig_value, G_VALUE_TYPE (orig_value));
+      g_value_copy (orig_value, &cp->orig_value);
+    }
+}
+
+static void
+grooved_player_skeleton_notify (GObject      *object,
+  GParamSpec *pspec G_GNUC_UNUSED)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+  g_mutex_lock (&skeleton->priv->lock);
+  if (skeleton->priv->changed_properties != NULL &&
+      skeleton->priv->changed_properties_idle_source == NULL)
+    {
+      skeleton->priv->changed_properties_idle_source = g_idle_source_new ();
+      g_source_set_priority (skeleton->priv->changed_properties_idle_source, G_PRIORITY_DEFAULT);
+      g_source_set_callback (skeleton->priv->changed_properties_idle_source, _grooved_player_emit_changed, g_object_ref (skeleton), (GDestroyNotify) g_object_unref);
+      g_source_attach (skeleton->priv->changed_properties_idle_source, skeleton->priv->context);
+      g_source_unref (skeleton->priv->changed_properties_idle_source);
+    }
+  g_mutex_unlock (&skeleton->priv->lock);
+}
+
+static void
+grooved_player_skeleton_set_property (GObject      *object,
+  guint         prop_id,
+  const GValue *value,
+  GParamSpec   *pspec)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+  g_assert (prop_id != 0 && prop_id - 1 < 5);
+  g_mutex_lock (&skeleton->priv->lock);
+  g_object_freeze_notify (object);
+  if (!_g_value_equal (value, &skeleton->priv->properties[prop_id - 1]))
+    {
+      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL)
+        _grooved_player_schedule_emit_changed (skeleton, _grooved_player_property_info_pointers[prop_id - 1], prop_id, &skeleton->priv->properties[prop_id - 1]);
+      g_value_copy (value, &skeleton->priv->properties[prop_id - 1]);
+      g_object_notify_by_pspec (object, pspec);
+    }
+  g_mutex_unlock (&skeleton->priv->lock);
+  g_object_thaw_notify (object);
 }
 
 static void
@@ -4357,6 +4147,67 @@ grooved_player_skeleton_init (GroovedPlayerSkeleton *skeleton)
 
   g_mutex_init (&skeleton->priv->lock);
   skeleton->priv->context = g_main_context_ref_thread_default ();
+  skeleton->priv->properties = g_new0 (GValue, 5);
+  g_value_init (&skeleton->priv->properties[0], G_TYPE_STRING);
+  g_value_init (&skeleton->priv->properties[1], G_TYPE_STRING);
+  g_value_init (&skeleton->priv->properties[2], G_TYPE_VARIANT);
+  g_value_init (&skeleton->priv->properties[3], G_TYPE_STRING);
+  g_value_init (&skeleton->priv->properties[4], G_TYPE_DOUBLE);
+}
+
+static const gchar *
+grooved_player_skeleton_get_playback_status (GroovedPlayer *object)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+  const gchar *value;
+  g_mutex_lock (&skeleton->priv->lock);
+  value = g_value_get_string (&(skeleton->priv->properties[0]));
+  g_mutex_unlock (&skeleton->priv->lock);
+  return value;
+}
+
+static const gchar *
+grooved_player_skeleton_get_loop_status (GroovedPlayer *object)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+  const gchar *value;
+  g_mutex_lock (&skeleton->priv->lock);
+  value = g_value_get_string (&(skeleton->priv->properties[1]));
+  g_mutex_unlock (&skeleton->priv->lock);
+  return value;
+}
+
+static GVariant *
+grooved_player_skeleton_get_track_metadata (GroovedPlayer *object)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+  GVariant *value;
+  g_mutex_lock (&skeleton->priv->lock);
+  value = g_value_get_variant (&(skeleton->priv->properties[2]));
+  g_mutex_unlock (&skeleton->priv->lock);
+  return value;
+}
+
+static const gchar *
+grooved_player_skeleton_get_track_path (GroovedPlayer *object)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+  const gchar *value;
+  g_mutex_lock (&skeleton->priv->lock);
+  value = g_value_get_string (&(skeleton->priv->properties[3]));
+  g_mutex_unlock (&skeleton->priv->lock);
+  return value;
+}
+
+static gdouble
+grooved_player_skeleton_get_track_length (GroovedPlayer *object)
+{
+  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
+  gdouble value;
+  g_mutex_lock (&skeleton->priv->lock);
+  value = g_value_get_double (&(skeleton->priv->properties[4]));
+  g_mutex_unlock (&skeleton->priv->lock);
+  return value;
 }
 
 static void
@@ -4367,6 +4218,12 @@ grooved_player_skeleton_class_init (GroovedPlayerSkeletonClass *klass)
 
   gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->finalize = grooved_player_skeleton_finalize;
+  gobject_class->get_property = grooved_player_skeleton_get_property;
+  gobject_class->set_property = grooved_player_skeleton_set_property;
+  gobject_class->notify       = grooved_player_skeleton_notify;
+
+
+  grooved_player_override_properties (gobject_class, 1);
 
   skeleton_class = G_DBUS_INTERFACE_SKELETON_CLASS (klass);
   skeleton_class->get_info = grooved_player_skeleton_dbus_interface_get_info;
@@ -4385,6 +4242,11 @@ grooved_player_skeleton_iface_init (GroovedPlayerIface *iface)
   iface->status_changed = _grooved_player_on_signal_status_changed;
   iface->track_changed = _grooved_player_on_signal_track_changed;
   iface->option_changed = _grooved_player_on_signal_option_changed;
+  iface->get_playback_status = grooved_player_skeleton_get_playback_status;
+  iface->get_loop_status = grooved_player_skeleton_get_loop_status;
+  iface->get_track_metadata = grooved_player_skeleton_get_track_metadata;
+  iface->get_track_path = grooved_player_skeleton_get_track_path;
+  iface->get_track_length = grooved_player_skeleton_get_track_length;
 }
 
 /**
