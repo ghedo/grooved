@@ -487,7 +487,7 @@ static const _ExtendedGDBusMethodInfo _grooved_player_method_info_remove_track =
   FALSE
 };
 
-static const _ExtendedGDBusArgInfo _grooved_player_method_info_loop_IN_ARG_mode =
+static const _ExtendedGDBusArgInfo _grooved_player_method_info_set_loop_status_IN_ARG_mode =
 {
   {
     -1,
@@ -498,22 +498,22 @@ static const _ExtendedGDBusArgInfo _grooved_player_method_info_loop_IN_ARG_mode 
   FALSE
 };
 
-static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_loop_IN_ARG_pointers[] =
+static const _ExtendedGDBusArgInfo * const _grooved_player_method_info_set_loop_status_IN_ARG_pointers[] =
 {
-  &_grooved_player_method_info_loop_IN_ARG_mode,
+  &_grooved_player_method_info_set_loop_status_IN_ARG_mode,
   NULL
 };
 
-static const _ExtendedGDBusMethodInfo _grooved_player_method_info_loop =
+static const _ExtendedGDBusMethodInfo _grooved_player_method_info_set_loop_status =
 {
   {
     -1,
-    (gchar *) "Loop",
-    (GDBusArgInfo **) &_grooved_player_method_info_loop_IN_ARG_pointers,
+    (gchar *) "SetLoopStatus",
+    (GDBusArgInfo **) &_grooved_player_method_info_set_loop_status_IN_ARG_pointers,
     NULL,
     NULL
   },
-  "handle-loop",
+  "handle-set-loop-status",
   FALSE
 };
 
@@ -545,7 +545,7 @@ static const _ExtendedGDBusMethodInfo * const _grooved_player_method_info_pointe
   &_grooved_player_method_info_add_list,
   &_grooved_player_method_info_goto_track,
   &_grooved_player_method_info_remove_track,
-  &_grooved_player_method_info_loop,
+  &_grooved_player_method_info_set_loop_status,
   &_grooved_player_method_info_quit,
   NULL
 };
@@ -688,7 +688,6 @@ grooved_player_override_properties (GObjectClass *klass, guint property_id_begin
  * @handle_add_track: Handler for the #GroovedPlayer::handle-add-track signal.
  * @handle_goto_track: Handler for the #GroovedPlayer::handle-goto-track signal.
  * @handle_list: Handler for the #GroovedPlayer::handle-list signal.
- * @handle_loop: Handler for the #GroovedPlayer::handle-loop signal.
  * @handle_next: Handler for the #GroovedPlayer::handle-next signal.
  * @handle_pause: Handler for the #GroovedPlayer::handle-pause signal.
  * @handle_play: Handler for the #GroovedPlayer::handle-play signal.
@@ -696,6 +695,7 @@ grooved_player_override_properties (GObjectClass *klass, guint property_id_begin
  * @handle_quit: Handler for the #GroovedPlayer::handle-quit signal.
  * @handle_remove_track: Handler for the #GroovedPlayer::handle-remove-track signal.
  * @handle_seek: Handler for the #GroovedPlayer::handle-seek signal.
+ * @handle_set_loop_status: Handler for the #GroovedPlayer::handle-set-loop-status signal.
  * @handle_stop: Handler for the #GroovedPlayer::handle-stop signal.
  * @handle_toggle: Handler for the #GroovedPlayer::handle-toggle signal.
  * @handle_track_position: Handler for the #GroovedPlayer::handle-track-position signal.
@@ -1007,21 +1007,21 @@ grooved_player_default_init (GroovedPlayerIface *iface)
     G_TYPE_DBUS_METHOD_INVOCATION, G_TYPE_INT64);
 
   /**
-   * GroovedPlayer::handle-loop:
+   * GroovedPlayer::handle-set-loop-status:
    * @object: A #GroovedPlayer.
    * @invocation: A #GDBusMethodInvocation.
    * @arg_mode: Argument passed by remote caller.
    *
-   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.Loop">Loop()</link> D-Bus method.
+   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.SetLoopStatus">SetLoopStatus()</link> D-Bus method.
    *
-   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call grooved_player_complete_loop() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
+   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call grooved_player_complete_set_loop_status() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
    *
    * Returns: %TRUE if the invocation was handled, %FALSE to let other signal handlers run.
    */
-  g_signal_new ("handle-loop",
+  g_signal_new ("handle-set-loop-status",
     G_TYPE_FROM_INTERFACE (iface),
     G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (GroovedPlayerIface, handle_loop),
+    G_STRUCT_OFFSET (GroovedPlayerIface, handle_set_loop_status),
     g_signal_accumulator_true_handled,
     NULL,
     g_cclosure_marshal_generic,
@@ -2591,21 +2591,21 @@ _out:
 }
 
 /**
- * grooved_player_call_loop:
+ * grooved_player_call_set_loop_status:
  * @proxy: A #GroovedPlayerProxy.
  * @arg_mode: Argument to pass with the method invocation.
  * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
  * @user_data: User data to pass to @callback.
  *
- * Asynchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.Loop">Loop()</link> D-Bus method on @proxy.
+ * Asynchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.SetLoopStatus">SetLoopStatus()</link> D-Bus method on @proxy.
  * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.
- * You can then call grooved_player_call_loop_finish() to get the result of the operation.
+ * You can then call grooved_player_call_set_loop_status_finish() to get the result of the operation.
  *
- * See grooved_player_call_loop_sync() for the synchronous, blocking version of this method.
+ * See grooved_player_call_set_loop_status_sync() for the synchronous, blocking version of this method.
  */
 void
-grooved_player_call_loop (
+grooved_player_call_set_loop_status (
     GroovedPlayer *proxy,
     const gchar *arg_mode,
     GCancellable *cancellable,
@@ -2613,7 +2613,7 @@ grooved_player_call_loop (
     gpointer user_data)
 {
   g_dbus_proxy_call (G_DBUS_PROXY (proxy),
-    "Loop",
+    "SetLoopStatus",
     g_variant_new ("(s)",
                    arg_mode),
     G_DBUS_CALL_FLAGS_NONE,
@@ -2624,17 +2624,17 @@ grooved_player_call_loop (
 }
 
 /**
- * grooved_player_call_loop_finish:
+ * grooved_player_call_set_loop_status_finish:
  * @proxy: A #GroovedPlayerProxy.
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_player_call_loop().
+ * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to grooved_player_call_set_loop_status().
  * @error: Return location for error or %NULL.
  *
- * Finishes an operation started with grooved_player_call_loop().
+ * Finishes an operation started with grooved_player_call_set_loop_status().
  *
  * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
  */
 gboolean
-grooved_player_call_loop_finish (
+grooved_player_call_set_loop_status_finish (
     GroovedPlayer *proxy,
     GAsyncResult *res,
     GError **error)
@@ -2651,20 +2651,20 @@ _out:
 }
 
 /**
- * grooved_player_call_loop_sync:
+ * grooved_player_call_set_loop_status_sync:
  * @proxy: A #GroovedPlayerProxy.
  * @arg_mode: Argument to pass with the method invocation.
  * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
- * Synchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.Loop">Loop()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
+ * Synchronously invokes the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.SetLoopStatus">SetLoopStatus()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
  *
- * See grooved_player_call_loop() for the asynchronous version of this method.
+ * See grooved_player_call_set_loop_status() for the asynchronous version of this method.
  *
  * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
  */
 gboolean
-grooved_player_call_loop_sync (
+grooved_player_call_set_loop_status_sync (
     GroovedPlayer *proxy,
     const gchar *arg_mode,
     GCancellable *cancellable,
@@ -2672,7 +2672,7 @@ grooved_player_call_loop_sync (
 {
   GVariant *_ret;
   _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
-    "Loop",
+    "SetLoopStatus",
     g_variant_new ("(s)",
                    arg_mode),
     G_DBUS_CALL_FLAGS_NONE,
@@ -3030,16 +3030,16 @@ grooved_player_complete_remove_track (
 }
 
 /**
- * grooved_player_complete_loop:
+ * grooved_player_complete_set_loop_status:
  * @object: A #GroovedPlayer.
  * @invocation: (transfer full): A #GDBusMethodInvocation.
  *
- * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.Loop">Loop()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
+ * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-io-github-ghedo-grooved-Player.SetLoopStatus">SetLoopStatus()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
  *
  * This method will free @invocation, you cannot use it afterwards.
  */
 void
-grooved_player_complete_loop (
+grooved_player_complete_set_loop_status (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation)
 {

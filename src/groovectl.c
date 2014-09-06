@@ -326,7 +326,7 @@ CMD_HANDLE(loop) {
 	     strcmp("none", argv[2])))
 		fail_printf("Invalid loop mode");
 
-	grooved_player_call_loop_sync(proxy, argv[2], NULL, &err);
+	grooved_player_call_set_loop_status_sync(proxy, argv[2], NULL, &err);
 
 	if (err != NULL)
 		fail_printf("%s", err -> message);

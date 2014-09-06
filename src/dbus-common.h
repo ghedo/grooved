@@ -48,11 +48,6 @@ struct _GroovedPlayerIface
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
 
-  gboolean (*handle_loop) (
-    GroovedPlayer *object,
-    GDBusMethodInvocation *invocation,
-    const gchar *arg_mode);
-
   gboolean (*handle_next) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
@@ -82,6 +77,11 @@ struct _GroovedPlayerIface
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation,
     gint64 arg_seconds);
+
+  gboolean (*handle_set_loop_status) (
+    GroovedPlayer *object,
+    GDBusMethodInvocation *invocation,
+    const gchar *arg_mode);
 
   gboolean (*handle_stop) (
     GroovedPlayer *object,
@@ -171,7 +171,7 @@ void grooved_player_complete_remove_track (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
 
-void grooved_player_complete_loop (
+void grooved_player_complete_set_loop_status (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
 
@@ -410,19 +410,19 @@ gboolean grooved_player_call_remove_track_sync (
     GCancellable *cancellable,
     GError **error);
 
-void grooved_player_call_loop (
+void grooved_player_call_set_loop_status (
     GroovedPlayer *proxy,
     const gchar *arg_mode,
     GCancellable *cancellable,
     GAsyncReadyCallback callback,
     gpointer user_data);
 
-gboolean grooved_player_call_loop_finish (
+gboolean grooved_player_call_set_loop_status_finish (
     GroovedPlayer *proxy,
     GAsyncResult *res,
     GError **error);
 
-gboolean grooved_player_call_loop_sync (
+gboolean grooved_player_call_set_loop_status_sync (
     GroovedPlayer *proxy,
     const gchar *arg_mode,
     GCancellable *cancellable,

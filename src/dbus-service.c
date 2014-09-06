@@ -275,7 +275,7 @@ static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
 		{ "handle-add-track",       G_CALLBACK(on_add_track) },
 		{ "handle-goto-track",      G_CALLBACK(on_goto_track) },
 		{ "handle-list",            G_CALLBACK(on_list) },
-		{ "handle-loop",            G_CALLBACK(on_loop) },
+		{ "handle-set-loop-status", G_CALLBACK(on_loop) },
 		{ "handle-next",            G_CALLBACK(on_next) },
 		{ "handle-pause",           G_CALLBACK(on_pause) },
 		{ "handle-play",            G_CALLBACK(on_play) },
