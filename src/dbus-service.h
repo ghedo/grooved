@@ -32,13 +32,12 @@
 #define GROOVED_DBUS_PLAYER_INTERFACE "io.github.ghedo.grooved.Player"
 #define GROOVED_DBUS_PLAYER_PATH      "/io/github/ghedo/grooved/Player"
 
-enum dbus_signal {
+enum dbus_event {
 	STATUS_CHANGED,
 	TRACK_CHANGED,
-	OPTION_CHANGED,
 };
 
 extern void dbus_init(void);
 extern void dbus_destroy(void);
 
-extern void dbus_emit_signal(enum dbus_signal sig);
+extern void dbus_handle_event(enum dbus_event sig);

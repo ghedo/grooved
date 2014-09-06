@@ -78,18 +78,14 @@ static void on_track_changed(void) {
 
 	double length = player_playback_track_length();
 	grooved_player_set_track_length(iface, length);
-
-	grooved_player_emit_track_changed(iface);
 }
 
 static void on_status_changed(void) {
 	char *status = player_playback_status_string();
 	grooved_player_set_playback_status(iface, status);
-
-	grooved_player_emit_status_changed(iface);
 }
 
-void dbus_emit_signal(enum dbus_signal sig) {
+void dbus_handle_event(enum dbus_event sig) {
 	switch (sig) {
 		case STATUS_CHANGED:
 			on_status_changed();
@@ -97,10 +93,6 @@ void dbus_emit_signal(enum dbus_signal sig) {
 
 		case TRACK_CHANGED:
 			on_track_changed();
-			break;
-
-		case OPTION_CHANGED:
-			grooved_player_emit_option_changed(iface);
 			break;
 	}
 }

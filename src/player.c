@@ -587,31 +587,31 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 			if (prev_status == STARTING)
 				break;
 
-			dbus_emit_signal(STATUS_CHANGED);
+			dbus_handle_event(STATUS_CHANGED);
 
 			if (prev_status != STOPPED)
 				player_playback_play();
 			else
-				dbus_emit_signal(TRACK_CHANGED);
+				dbus_handle_event(TRACK_CHANGED);
 
 			break;
 		}
 
 		case MPV_EVENT_PAUSE: {
 			player_status = PAUSED;
-			dbus_emit_signal(STATUS_CHANGED);
+			dbus_handle_event(STATUS_CHANGED);
 			break;
 		}
 
 		case MPV_EVENT_UNPAUSE: {
 			player_status = PLAYING;
-			dbus_emit_signal(STATUS_CHANGED);
+			dbus_handle_event(STATUS_CHANGED);
 			break;
 		}
 
 		case MPV_EVENT_START_FILE: {
 			playlist_pos = player_playlist_position();
-			dbus_emit_signal(TRACK_CHANGED);
+			dbus_handle_event(TRACK_CHANGED);
 
 			player_print_playlist_status();
 			break;
@@ -621,7 +621,7 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 			break;
 
 		case MPV_EVENT_METADATA_UPDATE: {
-			dbus_emit_signal(TRACK_CHANGED);
+			dbus_handle_event(TRACK_CHANGED);
 			break;
 		}
 

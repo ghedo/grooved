@@ -29,7 +29,6 @@ struct _GroovedPlayerIface
   GTypeInterface parent_iface;
 
 
-
   gboolean (*handle_add_list) (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation,
@@ -106,15 +105,6 @@ struct _GroovedPlayerIface
 
   const gchar * (*get_track_path) (GroovedPlayer *object);
 
-  void (*option_changed) (
-    GroovedPlayer *object);
-
-  void (*status_changed) (
-    GroovedPlayer *object);
-
-  void (*track_changed) (
-    GroovedPlayer *object);
-
 };
 
 GType grooved_player_get_type (void) G_GNUC_CONST;
@@ -188,18 +178,6 @@ void grooved_player_complete_loop (
 void grooved_player_complete_quit (
     GroovedPlayer *object,
     GDBusMethodInvocation *invocation);
-
-
-
-/* D-Bus signal emissions functions: */
-void grooved_player_emit_status_changed (
-    GroovedPlayer *object);
-
-void grooved_player_emit_track_changed (
-    GroovedPlayer *object);
-
-void grooved_player_emit_option_changed (
-    GroovedPlayer *object);
 
 
 

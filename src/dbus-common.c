@@ -550,47 +550,6 @@ static const _ExtendedGDBusMethodInfo * const _grooved_player_method_info_pointe
   NULL
 };
 
-static const _ExtendedGDBusSignalInfo _grooved_player_signal_info_status_changed =
-{
-  {
-    -1,
-    (gchar *) "StatusChanged",
-    NULL,
-    NULL
-  },
-  "status-changed"
-};
-
-static const _ExtendedGDBusSignalInfo _grooved_player_signal_info_track_changed =
-{
-  {
-    -1,
-    (gchar *) "TrackChanged",
-    NULL,
-    NULL
-  },
-  "track-changed"
-};
-
-static const _ExtendedGDBusSignalInfo _grooved_player_signal_info_option_changed =
-{
-  {
-    -1,
-    (gchar *) "OptionChanged",
-    NULL,
-    NULL
-  },
-  "option-changed"
-};
-
-static const _ExtendedGDBusSignalInfo * const _grooved_player_signal_info_pointers[] =
-{
-  &_grooved_player_signal_info_status_changed,
-  &_grooved_player_signal_info_track_changed,
-  &_grooved_player_signal_info_option_changed,
-  NULL
-};
-
 static const _ExtendedGDBusPropertyInfo _grooved_player_property_info_playback_status =
 {
   {
@@ -672,7 +631,7 @@ static const _ExtendedGDBusInterfaceInfo _grooved_player_interface_info =
     -1,
     (gchar *) "io.github.ghedo.grooved.Player",
     (GDBusMethodInfo **) &_grooved_player_method_info_pointers,
-    (GDBusSignalInfo **) &_grooved_player_signal_info_pointers,
+    NULL,
     (GDBusPropertyInfo **) &_grooved_player_property_info_pointers,
     NULL
   },
@@ -745,9 +704,6 @@ grooved_player_override_properties (GObjectClass *klass, guint property_id_begin
  * @get_track_length: Getter for the #GroovedPlayer:track-length property.
  * @get_track_metadata: Getter for the #GroovedPlayer:track-metadata property.
  * @get_track_path: Getter for the #GroovedPlayer:track-path property.
- * @option_changed: Handler for the #GroovedPlayer::option-changed signal.
- * @status_changed: Handler for the #GroovedPlayer::status-changed signal.
- * @track_changed: Handler for the #GroovedPlayer::track-changed signal.
  *
  * Virtual table for the D-Bus interface <link linkend="gdbus-interface-io-github-ghedo-grooved-Player.top_of_page">io.github.ghedo.grooved.Player</link>.
  */
@@ -1095,61 +1051,6 @@ grooved_player_default_init (GroovedPlayerIface *iface)
     1,
     G_TYPE_DBUS_METHOD_INVOCATION);
 
-  /* GObject signals for received D-Bus signals: */
-  /**
-   * GroovedPlayer::status-changed:
-   * @object: A #GroovedPlayer.
-   *
-   * On the client-side, this signal is emitted whenever the D-Bus signal <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.StatusChanged">"StatusChanged"</link> is received.
-   *
-   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.
-   */
-  g_signal_new ("status-changed",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (GroovedPlayerIface, status_changed),
-    NULL,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_NONE,
-    0);
-
-  /**
-   * GroovedPlayer::track-changed:
-   * @object: A #GroovedPlayer.
-   *
-   * On the client-side, this signal is emitted whenever the D-Bus signal <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.TrackChanged">"TrackChanged"</link> is received.
-   *
-   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.
-   */
-  g_signal_new ("track-changed",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (GroovedPlayerIface, track_changed),
-    NULL,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_NONE,
-    0);
-
-  /**
-   * GroovedPlayer::option-changed:
-   * @object: A #GroovedPlayer.
-   *
-   * On the client-side, this signal is emitted whenever the D-Bus signal <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.OptionChanged">"OptionChanged"</link> is received.
-   *
-   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.
-   */
-  g_signal_new ("option-changed",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (GroovedPlayerIface, option_changed),
-    NULL,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_NONE,
-    0);
-
   /* GObject properties for D-Bus properties: */
   /**
    * GroovedPlayer:playback-status:
@@ -1412,7 +1313,7 @@ grooved_player_set_track_path (GroovedPlayer *object, const gchar *value)
  *
  * Returns: The property value.
  */
-gdouble
+gdouble 
 grooved_player_get_track_length (GroovedPlayer *object)
 {
   return GROOVED_PLAYER_GET_IFACE (object)->get_track_length (object);
@@ -1431,45 +1332,6 @@ void
 grooved_player_set_track_length (GroovedPlayer *object, gdouble value)
 {
   g_object_set (G_OBJECT (object), "track-length", value, NULL);
-}
-
-/**
- * grooved_player_emit_status_changed:
- * @object: A #GroovedPlayer.
- *
- * Emits the <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.StatusChanged">"StatusChanged"</link> D-Bus signal.
- */
-void
-grooved_player_emit_status_changed (
-    GroovedPlayer *object)
-{
-  g_signal_emit_by_name (object, "status-changed");
-}
-
-/**
- * grooved_player_emit_track_changed:
- * @object: A #GroovedPlayer.
- *
- * Emits the <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.TrackChanged">"TrackChanged"</link> D-Bus signal.
- */
-void
-grooved_player_emit_track_changed (
-    GroovedPlayer *object)
-{
-  g_signal_emit_by_name (object, "track-changed");
-}
-
-/**
- * grooved_player_emit_option_changed:
- * @object: A #GroovedPlayer.
- *
- * Emits the <link linkend="gdbus-signal-io-github-ghedo-grooved-Player.OptionChanged">"OptionChanged"</link> D-Bus signal.
- */
-void
-grooved_player_emit_option_changed (
-    GroovedPlayer *object)
-{
-  g_signal_emit_by_name (object, "option-changed");
 }
 
 /**
@@ -3280,7 +3142,7 @@ grooved_player_proxy_set_property_cb (GDBusProxy *proxy,
   if (!_ret)
     {
       g_warning ("Error setting property '%s' on interface io.github.ghedo.grooved.Player: %s (%s, %d)",
-                 info->parent_struct.name,
+                 info->parent_struct.name, 
                  error->message, g_quark_to_string (error->domain), error->code);
       g_error_free (error);
     }
@@ -3438,7 +3300,7 @@ grooved_player_proxy_get_track_path (GroovedPlayer *object)
   return value;
 }
 
-static gdouble
+static gdouble 
 grooved_player_proxy_get_track_length (GroovedPlayer *object)
 {
   GroovedPlayerProxy *proxy = GROOVED_PLAYER_PROXY (object);
@@ -3905,72 +3767,6 @@ grooved_player_skeleton_dbus_interface_flush (GDBusInterfaceSkeleton *_skeleton)
     _grooved_player_emit_changed (skeleton);
 }
 
-static void
-_grooved_player_on_signal_status_changed (
-    GroovedPlayer *object)
-{
-  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
-
-  GList      *connections, *l;
-  GVariant   *signal_variant;
-  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
-
-  signal_variant = g_variant_ref_sink (g_variant_new ("()"));
-  for (l = connections; l != NULL; l = l->next)
-    {
-      GDBusConnection *connection = l->data;
-      g_dbus_connection_emit_signal (connection,
-        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "io.github.ghedo.grooved.Player", "StatusChanged",
-        signal_variant, NULL);
-    }
-  g_variant_unref (signal_variant);
-  g_list_free_full (connections, g_object_unref);
-}
-
-static void
-_grooved_player_on_signal_track_changed (
-    GroovedPlayer *object)
-{
-  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
-
-  GList      *connections, *l;
-  GVariant   *signal_variant;
-  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
-
-  signal_variant = g_variant_ref_sink (g_variant_new ("()"));
-  for (l = connections; l != NULL; l = l->next)
-    {
-      GDBusConnection *connection = l->data;
-      g_dbus_connection_emit_signal (connection,
-        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "io.github.ghedo.grooved.Player", "TrackChanged",
-        signal_variant, NULL);
-    }
-  g_variant_unref (signal_variant);
-  g_list_free_full (connections, g_object_unref);
-}
-
-static void
-_grooved_player_on_signal_option_changed (
-    GroovedPlayer *object)
-{
-  GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
-
-  GList      *connections, *l;
-  GVariant   *signal_variant;
-  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
-
-  signal_variant = g_variant_ref_sink (g_variant_new ("()"));
-  for (l = connections; l != NULL; l = l->next)
-    {
-      GDBusConnection *connection = l->data;
-      g_dbus_connection_emit_signal (connection,
-        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "io.github.ghedo.grooved.Player", "OptionChanged",
-        signal_variant, NULL);
-    }
-  g_variant_unref (signal_variant);
-  g_list_free_full (connections, g_object_unref);
-}
-
 static void grooved_player_skeleton_iface_init (GroovedPlayerIface *iface);
 #if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38
 G_DEFINE_TYPE_WITH_CODE (GroovedPlayerSkeleton, grooved_player_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,
@@ -4199,7 +3995,7 @@ grooved_player_skeleton_get_track_path (GroovedPlayer *object)
   return value;
 }
 
-static gdouble
+static gdouble 
 grooved_player_skeleton_get_track_length (GroovedPlayer *object)
 {
   GroovedPlayerSkeleton *skeleton = GROOVED_PLAYER_SKELETON (object);
@@ -4239,9 +4035,6 @@ grooved_player_skeleton_class_init (GroovedPlayerSkeletonClass *klass)
 static void
 grooved_player_skeleton_iface_init (GroovedPlayerIface *iface)
 {
-  iface->status_changed = _grooved_player_on_signal_status_changed;
-  iface->track_changed = _grooved_player_on_signal_track_changed;
-  iface->option_changed = _grooved_player_on_signal_option_changed;
   iface->get_playback_status = grooved_player_skeleton_get_playback_status;
   iface->get_loop_status = grooved_player_skeleton_get_loop_status;
   iface->get_track_metadata = grooved_player_skeleton_get_track_metadata;

@@ -71,14 +71,5 @@
 
     <method name="Quit">
     </method>
-
-    <signal name="StatusChanged">
-    </signal>
-
-    <signal name="TrackChanged">
-    </signal>
-
-    <signal name="OptionChanged">
-    </signal>
   </interface>
 </node>
