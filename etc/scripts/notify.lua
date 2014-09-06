@@ -18,17 +18,17 @@ function notify()
 		return
 	end
 
-	local msg = title
-
 	if artist ~= nil then
-		msg = msg .. ' - ' .. artist
+		msg = artist .. ' - ' .. title
+	else
+		msg = title
 	end
 
 	builder:add_value(GLib.Variant('s', 'grooved'))
 	builder:add_value(GLib.Variant('u', 1))
 	builder:add_value(GLib.Variant('s', 'media-playback-start'))
+	builder:add_value(GLib.Variant('s', 'Now Playing:'))
 	builder:add_value(GLib.Variant('s', msg))
-	builder:add_value(GLib.Variant('s', ''))
 	builder:add_value(GLib.VariantBuilder(GLib.VariantType.STRING_ARRAY):_end())
 	builder:add_value(GLib.VariantBuilder(GLib.VariantType.new('a{sv}')):_end())
 	builder:add_value(GLib.Variant('i', -1))
