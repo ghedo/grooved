@@ -584,13 +584,16 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 		case MPV_EVENT_IDLE: {
 			player_status = IDLE;
 
-			if ((prev_status == STARTING) ||
-			    (prev_status == STOPPED))
+			if (prev_status == STARTING)
 				break;
 
 			dbus_emit_signal(STATUS_CHANGED);
 
-			player_playback_play();
+			if (prev_status != STOPPED)
+				player_playback_play();
+			else
+				dbus_emit_signal(TRACK_CHANGED);
+
 			break;
 		}
 
