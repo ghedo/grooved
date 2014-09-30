@@ -45,5 +45,4 @@ function notify()
 	)
 end
 
-mp.register_event("start-file", notify)
 mp.register_event("metadata-update", notify)
