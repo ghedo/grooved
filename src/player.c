@@ -611,7 +611,6 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 
 		case MPV_EVENT_START_FILE: {
 			playlist_pos = player_playlist_position();
-			dbus_handle_event(TRACK_CHANGED);
 
 			player_print_playlist_status();
 			break;
