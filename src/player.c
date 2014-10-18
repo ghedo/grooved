@@ -210,6 +210,8 @@ void player_make_metadata(GVariantBuilder *meta) {
 			g_variant_builder_add(meta, "{ss}", key, val);
 		}
 	}
+
+	mpv_free_node_contents(&metadata);
 }
 
 int player_playback_start(void) {
