@@ -61,6 +61,11 @@ INSTALL(FILES
   DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/user
 )
 
+INSTALL(FILES
+  ${PROJECT_SOURCE_DIR}/etc/io.github.ghedo.grooved.service
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dbus-1/services
+)
+
 #
 # groovectl
 #
