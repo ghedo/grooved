@@ -56,9 +56,9 @@ void cfg_parse(const char *file) {
 }
 
 static bool cfg_decode_bool(const char *key, const char *val) {
-	if (strcmp("on", val) == 0)
+	if (strcmp("yes", val) == 0)
 		return true;
-	else if (strcmp("off", val) == 0)
+	else if (strcmp("no", val) == 0)
 		return false;
 	else
 		fail_printf("Invalid value for option '%s'", key);

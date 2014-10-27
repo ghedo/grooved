@@ -36,12 +36,12 @@ Here is a list of valid configuration options:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The path to beets' database.
 
-`verbose=on|off`
+`verbose=<yes|no>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Whether to enable verbose output. (optional)
 
-`gapless=on|off`
+`gapless=<yes|no>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Whether to play consecutive audio files with no silence or disruption at the
