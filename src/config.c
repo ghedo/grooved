@@ -38,6 +38,8 @@
 #include "printf.h"
 #include "util.h"
 
+#define GROOVED_SCRIPTS_DIR "/usr/share/doc/grooved/examples/scripts/"
+
 struct config cfg = {
 	/* default */
 	.cache   = NULL,
@@ -99,6 +101,12 @@ static int config_cb(void *argp, const char *section,
 				sysf_printf("Invalid value for option '%s'", key);
 
 			cfg -> library = path;
+		} else if (strcmp(key, "notify") == 0) {
+			char *script = GROOVED_SCRIPTS_DIR "notify.lua";
+
+			if (cfg_decode_bool(key, val))
+				cfg_decode_str_list(key, &cfg -> scripts,
+				                    script);
 		} else if (strcmp(key, "output") == 0) {
 			cfg -> output = strdup(val);
 		} else if (strcmp(key, "replaygain") == 0) {
