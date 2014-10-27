@@ -88,10 +88,6 @@ interface.</p>
 <ul>
 <li><a href="http://ghedo.github.io/grooved/grooved.1.html">grooved</a>: the music player daemon.</li>
 <li><a href="http://ghedo.github.io/grooved/groovectl.1.html">groovectl</a>: a command-line client to grooved.</li>
-<li>grooved-mmkeys: an additional daemon that listens for X11 multimedia keys
-events, and changes grooved playback state accordingly.</li>
-<li>grooved-notify: an additional daemon that listens for track changes and
-generates desktop notifications accordingly.</li>
 </ul>
 
 
@@ -136,12 +132,16 @@ $ groovectl quit                             # terminate grooved
 <p>You can also use beets to search for songs in your library and add them to the
 grooved tracklist as follows:</p>
 
-<pre><code class="bash">$ beet ls -p album:title | groovectl add -
+<pre><code class="bash">$ beet ls -p song title | groovectl add -
 </code></pre>
 
+<p>You can use beets' <a href="http://beets.readthedocs.org/en/latest/reference/query.html">query syntax</a> for more advanced queries to
+the database.</p>
+
 <p>Alternatively you can use beets' <a href="http://beets.readthedocs.org/en/latest/plugins/play.html">play</a> plugin to automatically add
-the files. First, <a href="http://beets.readthedocs.org/en/latest/plugins/index.html#using-plugins">enable the play plugin</a> and add the following
-section to your configuration file:</p>
+the files (note that at least beets v1.3.7 is required for this). First, <a href="http://beets.readthedocs.org/en/latest/plugins/index.html#using-plugins">enable
+the play plugin</a> and add the following section to your configuration
+file:</p>
 
 <pre><code class="yaml">play:
     command: groovectl load --append
@@ -149,10 +149,12 @@ section to your configuration file:</p>
 
 <p>then use the <code>beet play</code> command to search for tracks:</p>
 
-<pre><code class="bash">$ beet play album:title
+<pre><code class="bash">$ beet play song title
 </code></pre>
 
-<p>the matching tracks will be automatically added to grooved's tracklist.</p>
+<p>the matching tracks will be automatically added to grooved's tracklist. You can
+use beets' <a href="http://beets.readthedocs.org/en/latest/reference/query.html">query syntax</a> for more advanced queries to the
+database with the <code>play</code> command as well.</p>
 
 <p>See <a href="http://ghedo.github.io/grooved/grooved.1.html">grooved(1)</a> and <a href="http://ghedo.github.io/grooved/groovectl.1.html">groovectl(1)</a> for more information.</p>
 
@@ -168,14 +170,14 @@ $ [sudo] make install
 
 <h2 id="COPYRIGHT">COPYRIGHT</h2>
 
-<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#97;&#108;&#x65;&#x73;&#115;&#97;&#x6e;&#x64;&#x72;&#x6f;&#64;&#x67;&#104;&#101;&#x64;&#105;&#x6e;&#105;&#x2e;&#x6d;&#x65;" data-bare-link="true">&#x61;&#x6c;&#x65;&#115;&#115;&#97;&#x6e;&#100;&#x72;&#111;&#64;&#x67;&#x68;&#x65;&#x64;&#x69;&#110;&#x69;&#46;&#x6d;&#x65;</a></p>
+<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x61;&#108;&#101;&#115;&#x73;&#97;&#x6e;&#100;&#114;&#111;&#64;&#103;&#x68;&#x65;&#100;&#105;&#110;&#105;&#x2e;&#x6d;&#101;" data-bare-link="true">&#97;&#x6c;&#101;&#115;&#115;&#97;&#110;&#100;&#x72;&#111;&#x40;&#103;&#104;&#x65;&#x64;&#x69;&#x6e;&#105;&#x2e;&#x6d;&#101;</a></p>
 
 <p>See COPYING for the license.</p>
 
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>May 2014</li>
+    <li class='tc'>October 2014</li>
     <li class='tr'>README</li>
   </ol>
 
