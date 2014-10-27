@@ -26,10 +26,21 @@ PKG_CHECK_MODULES(GOBJECT gobject-2.0 REQUIRED)
 PKG_CHECK_MODULES(MPV mpv REQUIRED)
 PKG_CHECK_MODULES(SQLITE sqlite3 REQUIRED)
 
+FIND_PROGRAM(GDBUS_CODEGEN gdbus-codegen REQUIRED)
+
+ADD_CUSTOM_COMMAND(
+  OUTPUT            ${CMAKE_CURRENT_BINARY_DIR}/dbus-common.c
+  COMMAND           ${GDBUS_CODEGEN} --generate-c-code dbus-common --interface-prefix io.github.ghedo.grooved --c-namespace Grooved ${PROJECT_SOURCE_DIR}/src/dbus-service.xml
+  DEPENDS           ${PROJECT_SOURCE_DIR}/src/dbus-service.xml
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMENT           "Generate D-Bus code"
+  VERBATIM
+)
+
 ADD_EXECUTABLE(grooved
   deps/inih/ini.c
   src/config.c
-  src/dbus-common.c
+  ${CMAKE_CURRENT_BINARY_DIR}/dbus-common.c
   src/dbus-service.c
   src/grooved.c
   src/library.c
@@ -75,7 +86,7 @@ PKG_CHECK_MODULES(GLYR libglyr REQUIRED)
 ADD_EXECUTABLE(groovectl
   deps/inih/ini.c
   src/config.c
-  src/dbus-common.c
+  ${CMAKE_CURRENT_BINARY_DIR}/dbus-common.c
   src/groovectl.c
   src/printf.c
 )
