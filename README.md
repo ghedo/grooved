@@ -39,19 +39,11 @@ grooved itself. Here's a simple configuration example:
 
 ```ini
 [default]
-library = ~/data/musiclibrary.blb    ; path to beets' database
-verbose = no                         ; (optional) enable/disable verbose output
-gapless = yes                        ; (optional) enable/disable gapless audio
-
-replaygain = track                   ; (optional) enable ReplayGain support
-
-filter = volume=replaygain-track     ; (optional) apply an audio filter
-filter = bs2b=profile=cmoy           ; (optional) you can have multiple filters
-
-output = alsa                        ; (optional) select a specific audio output
+library    = ~/data/musiclibrary.blb ; path to beets' database
 ```
 
-Save that in the file `~/.config/grooved/config.ini`.
+Save that in the file `~/.config/grooved/config.ini` (see the [manual] [grooved]
+for more information about configuration options).
 
 That's it for the setup, now start `grooved`:
 
