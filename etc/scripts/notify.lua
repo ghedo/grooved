@@ -7,16 +7,8 @@ function notify()
 	local builder  = GLib.VariantBuilder(GLib.VariantType.TUPLE)
 	local metadata = mp.get_property_native('metadata')
 
-	local title  = metadata['title']
+	local title  = metadata['title'] or mp.get_property_native('media-title')
 	local artist = metadata['artist']
-
-	if title == nil then
-		title = metadata['icy-title']
-	end
-
-	if title == nil then
-		return
-	end
 
 	if artist ~= nil then
 		msg = artist .. ' - ' .. title
