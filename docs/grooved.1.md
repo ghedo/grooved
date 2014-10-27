@@ -47,6 +47,11 @@ Whether to enable verbose output. (optional)
 Whether to play consecutive audio files with no silence or disruption at the
 point of file change. (optional)
 
+`replaygain=<track|album>`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Adjust volume gain according to ReplayGain tags. (optional)
+
 `filter=<filter>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

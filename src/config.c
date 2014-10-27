@@ -43,6 +43,7 @@ struct config cfg = {
 	.verbose = false,
 	.gapless = NULL,
 	.filters = NULL,
+	.replaygain = NULL,
 	.output  = NULL,
 	.cache   = NULL,
 	.scripts = NULL,
@@ -97,6 +98,11 @@ static int config_cb(void *argp, const char *section,
 			cfg -> gapless = strdup(val);
 		} else if (strcmp(key, "filter") == 0) {
 			cfg_decode_str_list(key, &cfg -> filters, val);
+		} else if (strcmp(key, "replaygain") == 0) {
+			_free_ char *filter = NULL;
+			asprintf(&filter, "volume=replaygain-%s", val);
+
+			cfg_decode_str_list(key, &cfg -> filters, filter);
 		} else if (strcmp(key, "script") == 0) {
 			cfg_decode_str_list(key, &cfg -> scripts, val);
 		} else if (strcmp(key, "output") == 0) {

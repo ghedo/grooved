@@ -36,6 +36,7 @@ struct config {
 	bool  verbose;
 	char *gapless;
 	char *filters;
+	char *replaygain;
 	char *output;
 	char *cache;
 	char *scripts;
