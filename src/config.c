@@ -66,9 +66,21 @@ static bool cfg_decode_bool(const char *key, const char *val) {
 	return false; /* __builtin_unreachable(); */
 }
 
+static void cfg_decode_str_list(const char *key, char **dst, const char *val) {
+	int rc;
+
+	if (*dst != NULL) {
+		_free_ char *tmp = *dst;
+
+		rc = asprintf(dst, "%s,%s", *dst, val);
+		if (rc < 0) fail_printf("OOM");
+	} else {
+		*dst = strdup(val);
+	}
+}
+
 static int config_cb(void *argp, const char *section,
                      const char *key, const char *val) {
-	int rc;
 	struct config *cfg = argp;
 
 	if (strcmp(section, "default") == 0) {
@@ -84,25 +96,9 @@ static int config_cb(void *argp, const char *section,
 		} else if (strcmp(key, "gapless") == 0) {
 			cfg -> gapless = strdup(val);
 		} else if (strcmp(key, "filter") == 0) {
-			if (cfg -> filters != NULL) {
-				_free_ char *tmp = cfg -> filters;
-
-				rc = asprintf(&cfg -> filters, "%s,%s",
-				              cfg -> filters, val);
-				if (rc < 0) fail_printf("OOM");
-			} else {
-				cfg -> filters = strdup(val);
-			}
+			cfg_decode_str_list(key, &cfg -> filters, val);
 		} else if (strcmp(key, "script") == 0) {
-			if (cfg -> scripts != NULL) {
-				_free_ char *tmp = cfg -> scripts;
-
-				rc = asprintf(&cfg -> scripts, "%s,%s",
-				              cfg -> scripts, val);
-				if (rc < 0) fail_printf("OOM");
-			} else {
-				cfg -> scripts = strdup(val);
-			}
+			cfg_decode_str_list(key, &cfg -> scripts, val);
 		} else if (strcmp(key, "output") == 0) {
 			cfg -> output = strdup(val);
 		} else if (strcmp(key, "cache") == 0) {
