@@ -39,13 +39,16 @@
 #include "util.h"
 
 struct config cfg = {
-	.library = "/invalid",
-	.verbose = false,
-	.gapless = NULL,
-	.filters = NULL,
-	.replaygain = NULL,
-	.output  = NULL,
+	/* default */
 	.cache   = NULL,
+	.gapless = NULL,
+	.library = "/invalid",
+	.output  = NULL,
+	.replaygain = NULL,
+	.verbose = false,
+
+	/* internal */
+	.filters = NULL,
 	.scripts = NULL,
 };
 
@@ -85,30 +88,30 @@ static int config_cb(void *argp, const char *section,
 	struct config *cfg = argp;
 
 	if (strcmp(section, "default") == 0) {
-		if (strcmp(key, "library") == 0) {
+		if (strcmp(key, "cache") == 0) {
+			cfg -> cache = strdup(val);
+		} else if (strcmp(key, "gapless") == 0) {
+			cfg -> gapless = strdup(val);
+		} else if (strcmp(key, "library") == 0) {
 			char *path = realpath(val, NULL);
 
 			if (!path)
 				sysf_printf("Invalid value for option '%s'", key);
 
 			cfg -> library = path;
-		} else if (strcmp(key, "verbose") == 0) {
-			cfg -> verbose = cfg_decode_bool(key, val);
-		} else if (strcmp(key, "gapless") == 0) {
-			cfg -> gapless = strdup(val);
-		} else if (strcmp(key, "filter") == 0) {
-			cfg_decode_str_list(key, &cfg -> filters, val);
+		} else if (strcmp(key, "output") == 0) {
+			cfg -> output = strdup(val);
 		} else if (strcmp(key, "replaygain") == 0) {
 			_free_ char *filter = NULL;
 			asprintf(&filter, "volume=replaygain-%s", val);
 
 			cfg_decode_str_list(key, &cfg -> filters, filter);
+		} else if (strcmp(key, "verbose") == 0) {
+			cfg -> verbose = cfg_decode_bool(key, val);
+		} else if (strcmp(key, "filter") == 0) {
+			cfg_decode_str_list(key, &cfg -> filters, val);
 		} else if (strcmp(key, "script") == 0) {
 			cfg_decode_str_list(key, &cfg -> scripts, val);
-		} else if (strcmp(key, "output") == 0) {
-			cfg -> output = strdup(val);
-		} else if (strcmp(key, "cache") == 0) {
-			cfg -> cache = strdup(val);
 		} else
 			fail_printf("Invalid option '%s'", key);
 	} else

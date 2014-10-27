@@ -32,13 +32,14 @@
 
 struct config {
 	/* default */
-	char *library;
-	bool  verbose;
-	char *gapless;
-	char *filters;
-	char *replaygain;
-	char *output;
 	char *cache;
+	char *gapless;
+	char *library;
+	char *output;
+	char *replaygain;
+	bool  verbose;
+
+	char *filters;
 	char *scripts;
 };
 
