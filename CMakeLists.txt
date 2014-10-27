@@ -37,6 +37,12 @@ ADD_CUSTOM_COMMAND(
   VERBATIM
 )
 
+SET(GROOVED_SCRIPTS_DIR "${CMAKE_INSTALL_PREFIX}/share/grooved/scripts/")
+
+
+CONFIGURE_FILE("${PROJECT_SOURCE_DIR}/src/config.h.in"
+               "${CMAKE_CURRENT_BINARY_DIR}/config.h")
+
 ADD_EXECUTABLE(grooved
   deps/inih/ini.c
   src/config.c
@@ -61,6 +67,11 @@ SET_TARGET_PROPERTIES(grooved PROPERTIES
 )
 
 INSTALL(TARGETS grooved DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+INSTALL(FILES
+  ${PROJECT_SOURCE_DIR}/src/scripts/notify.lua
+  DESTINATION ${GROOVED_SCRIPTS_DIR}
+)
 
 INSTALL(FILES
   ${PROJECT_SOURCE_DIR}/docs/grooved.1

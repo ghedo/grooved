@@ -38,8 +38,6 @@
 #include "printf.h"
 #include "util.h"
 
-#define GROOVED_SCRIPTS_DIR "/usr/share/doc/grooved/examples/scripts/"
-
 struct config cfg = {
 	/* default */
 	.cache   = NULL,
