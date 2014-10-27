@@ -110,7 +110,7 @@ void player_init(void) {
 	player_check_error("Could not set no-softvol", rc);
 
 	if (cfg.gapless) {
-		rc = mpv_set_option_string(player_ctx, "gapless-audio", "");
+		rc = mpv_set_option_string(player_ctx, "gapless-audio", "yes");
 		player_check_error("Could not enable gapless audio", rc);
 	}
 
