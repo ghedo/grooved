@@ -41,7 +41,7 @@ The path to beets' database.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Whether to enable verbose output. (optional)
 
-`gapless=<yes|no>`
+`gapless=<yes|no|weak>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Whether to play consecutive audio files with no silence or disruption at the

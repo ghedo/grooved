@@ -34,7 +34,7 @@ struct config {
 	/* default */
 	char *library;
 	bool  verbose;
-	bool  gapless;
+	char *gapless;
 	char *filters;
 	char *output;
 	char *cache;

@@ -41,7 +41,7 @@
 struct config cfg = {
 	.library = "/invalid",
 	.verbose = false,
-	.gapless = false,
+	.gapless = NULL,
 	.filters = NULL,
 	.output  = NULL,
 	.cache   = NULL,
@@ -82,7 +82,7 @@ static int config_cb(void *argp, const char *section,
 		} else if (strcmp(key, "verbose") == 0) {
 			cfg -> verbose = cfg_decode_bool(key, val);
 		} else if (strcmp(key, "gapless") == 0) {
-			cfg -> gapless = cfg_decode_bool(key, val);
+			cfg -> gapless = strdup(val);
 		} else if (strcmp(key, "filter") == 0) {
 			if (cfg -> filters != NULL) {
 				_free_ char *tmp = cfg -> filters;
