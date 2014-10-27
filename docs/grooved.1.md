@@ -52,13 +52,6 @@ point of file change. (optional)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Adjust volume gain according to ReplayGain tags. (optional)
 
-`filter=<filter>`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Filter audio with the given filter. Can be specified multiple times, in which
-case filters get chained one after the other. See mpv(1) for a list of supported
-filters and options. (optional)
-
 `output=<output>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
