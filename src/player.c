@@ -53,7 +53,6 @@ typedef struct {
 
 enum player_status {
 	STARTING,
-	IDLE,
 	PLAYING,
 	PAUSED,
 	STOPPED,
@@ -64,8 +63,6 @@ static mpv_handle *player_ctx;
 static enum player_status player_status;
 
 static enum loop player_loop = PLAYER_LOOP_NONE;
-
-static int64_t playlist_pos = -1;
 
 #define player_check_error(MSG, RC)				\
 	if (RC < 0)						\
@@ -83,7 +80,7 @@ static GSourceFuncs player_funcs = {
 	player_loop_fd_finalize
 };
 
-static void player_print_playlist_status(void);
+static void player_status_change(enum player_status status);
 
 void player_init(void) {
 	int rc;
@@ -190,7 +187,7 @@ void player_make_list(GVariantBuilder *list) {
 
 	g_variant_builder_add_value(list, g_variant_builder_end(files));
 	g_variant_builder_add(list, "x", count);
-	g_variant_builder_add(list, "x", playlist_pos);
+	g_variant_builder_add(list, "x", player_playlist_position());
 
 	mpv_free_node_contents(&playlist);
 }
@@ -214,29 +211,6 @@ void player_make_metadata(GVariantBuilder *meta) {
 	mpv_free_node_contents(&metadata);
 }
 
-int player_playback_start(void) {
-	int rc;
-
-	_free_ char *path = NULL;
-
-	int64_t pos   = playlist_pos;
-	int64_t count = player_playlist_count();
-
-	if ((pos == (count - 1) && (path = library_random())))
-		player_playlist_append_file(path);
-
-	++pos;
-
-	rc = mpv_set_property(
-		player_ctx, "playlist-pos", MPV_FORMAT_INT64, &pos
-	);
-	if (rc < 0) return rc;
-
-	player_status = PLAYING;
-
-	return 0;
-}
-
 int player_playback_play(void) {
 	int rc;
 
@@ -245,9 +219,14 @@ int player_playback_play(void) {
 		case PLAYING:
 			break;
 
-		case IDLE:
 		case STOPPED:
-			player_playback_start();
+			if (player_playlist_count() > 0) {
+				player_playlist_goto_index(0);
+				break;
+			}
+
+			player_playlist_append_file(NULL, true);
+			break;
 
 		case PAUSED:
 			rc = mpv_set_property_string(player_ctx, "pause", "no");
@@ -263,7 +242,6 @@ int player_playback_pause(void) {
 
 	switch (player_status) {
 		case STARTING:
-		case IDLE:
 		case PAUSED:
 		case STOPPED:
 			break;
@@ -284,7 +262,6 @@ int player_playback_toggle(void) {
 		case STARTING:
 			break;
 
-		case IDLE:
 		case PAUSED:
 		case STOPPED:
 			rc = player_playback_play();
@@ -305,14 +282,11 @@ int player_playback_stop(void) {
 	enum player_status prev_status = player_status;
 	const char *cmd_clear[]  = { "playlist_clear", NULL };
 
-	player_status = STOPPED;
-
 	switch (prev_status) {
 		case STARTING:
 		case STOPPED:
 			break;
 
-		case IDLE:
 		case PLAYING:
 		case PAUSED:
 			rc = mpv_command(player_ctx, cmd_clear);
@@ -323,6 +297,8 @@ int player_playback_stop(void) {
 
 			break;
 	}
+
+	player_status_change(STOPPED);
 
 	return 0;
 }
@@ -379,10 +355,7 @@ int player_playback_loop(enum loop mode) {
 char *player_playback_status_string(void) {
 	switch (player_status) {
 		case STARTING:
-			return "starting";
-
-		case IDLE:
-			return "idle";
+			return "start";
 
 		case PLAYING:
 			return "play";
@@ -476,12 +449,19 @@ int64_t player_playlist_position(void) {
 	return pos;
 }
 
-int player_playlist_append_file(const char *path) {
+int player_playlist_append_file(const char *path, bool play) {
 	int rc;
-	const char *cmd[] = { "loadfile", path, "append", NULL };
+
+	const char *file = path == NULL ? library_random() : path;
+
+	const char *mode  = play ? "append-play" : "append";
+	const char *cmd[] = { "loadfile", file, mode, NULL };
 
 	rc = mpv_command(player_ctx, cmd);
 	if (rc < 0) return rc;
+
+	if (!path && file)
+		free((void *)file);
 
 	return 0;
 }
@@ -504,8 +484,6 @@ int player_playlist_goto_index(int64_t index) {
 	);
 	if (rc < 0) return rc;
 
-	playlist_pos = player_playlist_position();
-
 	return 0;
 }
 
@@ -525,8 +503,6 @@ int player_playlist_remove_index(int64_t index) {
 
 	rc = mpv_command(player_ctx, cmd);
 	if (rc < 0) return rc;
-
-	playlist_pos = player_playlist_position();
 
 	return 0;
 }
@@ -551,17 +527,6 @@ int player_playlist_prev(void) {
 	return 0;
 }
 
-static void player_print_playlist_status(void) {
-	char *path = mpv_get_property_string(player_ctx, "path");
-
-	int64_t count = player_playlist_count();
-	int64_t pos   = player_playlist_position();
-
-	debug_printf("position: %d, count: %d, path: %s", pos + 1, count, path);
-
-	mpv_free(path);
-}
-
 static gboolean player_loop_fd_prepare(GSource *src, int *timeout) {
 	*timeout = -1;
 
@@ -576,55 +541,49 @@ static gboolean player_loop_fd_check(GSource *src) {
 	return (cond > 0);
 }
 
+static void player_status_change(enum player_status status) {
+	if (player_status == status)
+		return;
+
+	player_status = status;
+	dbus_handle_event(STATUS_CHANGED);
+
+	if (player_status == STOPPED)
+		dbus_handle_event(TRACK_CHANGED);
+}
+
 static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
-	enum player_status prev_status = player_status;
+	int rc;
 
 	mpv_event *event = mpv_wait_event(player_ctx, 0);
 	debug_printf("event: %s", mpv_event_name(event -> event_id));
 
 	switch (event -> event_id) {
-		case MPV_EVENT_IDLE: {
-			player_status = IDLE;
+		case MPV_EVENT_IDLE:
+			if (player_status == STARTING)
+				player_status = STOPPED;
 
-			if (prev_status == STARTING)
+			if (player_status == STOPPED)
 				break;
 
-			dbus_handle_event(STATUS_CHANGED);
-
-			if (prev_status != STOPPED)
-				player_playback_play();
-			else
-				dbus_handle_event(TRACK_CHANGED);
+			rc = player_playlist_append_file(NULL, true);
+			if (rc < 0)
+				player_status_change(STOPPED);
 
 			break;
-		}
 
-		case MPV_EVENT_PAUSE: {
-			player_status = PAUSED;
-			dbus_handle_event(STATUS_CHANGED);
-			break;
-		}
-
-		case MPV_EVENT_UNPAUSE: {
-			player_status = PLAYING;
-			dbus_handle_event(STATUS_CHANGED);
-			break;
-		}
-
-		case MPV_EVENT_START_FILE: {
-			playlist_pos = player_playlist_position();
-
-			player_print_playlist_status();
-			break;
-		}
-
-		case MPV_EVENT_END_FILE:
+		case MPV_EVENT_PAUSE:
+			player_status_change(PAUSED);
 			break;
 
-		case MPV_EVENT_METADATA_UPDATE: {
+		case MPV_EVENT_UNPAUSE:
+		case MPV_EVENT_PLAYBACK_RESTART:
+			player_status_change(PLAYING);
+			break;
+
+		case MPV_EVENT_METADATA_UPDATE:
 			dbus_handle_event(TRACK_CHANGED);
 			break;
-		}
 
 		case MPV_EVENT_LOG_MESSAGE: {
 			mpv_event_log_message *log = event -> data;

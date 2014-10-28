@@ -109,7 +109,7 @@ gboolean on_add_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
 
 gboolean on_add_track(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
                       const char *arg_path) {
-	int rc = player_playlist_append_file(arg_path);
+	int rc = player_playlist_append_file(arg_path, false);
 	dbus_check_error(invocation, rc);
 
 	grooved_player_complete_add_track(obj, invocation);

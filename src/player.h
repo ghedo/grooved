@@ -46,7 +46,6 @@ extern const char *player_error_string(int error);
 extern void player_make_list(GVariantBuilder *list);
 extern void player_make_metadata(GVariantBuilder *metadata);
 
-extern int player_playback_start(void);
 extern int player_playback_play(void);
 extern int player_playback_pause(void);
 extern int player_playback_toggle(void);
@@ -64,7 +63,7 @@ extern double player_playback_track_length(void);
 extern double player_playback_track_position_time(void);
 extern double player_playback_track_position_percent(void);
 
-extern int player_playlist_append_file(const char *path);
+extern int player_playlist_append_file(const char *path, bool play);
 extern int player_playlist_append_list(const char *path);
 extern int player_playlist_goto_index(int64_t index);
 extern int player_playlist_remove_index(int64_t index);
