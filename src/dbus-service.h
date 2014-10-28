@@ -40,4 +40,6 @@ enum dbus_event {
 extern void dbus_init(void);
 extern void dbus_destroy(void);
 
+extern void dbus_notify(char *title, char *msg, char *icon);
+
 extern void dbus_handle_event(enum dbus_event sig);

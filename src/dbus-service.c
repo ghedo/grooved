@@ -34,11 +34,14 @@
 #include <gio/gio.h>
 #include <dbus/dbus.h>
 
+#include "config.h"
 #include "dbus-common.h"
+#include "notify-common.h"
 #include "dbus-service.h"
 #include "grooved.h"
 #include "player.h"
 #include "printf.h"
+#include "util.h"
 
 GroovedPlayer *iface = NULL;
 
@@ -83,6 +86,33 @@ static void on_track_changed(void) {
 static void on_status_changed(void) {
 	char *status = player_playback_status_string();
 	grooved_player_set_playback_status(iface, status);
+}
+
+void dbus_notify(char *title, char *msg, char *icon) {
+	GError *err = NULL;
+
+	NotifyNotifications *proxy =
+		notify_notifications_proxy_new_for_bus_sync(
+			G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
+			"org.freedesktop.Notifications",
+			"/org/freedesktop/Notifications" , NULL, &err
+		);
+
+	if (err != NULL)
+		return;
+
+	GVariant *actions = g_variant_new_bytestring_array(NULL, 0);
+	GVariant *hints   = g_variant_new("a{sv}");
+
+	const gchar **actions_a = g_variant_get_bytestring_array(actions, NULL);
+
+	notify_notifications_call_notify_sync(
+		proxy, "grooved", 1, icon, title, msg,
+		actions_a, hints, -1, NULL, NULL, &err
+	);
+
+	g_variant_unref(actions);
+	g_free(actions_a);
 }
 
 void dbus_handle_event(enum dbus_event sig) {

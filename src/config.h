@@ -35,6 +35,7 @@ struct config {
 	char *cache;
 	char *gapless;
 	char *library;
+	bool  notify;
 	char *output;
 	char *replaygain;
 	bool  verbose;
@@ -46,5 +47,3 @@ struct config {
 extern struct config cfg;
 
 extern void cfg_parse(const char *file);
-
-#define GROOVED_SCRIPTS_DIR "@GROOVED_SCRIPTS_DIR@"

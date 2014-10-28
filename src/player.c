@@ -211,6 +211,35 @@ void player_make_metadata(GVariantBuilder *meta) {
 	mpv_free_node_contents(&metadata);
 }
 
+char *player_make_media_title(void) {
+	int i;
+	mpv_node metadata;
+
+	char *title  = mpv_get_property_string(player_ctx, "media-title");
+	char *artist = NULL;
+
+	mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
+
+	for (i = 0; i < metadata.u.list -> num; i++) {
+		char *key = metadata.u.list -> keys[i];
+		char *val = metadata.u.list -> values[i].u.string;
+
+		if (!strcmp(key, "artist"))
+			artist = val;
+	}
+
+	char *media_title = NULL;
+	if (artist)
+		asprintf(&media_title, "%s - %s", artist, title);
+	else
+		asprintf(&media_title, "%s", title);
+
+	mpv_free_node_contents(&metadata);
+	mpv_free(title);
+
+	return media_title;
+}
+
 int player_playback_play(void) {
 	int rc;
 
@@ -582,6 +611,14 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 			break;
 
 		case MPV_EVENT_METADATA_UPDATE:
+			if (cfg.notify) {
+				_free_ char *msg = player_make_media_title();
+				dbus_notify(
+					"Now Playing:", msg,
+					"media-playback-start"
+				);
+			}
+
 			dbus_handle_event(TRACK_CHANGED);
 			break;
 

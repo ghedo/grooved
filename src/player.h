@@ -46,6 +46,8 @@ extern const char *player_error_string(int error);
 extern void player_make_list(GVariantBuilder *list);
 extern void player_make_metadata(GVariantBuilder *metadata);
 
+extern char *player_make_media_title(void);
+
 extern int player_playback_play(void);
 extern int player_playback_pause(void);
 extern int player_playback_toggle(void);

@@ -43,6 +43,7 @@ struct config cfg = {
 	.cache   = NULL,
 	.gapless = NULL,
 	.library = "/invalid",
+	.notify  = false,
 	.output  = NULL,
 	.replaygain = NULL,
 	.verbose = false,
@@ -100,11 +101,7 @@ static int config_cb(void *argp, const char *section,
 
 			cfg -> library = path;
 		} else if (strcmp(key, "notify") == 0) {
-			char *script = GROOVED_SCRIPTS_DIR "notify.lua";
-
-			if (cfg_decode_bool(key, val))
-				cfg_decode_str_list(key, &cfg -> scripts,
-				                    script);
+			cfg -> notify = cfg_decode_bool(key, val);
 		} else if (strcmp(key, "output") == 0) {
 			cfg -> output = strdup(val);
 		} else if (strcmp(key, "replaygain") == 0) {
