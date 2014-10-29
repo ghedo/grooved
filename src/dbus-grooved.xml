@@ -21,6 +21,9 @@
       <arg direction="out" name="percent" type="d"/>
     </method>
 
+    <property name="TrackTitle" type="s" access="read">
+    </property>
+
     <method name="Play">
     </method>
 

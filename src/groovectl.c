@@ -65,6 +65,7 @@ CMD_HANDLE(status) {
 
 	const char *state = grooved_player_get_playback_status(proxy);
 	const char *loop  = grooved_player_get_loop_status(proxy);
+	const char *title = grooved_player_get_track_title(proxy);
 
 	double len  = grooved_player_get_track_length(proxy);
 	GVariant *metadata = grooved_player_get_track_metadata(proxy);
@@ -76,6 +77,8 @@ CMD_HANDLE(status) {
 	GVariantIter iter;
 
 	char *key, *val;
+
+	printf("Title: %s\n", title);
 
 	puts("Tags:");
 

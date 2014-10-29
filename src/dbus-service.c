@@ -81,6 +81,10 @@ static void on_track_changed(void) {
 
 	double length = player_playback_track_length();
 	grooved_player_set_track_length(iface, length);
+
+	char *title = player_make_media_title();
+	grooved_player_set_track_title(iface, title);
+	free(title);
 }
 
 static void on_status_changed(void) {
