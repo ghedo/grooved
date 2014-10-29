@@ -29,8 +29,8 @@
  */
 
 #define GROOVED_DBUS_NAME             "io.github.ghedo.grooved"
+#define GROOVED_DBUS_PATH             "/io/github/ghedo/grooved"
 #define GROOVED_DBUS_PLAYER_INTERFACE "io.github.ghedo.grooved.Player"
-#define GROOVED_DBUS_PLAYER_PATH      "/io/github/ghedo/grooved/Player"
 
 enum dbus_event {
 	STATUS_CHANGED,

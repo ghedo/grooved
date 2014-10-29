@@ -432,7 +432,7 @@ int main(int argc, char *argv[]) {
 
 	GroovedPlayer *proxy = grooved_player_proxy_new_for_bus_sync(
 		G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
-		GROOVED_DBUS_NAME, GROOVED_DBUS_PLAYER_PATH, NULL, &err
+		GROOVED_DBUS_NAME, GROOVED_DBUS_PATH, NULL, &err
 	);
 
 	if (err != NULL)

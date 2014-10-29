@@ -307,8 +307,7 @@ static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
 		g_signal_connect(iface, cbs[i].name, cbs[i].callback, NULL);
 
 	g_dbus_interface_skeleton_export(
-		G_DBUS_INTERFACE_SKELETON(iface),
-		conn, GROOVED_DBUS_PLAYER_PATH, &err
+		G_DBUS_INTERFACE_SKELETON(iface), conn, GROOVED_DBUS_PATH, &err
 	);
 
 	if (err != NULL)
