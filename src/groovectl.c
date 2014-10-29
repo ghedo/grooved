@@ -40,7 +40,7 @@
 #include <gio/gio.h>
 #include <glyr/glyr.h>
 
-#include "dbus-common.h"
+#include "dbus-grooved.h"
 #include "dbus-service.h"
 #include "printf.h"
 #include "util.h"

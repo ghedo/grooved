@@ -35,8 +35,8 @@
 #include <dbus/dbus.h>
 
 #include "config.h"
-#include "dbus-common.h"
-#include "notify-common.h"
+#include "dbus-grooved.h"
+#include "dbus-notify.h"
 #include "dbus-service.h"
 #include "grooved.h"
 #include "player.h"

@@ -29,28 +29,30 @@ PKG_CHECK_MODULES(SQLITE sqlite3 REQUIRED)
 FIND_PROGRAM(GDBUS_CODEGEN gdbus-codegen REQUIRED)
 
 ADD_CUSTOM_COMMAND(
-  OUTPUT            ${CMAKE_CURRENT_BINARY_DIR}/dbus-common.c
-  COMMAND           ${GDBUS_CODEGEN} --generate-c-code dbus-common --interface-prefix io.github.ghedo.grooved --c-namespace Grooved ${PROJECT_SOURCE_DIR}/src/dbus-service.xml
-  DEPENDS           ${PROJECT_SOURCE_DIR}/src/dbus-service.xml
+  OUTPUT            ${CMAKE_CURRENT_BINARY_DIR}/dbus-grooved.c
+  COMMAND           ${GDBUS_CODEGEN} --generate-c-code dbus-grooved
+  --interface-prefix io.github.ghedo.grooved --c-namespace Grooved ${PROJECT_SOURCE_DIR}/src/dbus-grooved.xml
+  DEPENDS           ${PROJECT_SOURCE_DIR}/src/dbus-grooved.xml
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT           "Generate D-Bus code"
+  COMMENT           "Generate D-Bus code for grooved"
   VERBATIM
 )
 
 ADD_CUSTOM_COMMAND(
-  OUTPUT            ${CMAKE_CURRENT_BINARY_DIR}/notify-common.c
-  COMMAND           ${GDBUS_CODEGEN} --generate-c-code notify-common --interface-prefix org.freedesktop --c-namespace Notify ${PROJECT_SOURCE_DIR}/src/notify.xml
-  DEPENDS           ${PROJECT_SOURCE_DIR}/src/notify.xml
+  OUTPUT            ${CMAKE_CURRENT_BINARY_DIR}/dbus-notify.c
+  COMMAND           ${GDBUS_CODEGEN} --generate-c-code dbus-notify
+  --interface-prefix org.freedesktop --c-namespace Notify ${PROJECT_SOURCE_DIR}/src/dbus-notify.xml
+  DEPENDS           ${PROJECT_SOURCE_DIR}/src/dbus-notify.xml
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT           "Generate D-Bus code"
+  COMMENT           "Generate D-Bus code for notify"
   VERBATIM
 )
 
 ADD_EXECUTABLE(grooved
   deps/inih/ini.c
   src/config.c
-  ${CMAKE_CURRENT_BINARY_DIR}/dbus-common.c
-  ${CMAKE_CURRENT_BINARY_DIR}/notify-common.c
+  ${CMAKE_CURRENT_BINARY_DIR}/dbus-grooved.c
+  ${CMAKE_CURRENT_BINARY_DIR}/dbus-notify.c
   src/dbus-service.c
   src/grooved.c
   src/library.c
@@ -96,7 +98,7 @@ PKG_CHECK_MODULES(GLYR libglyr REQUIRED)
 ADD_EXECUTABLE(groovectl
   deps/inih/ini.c
   src/config.c
-  ${CMAKE_CURRENT_BINARY_DIR}/dbus-common.c
+  ${CMAKE_CURRENT_BINARY_DIR}/dbus-grooved.c
   src/groovectl.c
   src/printf.c
 )
