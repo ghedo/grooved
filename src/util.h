@@ -33,7 +33,6 @@
 #include <errno.h>
 
 #define _free_ __attribute__((cleanup(freep)))
-#define _close_ __attribute__((cleanup(closep)))
 
 static inline void freep(void *p) {
 	if (p == NULL)
@@ -42,18 +41,6 @@ static inline void freep(void *p) {
 	free(*(void **) p);
 
 	*(void **)p = NULL;
-}
-
-static inline void closep(int *p) {
-	int rc;
-
-	if (*p == -1)
-		return;
-
-	rc = close(*p);
-	if (rc < 0) sysf_printf("close()");
-
-	*p = -1;
 }
 
 static inline void flush_pipe(int fd) {

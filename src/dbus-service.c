@@ -75,16 +75,14 @@ static void on_track_changed(void) {
 	player_make_metadata(meta);
 	grooved_player_set_track_metadata(iface, g_variant_builder_end(meta));
 
-	char *path = player_playback_track_path();
+	_free_ char *path = player_playback_track_path();
 	grooved_player_set_track_path(iface, path);
-	free(path);
 
 	double length = player_playback_track_length();
 	grooved_player_set_track_length(iface, length);
 
-	char *title = player_make_media_title();
+	_free_ char *title = player_make_media_title();
 	grooved_player_set_track_title(iface, title);
-	free(title);
 }
 
 static void on_status_changed(void) {

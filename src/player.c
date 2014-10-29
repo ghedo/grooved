@@ -400,24 +400,6 @@ char *player_loop_status_string(void) {
 	return NULL;
 }
 
-int player_get_property_double(char *name, double *value) {
-	int rc;
-
-	rc = mpv_get_property(player_ctx, name, MPV_FORMAT_DOUBLE, value);
-	if (rc < 0) return rc;
-
-	return 0;
-}
-
-int player_get_property_int64(char *name, int64_t *value) {
-	int rc;
-
-	rc = mpv_get_property(player_ctx, name, MPV_FORMAT_INT64, value);
-	if (rc < 0) return rc;
-
-	return 0;
-}
-
 int player_get_property_string(char *name, char **value) {
 	char *mvalue = mpv_get_property_string(player_ctx, name);
 	*value       = (mvalue != NULL) ? strdup(mvalue) : strdup("");
@@ -429,7 +411,7 @@ int player_get_property_string(char *name, char **value) {
 
 double player_playback_track_length(void) {
 	double length = 0.0;
-	player_get_property_double("length", &length);
+	mpv_get_property(player_ctx, "length", MPV_FORMAT_DOUBLE, &length);
 	return length;
 }
 
@@ -442,25 +424,25 @@ char *player_playback_track_path(void) {
 
 double player_playback_track_position_time(void) {
 	double pos = 0.0;
-	player_get_property_double("time-pos", &pos);
+	mpv_get_property(player_ctx, "time-pos", MPV_FORMAT_DOUBLE, &pos);
 	return pos;
 }
 
 double player_playback_track_position_percent(void) {
 	double pos = 0.0;
-	player_get_property_double("percent-pos", &pos);
+	mpv_get_property(player_ctx, "percent-pos", MPV_FORMAT_DOUBLE, &pos);
 	return pos;
 }
 
 int64_t player_playlist_count(void) {
 	int64_t count = -1;
-	player_get_property_int64("playlist-count", &count);
+	mpv_get_property(player_ctx, "playlist-count", MPV_FORMAT_INT64, &count);
 	return count;
 }
 
 int64_t player_playlist_position(void) {
 	int64_t pos = -1;
-	player_get_property_int64("playlist-pos", &pos);
+	mpv_get_property(player_ctx, "playlist-pos", MPV_FORMAT_INT64, &pos);
 	return pos;
 }
 
