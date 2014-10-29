@@ -171,33 +171,16 @@ gboolean on_list(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
 	return TRUE;
 }
 
-gboolean on_loop(GroovedPlayer *obj, GDBusMethodInvocation *invocation,
-                 const char *arg_mode) {
-	int rc;
+void on_loop(GroovedPlayer *obj, GParamSpec *spec, gpointer data) {
+	const char *arg_mode = grooved_player_get_loop_status(obj);
 
 	if (g_strcmp0(arg_mode, "track") == 0) {
-		rc = player_playback_loop(PLAYER_LOOP_TRACK);
+		player_playback_loop(PLAYER_LOOP_TRACK);
 	} else if (g_strcmp0(arg_mode, "list") == 0) {
-		rc = player_playback_loop(PLAYER_LOOP_LIST);
+		player_playback_loop(PLAYER_LOOP_LIST);
 	} else if (g_strcmp0(arg_mode, "none") == 0) {
-		rc = player_playback_loop(PLAYER_LOOP_NONE);
-	} else {
-		g_dbus_method_invocation_return_dbus_error(
-			invocation, DBUS_ERROR_INVALID_ARGS,
-			"Invalid loop mode"
-		);
-
-		goto exit;
+		player_playback_loop(PLAYER_LOOP_NONE);
 	}
-	dbus_check_error(invocation, rc);
-
-	grooved_player_complete_set_loop_status(obj, invocation);
-
-	char *loop = player_loop_status_string();
-	grooved_player_set_loop_status(iface, loop);
-
-exit:
-	return TRUE;
 }
 
 gboolean on_next(GroovedPlayer *obj, GDBusMethodInvocation *invocation) {
@@ -307,7 +290,7 @@ static void on_bus_acquired(GDBusConnection *conn, const char *name, void *p) {
 		{ "handle-add-track",       G_CALLBACK(on_add_track) },
 		{ "handle-goto-track",      G_CALLBACK(on_goto_track) },
 		{ "handle-list",            G_CALLBACK(on_list) },
-		{ "handle-set-loop-status", G_CALLBACK(on_loop) },
+		{ "notify::loop-status",    G_CALLBACK(on_loop) },
 		{ "handle-next",            G_CALLBACK(on_next) },
 		{ "handle-pause",           G_CALLBACK(on_pause) },
 		{ "handle-play",            G_CALLBACK(on_play) },

@@ -4,7 +4,7 @@
     <property name="PlaybackStatus" type="s" access="read">
     </property>
 
-    <property name="LoopStatus" type="s" access="read">
+    <property name="LoopStatus" type="s" access="readwrite">
     </property>
 
     <property name="TrackMetadata" type="a{ss}" access="read">
@@ -66,10 +66,6 @@
 
     <method name="RemoveTrack">
       <arg direction="in" name="index" type="x"/>
-    </method>
-
-    <method name="SetLoopStatus">
-      <arg direction="in" name="mode" type="s"/>
     </method>
 
     <method name="Quit">

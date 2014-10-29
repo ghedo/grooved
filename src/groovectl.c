@@ -321,18 +321,13 @@ CMD_HANDLE(rm) {
 }
 
 CMD_HANDLE(loop) {
-	GError *err = NULL;
-
 	if ((argc < 3) ||
 	    (strcmp("track", argv[2]) &&
 	     strcmp("list", argv[2]) &&
 	     strcmp("none", argv[2])))
 		fail_printf("Invalid loop mode");
 
-	grooved_player_call_set_loop_status_sync(proxy, argv[2], NULL, &err);
-
-	if (err != NULL)
-		fail_printf("%s", err -> message);
+	grooved_player_set_loop_status(proxy, argv[2]);
 }
 
 CMD_HANDLE(lyrics) {
