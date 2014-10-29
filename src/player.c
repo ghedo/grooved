@@ -532,8 +532,10 @@ static gboolean player_loop_fd_prepare(GSource *src, int *timeout) {
 
 static gboolean player_loop_fd_check(GSource *src) {
 	GIOCondition cond = g_source_query_unix_fd(src, ((GPlayerSource *) src) -> fd);
+	int pipe_fd = mpv_get_wakeup_pipe(player_ctx);
 
-	flush_pipe(mpv_get_wakeup_pipe(player_ctx));
+	char discard[100];
+	read(pipe_fd, discard, sizeof(discard));
 
 	return (cond > 0);
 }

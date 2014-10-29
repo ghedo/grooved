@@ -42,17 +42,3 @@ static inline void freep(void *p) {
 
 	*(void **)p = NULL;
 }
-
-static inline void flush_pipe(int fd) {
-#define FIFO_BUFFER_SIZE 256
-
-	ssize_t bytes;
-	char    unused[FIFO_BUFFER_SIZE];
-
-	do {
-		bytes = read(fd, unused, FIFO_BUFFER_SIZE);
-	} while ((bytes > 0) && (errno != EINTR));
-
-	if ((bytes < 0) && (errno != EAGAIN))
-		err_printf("Error flushing pipe");
-}
