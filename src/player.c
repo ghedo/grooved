@@ -307,27 +307,13 @@ int player_playback_toggle(void) {
 }
 
 int player_playback_stop(void) {
-	int rc = 0;
-	enum player_status prev_status = player_status;
-	const char *cmd_clear[]  = { "playlist_clear", NULL };
-
-	switch (prev_status) {
-		case STARTING:
-		case STOPPED:
-			break;
-
-		case PLAYING:
-		case PAUSED:
-			rc = mpv_command(player_ctx, cmd_clear);
-			if (rc < 0) return rc;
-
-			rc = player_playlist_remove_index(-1);
-			if (rc < 0) return rc;
-
-			break;
-	}
+	int rc;
+	const char *cmd_clear[]  = { "stop", NULL };
 
 	player_status_change(STOPPED);
+
+	rc = mpv_command(player_ctx, cmd_clear);
+	if (rc < 0) return rc;
 
 	return 0;
 }
