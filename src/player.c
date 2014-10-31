@@ -311,7 +311,6 @@ int player_playback_stop(void) {
 	const char *cmd_clear[]  = { "stop", NULL };
 
 	player_status_change(STOPPED);
-	player_status_change(STOPPED);
 
 	rc = mpv_command(player_ctx, cmd_clear);
 	if (rc < 0) return rc;
