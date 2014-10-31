@@ -311,6 +311,7 @@ int player_playback_stop(void) {
 	const char *cmd_clear[]  = { "stop", NULL };
 
 	player_status_change(STOPPED);
+	player_status_change(STOPPED);
 
 	rc = mpv_command(player_ctx, cmd_clear);
 	if (rc < 0) return rc;
@@ -562,8 +563,10 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 			if (player_status == STARTING)
 				player_status = STOPPED;
 
-			if (player_status == STOPPED)
+			if (player_status == STOPPED) {
+				dbus_handle_event(TRACK_CHANGED);
 				break;
+			}
 
 			rc = player_playlist_append_file(NULL, true);
 			if (rc < 0)
