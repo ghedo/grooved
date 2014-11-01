@@ -193,32 +193,36 @@ void player_make_list(GVariantBuilder *list) {
 }
 
 void player_make_metadata(GVariantBuilder *meta) {
-	int i;
+	int rc, i;
 
 	mpv_node metadata;
 
-	mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
+	rc = mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
+	if (rc < 0)
+		return;
 
-	if (metadata.format == MPV_FORMAT_NODE_MAP) {
-		for (i = 0; i < metadata.u.list -> num; i++) {
-			char *key = metadata.u.list -> keys[i];
-			char *val = metadata.u.list -> values[i].u.string;
+	for (i = 0; i < metadata.u.list -> num; i++) {
+		char *key = metadata.u.list -> keys[i];
+		char *val = metadata.u.list -> values[i].u.string;
 
-			g_variant_builder_add(meta, "{ss}", key, val);
-		}
+		g_variant_builder_add(meta, "{ss}", key, val);
 	}
 
 	mpv_free_node_contents(&metadata);
 }
 
 char *player_make_media_title(void) {
-	int i;
+	int rc, i;
 	mpv_node metadata;
 
 	char *title  = mpv_get_property_string(player_ctx, "media-title");
 	char *artist = NULL;
 
-	mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
+	char *media_title = NULL;
+
+	rc = mpv_get_property(player_ctx, "metadata", MPV_FORMAT_NODE, &metadata);
+	if (rc < 0)
+		goto done;
 
 	for (i = 0; i < metadata.u.list -> num; i++) {
 		char *key = metadata.u.list -> keys[i];
@@ -228,12 +232,12 @@ char *player_make_media_title(void) {
 			artist = val;
 	}
 
-	char *media_title = NULL;
 	if (artist)
 		asprintf(&media_title, "%s - %s", artist, title);
 	else
 		asprintf(&media_title, "%s", title);
 
+done:
 	mpv_free_node_contents(&metadata);
 	mpv_free(title);
 
@@ -310,10 +314,10 @@ int player_playback_stop(void) {
 	int rc;
 	const char *cmd_clear[]  = { "stop", NULL };
 
-	player_status_change(STOPPED);
-
 	rc = mpv_command(player_ctx, cmd_clear);
 	if (rc < 0) return rc;
+
+	player_status_change(STOPPED);
 
 	return 0;
 }
@@ -562,10 +566,8 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 			if (player_status == STARTING)
 				player_status = STOPPED;
 
-			if (player_status == STOPPED) {
-				dbus_handle_event(TRACK_CHANGED);
+			if (player_status == STOPPED)
 				break;
-			}
 
 			rc = player_playlist_append_file(NULL, true);
 			if (rc < 0)
