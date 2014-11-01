@@ -455,6 +455,9 @@ int player_playlist_append_file(const char *path, bool play) {
 
 	const char *file = path == NULL ? library_random() : path;
 
+	if (file == NULL)
+		return MPV_ERROR_INVALID_PARAMETER;
+
 	const char *mode  = play ? "append-play" : "append";
 	const char *cmd[] = { "loadfile", file, mode, NULL };
 
@@ -570,8 +573,11 @@ static gboolean player_loop_fd_dispatch(GSource *src, GSourceFunc cb, void *p) {
 				break;
 
 			rc = player_playlist_append_file(NULL, true);
-			if (rc < 0)
+			if (rc < 0) {
+				debug_printf("Could not append random track: %s",
+				             mpv_error_string(rc));
 				player_status_change(STOPPED);
+			}
 
 			break;
 
