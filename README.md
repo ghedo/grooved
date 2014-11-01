@@ -39,7 +39,7 @@ grooved itself. Here's a simple configuration example:
 
 ```ini
 [default]
-library    = ~/data/musiclibrary.blb ; path to beets' database
+library = ~/data/musiclibrary.blb ; path to beets' database
 ```
 
 Save that in the file `~/.config/grooved/config.ini` (see the [manual] [grooved]
