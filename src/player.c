@@ -131,7 +131,10 @@ void player_init(void) {
 		player_check_error("Could not set scripts", rc);
 	}
 
-	mpv_request_log_messages(player_ctx, "warn");
+	if (cfg.verbose)
+		mpv_request_log_messages(player_ctx, "v");
+	else
+		mpv_request_log_messages(player_ctx, "warn");
 
 	player_src = (GPlayerSource *) g_source_new(
 		&player_funcs, sizeof(GPlayerSource)
