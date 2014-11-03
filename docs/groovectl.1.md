@@ -12,27 +12,41 @@ grooved daemon via the DBus session bus.
 
 ## COMMANDS
 
-`add TRACK [, TRACK ...]`
+`play`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Unpause the player.
+
+`pause`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Pause the player.
+
+`toggle`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Toggle the player's pause status.
+
+`next`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Skip to the next track.
+
+`prev`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Skip to the previous track.
+
+`stop`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Stop playback and clear tracklist.
+
+`add TRACK`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Append tracks to the player's tracklist. Tracks can be either files on the
-filesystem or other kinds of streams (e.g. HTTP streams). If the first track
-argument is "-", track names will be read from STDIN (one track per line).
-
-`goto`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Skip to a specific track, identified by its index, in the tracklist.
-
-`last`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Stop playback after the currently playing track has ended.
-
-`ls`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Show tracklist (the current track is marked with '*').
+filesystem or other kinds of streams (e.g. HTTP streams, Youtube videos, ...).
 
 `load [--append] FILE`
 
@@ -40,40 +54,15 @@ Show tracklist (the current track is marked with '*').
 Load a playlist file. The tracklist will be replaced with the content of the
 given playlist and playback stopped, unless `--append` is used.
 
-`loop track|list|none`
+`save FILE`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Set the player's loop mode.
+Save the tracklist to a playlist file.
 
-`lyrics`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Download and show lyrics for the currently playing track.
-
-`next`
+`goto INDEX`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Skip to the next track.
-
-`pause`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Pause the player.
-
-`play`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Unpause the player.
-
-`prev`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Skip to the previous track.
-
-`quit`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Shutdown the player.
+Skip to a specific track, identified by its index, in the tracklist.
 
 `rm INDEX`
 
@@ -81,10 +70,15 @@ Shutdown the player.
 Remove a track identified by its index in the tracklist, from the tracklist. The
 special value `-1` corresponds to the current track.
 
-`save FILE`
+`ls`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Save the tracklist to a playlist file.
+Show tracklist (the current track is marked with '*').
+
+`status`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Show the status of the player.
 
 `seek SECONDS`
 
@@ -92,20 +86,15 @@ Save the tracklist to a playlist file.
 Seek by the given amount of seconds relative to the current position. A negative
 value seeks backwards.
 
-`status`
+`loop track|list|none`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Show the status of the player.
+Set the player's loop mode.
 
-`toggle`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Toggle the player's pause status.
-
-`stop`
+`quit`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Stop playback and clear tracklist.
+Shutdown the player.
 
 ## AUTHOR ##
 

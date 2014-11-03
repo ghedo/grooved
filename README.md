@@ -106,10 +106,7 @@ See [grooved(1)] [grooved] and [groovectl(1)] [groovectl] for more information.
 grooved is distributed as source code. Install with:
 
 ```bash
-$ mkdir build && cd build
-$ cmake ..
 $ make
-$ [sudo] make install
 ```
 
 ## COPYRIGHT

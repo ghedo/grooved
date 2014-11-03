@@ -28,18 +28,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#define GROOVED_DBUS_NAME             "io.github.ghedo.grooved"
-#define GROOVED_DBUS_PATH             "/io/github/ghedo/grooved"
-#define GROOVED_DBUS_PLAYER_INTERFACE "io.github.ghedo.grooved.Player"
+package library
 
-enum dbus_event {
-	STATUS_CHANGED,
-	TRACK_CHANGED,
-};
+import "database/sql"
+import _ "github.com/mattn/go-sqlite3"
 
-extern void dbus_init(void);
-extern void dbus_destroy(void);
+import "fmt"
 
-extern void dbus_notify(char *title, char *msg, char *icon);
+const random_query = "SELECT path FROM items ORDER BY RANDOM() LIMIT 1";
 
-extern void dbus_handle_event(enum dbus_event sig);
+func Random(library string) (string, error) {
+	db, err := sql.Open("sqlite3", library);
+	if err != nil {
+		return "", fmt.Errorf("Could not open library: %s", err);
+	}
+	defer db.Close();
+
+	rows, err := db.Query(random_query);
+	if err != nil {
+		return "", fmt.Errorf("Could not execute query: %s", err);
+	}
+	defer rows.Close();
+
+	for rows.Next() {
+		var path string
+		rows.Scan(&path);
+
+		return path, nil;
+	}
+	rows.Close();
+
+	return "", fmt.Errorf("Empty database");
+}

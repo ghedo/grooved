@@ -28,7 +28,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-extern void library_open(void);
-extern void library_close(void);
+package util
 
-extern char *library_random(void);
+import "fmt"
+import "os/user"
+import "strings"
+
+func ExpandUser(path string) (string, error) {
+	user, err := user.Current();
+	if err != nil {
+		return "", fmt.Errorf("Could not find current user: %s", err);
+	}
+
+	if strings.HasPrefix(path, "~/") {
+		return strings.Replace(path, "~", user.HomeDir, 1), nil;
+	}
+
+	return path, nil;
+}

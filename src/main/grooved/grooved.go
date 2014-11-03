@@ -28,16 +28,51 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#define COLOR_GREEN	"[1;32m"
-#define COLOR_YELLOW	"[1;33m"
-#define COLOR_RED	"[1;31m"
-#define COLOR_BGRED	"[1;41m"
-#define COLOR_OFF	"[0m"
+package main
 
-extern int use_syslog;
+import "log"
 
-extern void ok_printf(const char *fmt, ...);
-extern void debug_printf(const char *fmt, ...);
-extern void err_printf(const char *fmt, ...);
-extern void fail_printf(const char *fmt, ...);
-extern void sysf_printf(const char *fmt, ...);
+import "github.com/docopt/docopt-go"
+import "github.com/vaughan0/go-ini"
+
+import "bus"
+import "player"
+import "util"
+
+func main() {
+	log.SetFlags(0);
+
+	usage := `Usage: grooved [options]
+
+Options:
+  -c <file>, --config <file>    Configuration file [default: ~/.config/grooved/config.ini].
+  -V, --verbose                 Enable verbose log messages [default: false].
+  -h, --help                    Show the program's help message and exit.`
+
+	args, err := docopt.Parse(usage, nil, true, "", false)
+	if err != nil {
+		log.Fatalf("Invalid arguments: %s", err);
+	}
+
+	cfg_file, err := util.ExpandUser(args["--config"].(string));
+	if err != nil {
+		log.Fatalf("Error expanding home directory: %s", err);
+	}
+
+	cfg, err := ini.LoadFile(cfg_file);
+	if err != nil {
+		log.Fatalf("Error loading config file: %s", err);
+	}
+
+	player, err := player.Run(cfg);
+	if err != nil {
+		log.Fatalf("Error creating player: %s", err);
+	}
+
+	err = bus.Run(player);
+	if err != nil {
+		log.Fatalf("Error creating dbus service: %s", err);
+	}
+
+	player.Wait.Wait();
+}

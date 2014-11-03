@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "GROOVECTL" "1" "September 2014" "" ""
+.TH "GROOVECTL" "1" "November 2014" "" ""
 .
 .SH "NAME"
 \fBgroovectl\fR \- groovy music player client
@@ -13,52 +13,10 @@
 \fBgroovectl\fR is a command\-line client for grooved\. It communicates with the grooved daemon via the DBus session bus\.
 .
 .SH "COMMANDS"
-\fBadd TRACK [, TRACK \.\.\.]\fR
+\fBplay\fR
 .
 .P
-\~\~\~\~\~\~ Append tracks to the player\'s tracklist\. Tracks can be either files on the filesystem or other kinds of streams (e\.g\. HTTP streams)\. If the first track argument is "\-", track names will be read from STDIN (one track per line)\.
-.
-.P
-\fBgoto\fR
-.
-.P
-\~\~\~\~\~\~ Skip to a specific track, identified by its index, in the tracklist\.
-.
-.P
-\fBlast\fR
-.
-.P
-\~\~\~\~\~\~ Stop playback after the currently playing track has ended\.
-.
-.P
-\fBls\fR
-.
-.P
-\~\~\~\~\~\~ Show tracklist (the current track is marked with \'*\')\.
-.
-.P
-\fBload [\-\-append] FILE\fR
-.
-.P
-\~\~\~\~\~\~ Load a playlist file\. The tracklist will be replaced with the content of the given playlist and playback stopped, unless \fB\-\-append\fR is used\.
-.
-.P
-\fBloop track|list|none\fR
-.
-.P
-\~\~\~\~\~\~ Set the player\'s loop mode\.
-.
-.P
-\fBlyrics\fR
-.
-.P
-\~\~\~\~\~\~ Download and show lyrics for the currently playing track\.
-.
-.P
-\fBnext\fR
-.
-.P
-\~\~\~\~\~\~ Skip to the next track\.
+\~\~\~\~\~\~ Unpause the player\.
 .
 .P
 \fBpause\fR
@@ -67,10 +25,16 @@
 \~\~\~\~\~\~ Pause the player\.
 .
 .P
-\fBplay\fR
+\fBtoggle\fR
 .
 .P
-\~\~\~\~\~\~ Unpause the player\.
+\~\~\~\~\~\~ Toggle the player\'s pause status\.
+.
+.P
+\fBnext\fR
+.
+.P
+\~\~\~\~\~\~ Skip to the next track\.
 .
 .P
 \fBprev\fR
@@ -79,16 +43,22 @@
 \~\~\~\~\~\~ Skip to the previous track\.
 .
 .P
-\fBquit\fR
+\fBstop\fR
 .
 .P
-\~\~\~\~\~\~ Shutdown the player\.
+\~\~\~\~\~\~ Stop playback and clear tracklist\.
 .
 .P
-\fBrm INDEX\fR
+\fBadd TRACK\fR
 .
 .P
-\~\~\~\~\~\~ Remove a track identified by its index in the tracklist, from the tracklist\. The special value \fB\-1\fR corresponds to the current track\.
+\~\~\~\~\~\~ Append tracks to the player\'s tracklist\. Tracks can be either files on the filesystem or other kinds of streams (e\.g\. HTTP streams, Youtube videos, \.\.\.)\.
+.
+.P
+\fBload [\-\-append] FILE\fR
+.
+.P
+\~\~\~\~\~\~ Load a playlist file\. The tracklist will be replaced with the content of the given playlist and playback stopped, unless \fB\-\-append\fR is used\.
 .
 .P
 \fBsave FILE\fR
@@ -97,10 +67,22 @@
 \~\~\~\~\~\~ Save the tracklist to a playlist file\.
 .
 .P
-\fBseek SECONDS\fR
+\fBgoto INDEX\fR
 .
 .P
-\~\~\~\~\~\~ Seek by the given amount of seconds relative to the current position\. A negative value seeks backwards\.
+\~\~\~\~\~\~ Skip to a specific track, identified by its index, in the tracklist\.
+.
+.P
+\fBrm INDEX\fR
+.
+.P
+\~\~\~\~\~\~ Remove a track identified by its index in the tracklist, from the tracklist\. The special value \fB\-1\fR corresponds to the current track\.
+.
+.P
+\fBls\fR
+.
+.P
+\~\~\~\~\~\~ Show tracklist (the current track is marked with \'*\')\.
 .
 .P
 \fBstatus\fR
@@ -109,16 +91,22 @@
 \~\~\~\~\~\~ Show the status of the player\.
 .
 .P
-\fBtoggle\fR
+\fBseek SECONDS\fR
 .
 .P
-\~\~\~\~\~\~ Toggle the player\'s pause status\.
+\~\~\~\~\~\~ Seek by the given amount of seconds relative to the current position\. A negative value seeks backwards\.
 .
 .P
-\fBstop\fR
+\fBloop track|list|none\fR
 .
 .P
-\~\~\~\~\~\~ Stop playback and clear tracklist\.
+\~\~\~\~\~\~ Set the player\'s loop mode\.
+.
+.P
+\fBquit\fR
+.
+.P
+\~\~\~\~\~\~ Shutdown the player\.
 .
 .SH "AUTHOR"
 Alessandro Ghedini \fIalessandro@ghedini\.me\fR

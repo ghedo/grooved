@@ -31,21 +31,26 @@ Enable verbose log messages.
 
 Here is a list of valid configuration options:
 
-`library=<path>`
+`cache=<kBytes|no|auto>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-The path to beets' database.
-
-`verbose=<yes|no>`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Whether to enable verbose output. (optional)
+The size of the cache in kilobytes. (optional)
 
 `gapless=<yes|no|weak>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Whether to play consecutive audio files with no silence or disruption at the
 point of file change. (optional)
+
+`library=<path>`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The path to beets' database.
+
+`notify=<yes|no>`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Send desktop notifications on track change.
 
 `replaygain=<track|album>`
 
@@ -58,10 +63,10 @@ Adjust volume gain according to ReplayGain tags. (optional)
 The output audio driver to use. See mpv(1) for a list of suported audio outputs
 and options. (optional)
 
-`cache=<kBytes|no|auto>`
+`verbose=<yes|no>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-The size of the cache in kilobytes. (optional)
+Whether to enable verbose output. (optional)
 
 ## AUTHOR ##
 

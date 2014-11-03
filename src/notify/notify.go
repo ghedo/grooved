@@ -28,50 +28,32 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <string.h>
+package notify
 
-#include <sqlite3.h>
+import "fmt"
 
-#include "player.h"
-#include "config.h"
-#include "printf.h"
+import "github.com/godbus/dbus"
 
-static sqlite3 *db = NULL;
-
-static int single_path_cb(void *argp, int argc, char **argv, char **column);
-
-void library_open(void) {
-	if (sqlite3_open(cfg.library, &db) != SQLITE_OK) {
-		err_printf("Could not open database: %s", sqlite3_errmsg(db));
-		sqlite3_close(db);
-		db = NULL;
-	}
-}
-
-void library_close(void) {
-	sqlite3_close(db);
-}
-
-char *library_random(void) {
-	char *err;
-	char *path = NULL;
-
-	char *q = "SELECT path FROM items ORDER BY RANDOM() LIMIT 1";
-
-	if (db == NULL)
-		return NULL;
-
-	if (sqlite3_exec(db, q, single_path_cb, &path, &err) != SQLITE_OK) {
-		err_printf("SQL error: %s", err);
-		sqlite3_free(err);
-		return NULL;
+func Notify(title, body, icon string) error {
+	conn, err := dbus.SessionBus()
+	if err != nil {
+		return fmt.Errorf("Could not get session bus: %s", err);
 	}
 
-	return path;
-}
+	obj := conn.Object(
+		"org.freedesktop.Notifications",
+		"/org/freedesktop/Notifications",
+	);
 
-static int single_path_cb(void *argp, int argc, char **argv, char **column) {
-	char **str = argp;
-	*str = strdup(argv[0]);
-	return 0;
+	call := obj.Call(
+		"org.freedesktop.Notifications.Notify", 0,
+		"grooved", uint32(0), icon, title, body, []string{},
+		map[string]dbus.Variant{}, int32(-1),
+	);
+
+	if call.Err != nil {
+		return fmt.Errorf("Could not send notifycation: %s", call.Err);
+	}
+
+	return nil;
 }
