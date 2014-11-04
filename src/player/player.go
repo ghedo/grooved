@@ -43,6 +43,7 @@ import "github.com/vaughan0/go-ini"
 
 import "library"
 import "notify"
+import "util"
 
 type Event byte;
 type Status byte;
@@ -353,7 +354,7 @@ func Run(cfg ini.File) (*Player, error) {
 		p.SetOptionString("gapless-audio", cfg["default"]["gapless"]);
 	}
 
-	p.library = cfg["default"]["library"];
+	p.library, _ = util.ExpandUser(cfg["default"]["library"]);
 
 	if cfg["default"]["notify"] == "yes" {
 		p.notify = true;
