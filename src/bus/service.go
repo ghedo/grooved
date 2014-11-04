@@ -272,7 +272,6 @@ func Run(player *player.Player) error {
 			},
 
 			"LoopStatus": {
-				/* TODO: implement set callback */
 				"none", true, prop.EmitTrue, SetLoopStatus,
 			},
 
