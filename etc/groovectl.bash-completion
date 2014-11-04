@@ -3,34 +3,26 @@
 # This file is released under the 2 clause BSD license, see COPYING
 
 _groovectl() {
-	local cur prev
-
-	COMPREPLY=()
-
-	cur=${COMP_WORDS[COMP_CWORD]}
-	prev=${COMP_WORDS[COMP_CWORD-1]}
-
 	CMDS=(
-		add
-		goto
-		ls
-		load
-		loop
-		next
-		pause
-		play
-		prev
-		quit
-		rm
-		save
-		seek
-		status
-		stop
-		toggle
+		"add"
+		"goto"
+		"ls"
+		"load"
+		"loop"
+		"next"
+		"pause"
+		"play"
+		"prev"
+		"quit"
+		"rm"
+		"save"
+		"seek"
+		"status"
+		"stop"
+		"toggle"
 	)
 
-	COMPREPLY=($(compgen -W "${CMDS[@]}" -- $cur))
-
-	return 0
+	local cur=${COMP_WORDS[COMP_CWORD]}
+	COMPREPLY=( $(compgen -W "${CMDS[*]}" -- $cur) )
 }
-complete -f -F _groovectl groovectl
+complete -F _groovectl groovectl
