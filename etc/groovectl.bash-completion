@@ -13,11 +13,9 @@ _groovectl() {
 	CMDS=(
 		add
 		goto
-		last
 		ls
 		load
 		loop
-		lyrics
 		next
 		pause
 		play
