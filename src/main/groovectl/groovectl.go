@@ -31,6 +31,7 @@
 package main
 
 import "log"
+import "path/filepath"
 import "strconv"
 import "time"
 import "os"
@@ -121,6 +122,11 @@ Options:
 
 		case args["add"].(bool) == true:
 			track := args["<track>"].(string);
+
+			if _, err := os.Stat(track); err == nil {
+				track, _ = filepath.Abs(track);
+			}
+
 			call = obj.Call(bus_interface + ".AddTrack", 0, track);
 
 		case args["load"].(bool) == true:
