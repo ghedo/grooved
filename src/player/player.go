@@ -401,8 +401,6 @@ func (p *Player) EventLoop() {
 		ev := C.mpv_wait_event(p.handle, -1);
 		ev_name := C.GoString(C.mpv_event_name(ev.event_id));
 
-		log.Printf("event: %s", ev_name);
-
 		switch ev_name {
 			case "idle":
 				if p.Status == StatusStarting {
