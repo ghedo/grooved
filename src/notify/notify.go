@@ -47,7 +47,7 @@ func Notify(title, body, icon string) error {
 
 	call := obj.Call(
 		"org.freedesktop.Notifications.Notify", 0,
-		"grooved", uint32(0), icon, title, body, []string{},
+		"grooved", uint32(1), icon, title, body, []string{},
 		map[string]dbus.Variant{}, int32(-1),
 	);
 
