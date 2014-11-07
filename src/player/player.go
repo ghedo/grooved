@@ -235,6 +235,9 @@ func (p *Player) Quit() error {
 
 func (p *Player) GetTrackMetadata() (map[string]string, error) {
 	metadata, err := p.GetProperty("metadata");
+	if err != nil {
+		return nil, err;
+	}
 
 	metadata_str := map[string]string{};
 
@@ -248,7 +251,7 @@ func (p *Player) GetTrackMetadata() (map[string]string, error) {
 func (p *Player) GetTrackLength() (float64, error) {
 	length, err := p.GetProperty("length");
 	if err != nil {
-		return 0.0, nil;
+		return 0.0, err;
 	}
 
 	return length.(float64), nil;
@@ -256,7 +259,11 @@ func (p *Player) GetTrackLength() (float64, error) {
 
 func (p *Player) GetTrackPath() (string, error) {
 	path, err := p.GetProperty("path");
-	return path.(string), err;
+	if err != nil {
+		return "", err;
+	}
+
+	return path.(string), nil;
 }
 
 func (p *Player) GetTrackPosition(percent bool) (float64, error) {
