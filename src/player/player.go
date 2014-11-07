@@ -149,6 +149,7 @@ func (p *Player) Prev() error {
 func (p *Player) Stop() error {
 	err := p.Command([]string{"stop"})
 
+	p.ChangeStatus(StatusStopped);
 	p.HandleTrackChange();
 
 	return err;
