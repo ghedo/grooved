@@ -147,7 +147,7 @@ func (p *Player) Prev() error {
 }
 
 func (p *Player) Stop() error {
-	err := p.Command([]string{"playlist_prev", "weak"})
+	err := p.Command([]string{"stop"})
 
 	p.HandleTrackChange();
 
