@@ -79,6 +79,7 @@ type Player struct {
 
 	HandleStatusChange func();
 	HandleTrackChange func();
+	HandleTracksChange func();
 
 	Wait sync.WaitGroup;
 }
@@ -154,20 +155,10 @@ func (p *Player) Seek(seconds int64) error {
 	return p.Command([]string{"seek", secs});
 }
 
-func (p *Player) List() ([]string, int64, int64, error) {
-	count, err := p.GetProperty("playlist-count");
-	if err != nil {
-		return nil, 0, -1, nil;
-	}
-
-	pos, err := p.GetProperty("playlist-pos");
-	if err != nil {
-		return nil, 0, -1, nil;
-	}
-
+func (p *Player) List() ([]string, error) {
 	playlist, err := p.GetProperty("playlist");
 	if err != nil {
-		return nil, 0, -1, nil;
+		return nil, nil;
 	}
 
 	var files []string;
@@ -181,7 +172,7 @@ func (p *Player) List() ([]string, int64, int64, error) {
 		files = append(files, entry_map["filename"].(string));
 	}
 
-	return files, count.(int64), pos.(int64), nil;
+	return files, nil;
 }
 
 func (p *Player) AddTrack(path string, play bool) error {
@@ -434,6 +425,7 @@ func (p *Player) HandleMetadataChange() {
 func (p *Player) EventLoop() {
 	p.ObserveProperty("pause", FormatFlag);
 	p.ObserveProperty("metadata", FormatNode);
+	p.ObserveProperty("playlist", FormatNode);
 
 	for {
 		ev := C.mpv_wait_event(p.handle, -1);
@@ -472,6 +464,9 @@ func (p *Player) EventLoop() {
 
 					case "metadata":
 						p.HandleMetadataChange();
+
+					case "playlist":
+						p.HandleTracksChange();
 				}
 
 			case "log-message":

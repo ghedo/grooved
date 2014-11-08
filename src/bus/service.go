@@ -65,6 +65,9 @@ const bus_introspection = `
     <property name="TrackTitle" type="s" access="read">
     </property>
 
+    <property name="Tracks" type="as" access="read">
+    </property>
+
     <method name="Play">
     </method>
 
@@ -85,12 +88,6 @@ const bus_introspection = `
 
     <method name="Seek">
       <arg direction="in" name="seconds" type="x"/>
-    </method>
-
-    <method name="List">
-      <arg direction="out" name="files" type="as"/>
-      <arg direction="out" name="count" type="x"/>
-      <arg direction="out" name="position" type="x"/>
     </method>
 
     <method name="AddTrack">
@@ -196,11 +193,6 @@ func (b *Bus) Seek(seconds int64) *dbus.Error {
 	return nil;
 }
 
-func (b *Bus) List() ([]string, int64, int64, *dbus.Error) {
-	files, count, pos, _ := b.player.List();
-	return files, count, pos, nil;
-}
-
 func (b *Bus) AddTrack(path string) *dbus.Error {
 	b.player.AddTrack(path, false);
 	return nil;
@@ -243,6 +235,11 @@ func HandleTrackChange() {
 
 	title, _ := bus.player.GetTrackTitle();
 	bus.props.SetMust(bus_interface_player, "TrackTitle", title);
+}
+
+func HandleTracksChange() {
+	files, _ := bus.player.List();
+	bus.props.SetMust(bus_interface_player, "Tracks", files);
 }
 
 func SetLoopStatus(c *prop.Change) *dbus.Error {
@@ -291,6 +288,10 @@ func Run(p *player.Player) error {
 			"TrackTitle": {
 				"", false, prop.EmitTrue, nil,
 			},
+
+			"Tracks": {
+				[]string{}, false, prop.EmitTrue, nil,
+			},
 		},
 	};
 
@@ -303,6 +304,7 @@ func Run(p *player.Player) error {
 
 	p.HandleStatusChange = HandleStatusChange;
 	p.HandleTrackChange = HandleTrackChange;
+	p.HandleTracksChange = HandleTracksChange;
 
 	introspect := introspect.Introspectable(bus_introspection);
 	conn.Export(introspect, bus_path, bus_interface_introspect);

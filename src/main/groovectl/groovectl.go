@@ -201,15 +201,17 @@ Options:
 }
 
 func PrintList(obj *dbus.Object) {
-	var files []string;
-	var count, pos int64;
+	files, err := obj.GetProperty(bus_interface + ".Tracks");
+	if err != nil {
+		log.Fatalf("Could not retrieve property: %s", err);
+	}
 
-	obj.Call(bus_interface + ".List", 0).Store(&files, &count, &pos);
+	current, _ := obj.GetProperty(bus_interface + ".TrackPath");
 
-	for i, file := range files {
+	for i, file := range files.Value().([]string) {
 		var prefix string;
 
-		if int64(i) == pos {
+		if current.Value() != nil && file == current.Value().(string) {
 			prefix = "*";
 		} else {
 			prefix = " ";
