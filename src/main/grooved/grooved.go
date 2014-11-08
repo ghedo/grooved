@@ -64,7 +64,7 @@ Options:
 		log.Fatalf("Error loading config file: %s", err);
 	}
 
-	player, err := player.Run(cfg);
+	player, err := player.Init(cfg);
 	if err != nil {
 		log.Fatalf("Error creating player: %s", err);
 	}
@@ -72,6 +72,11 @@ Options:
 	err = bus.Run(player);
 	if err != nil {
 		log.Fatalf("Error creating dbus service: %s", err);
+	}
+
+	err = player.Run();
+	if err != nil {
+		log.Fatalf("Error running player: %s", err);
 	}
 
 	player.Wait.Wait();

@@ -309,7 +309,7 @@ func (p *Player) SetLoopStatus(mode string) error {
 	return nil;
 }
 
-func Run(cfg ini.File) (*Player, error) {
+func Init(cfg ini.File) (*Player, error) {
 	p := new(Player);
 
 	p.Status = StatusStopped;
@@ -384,11 +384,15 @@ func Run(cfg ini.File) (*Player, error) {
 		return nil, ErrorString(mp_err);
 	}
 
+	return p, nil;
+}
+
+func (p *Player) Run() error {
 	p.Wait.Add(1);
 
 	go p.EventLoop();
 
-	return p, nil;
+	return nil;
 }
 
 func (p *Player) HandlePauseChange() {
