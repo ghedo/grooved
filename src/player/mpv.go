@@ -150,6 +150,18 @@ func (p *Player) GetProperty(name string) (interface{}, error) {
 	return node_to_go(&node);
 }
 
+func (p *Player) ObserveProperty(name string, fmt C.mpv_format) error {
+	cname := C.CString(name);
+	defer C.free(unsafe.Pointer(cname));
+
+	err := C.mpv_observe_property(p.handle, 0, cname, fmt);
+	if err != 0 {
+		return ErrorString(err);
+	}
+
+	return nil;
+}
+
 func (p *Player) Command(command []string) error {
 	carray := C.alloc_array(C.int(len(command) + 1));
 	if carray == nil {

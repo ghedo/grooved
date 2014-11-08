@@ -75,6 +75,7 @@ type Player struct {
 
 	library string;
 	notify  bool;
+	started bool;
 
 	HandleStatusChange func();
 	HandleTrackChange func();
@@ -321,6 +322,7 @@ func Run(cfg ini.File) (*Player, error) {
 	p := new(Player);
 
 	p.Status = StatusStopped;
+	p.started = false;
 
 	p.handle = C.mpv_create();
 	if p.handle == nil {
@@ -398,7 +400,41 @@ func Run(cfg ini.File) (*Player, error) {
 	return p, nil;
 }
 
+func (p *Player) HandlePauseChange() {
+	if !p.started {
+		return;
+	}
+
+	pause, err := p.GetProperty("pause");
+	if err != nil {
+		return;
+	}
+
+	if pause.(bool) {
+		p.ChangeStatus(StatusPaused);
+	} else {
+		p.ChangeStatus(StatusPlaying);
+	}
+}
+
+func (p *Player) HandleMetadataChange() {
+	if !p.started {
+		return;
+	}
+
+	if p.notify {
+		msg, _ := p.GetTrackTitle();
+		notify.Notify("Now Playing:", msg,
+				"media-playback-start");
+	}
+
+	p.HandleTrackChange();
+}
+
 func (p *Player) EventLoop() {
+	p.ObserveProperty("pause", FormatFlag);
+	p.ObserveProperty("metadata", FormatNode);
+
 	for {
 		ev := C.mpv_wait_event(p.handle, -1);
 		ev_name := C.GoString(C.mpv_event_name(ev.event_id));
@@ -418,20 +454,25 @@ func (p *Player) EventLoop() {
 					p.ChangeStatus(StatusStopped);
 				}
 
-			case "pause":
-				p.ChangeStatus(StatusPaused);
-
-			case "playback-restart", "unpause":
+			case "start-file":
+				p.started = true;
 				p.ChangeStatus(StatusPlaying);
 
-			case "metadata-update":
-				if p.notify {
-					msg, _ := p.GetTrackTitle();
-					notify.Notify("Now Playing:", msg,
-					              "media-playback-start");
+			case "property-change":
+				prop := (*C.mpv_event_property)(ev.data);
+				prop_name := C.GoString(prop.name);
+
+				if prop.format == FormatNone {
+					break;
 				}
 
-				p.HandleTrackChange();
+				switch prop_name {
+					case "pause":
+						p.HandlePauseChange();
+
+					case "metadata":
+						p.HandleMetadataChange();
+				}
 
 			case "log-message":
 				mp_log := (*C.mpv_event_log_message)(ev.data);
