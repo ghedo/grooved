@@ -49,17 +49,13 @@ type Event byte;
 type Status byte;
 
 const (
-	StatusStarting Status = iota;
-	StatusPlaying;
+	StatusPlaying Status = iota;
 	StatusPaused;
 	StatusStopped;
 );
 
 func (s Status) String() string {
 	switch s {
-		case StatusStarting:
-			return "start";
-
 		case StatusPlaying:
 			return "play";
 
@@ -93,7 +89,7 @@ func (p *Player) ChangeStatus(status Status) {
 
 func (p *Player) Play() error {
 	switch p.Status {
-		case StatusStarting, StatusPlaying:
+		case StatusPlaying:
 			return nil;
 
 		case StatusStopped:
@@ -113,7 +109,7 @@ func (p *Player) Play() error {
 
 func (p *Player) Pause() error {
 	switch p.Status {
-		case StatusStarting, StatusPaused, StatusStopped:
+		case StatusPaused, StatusStopped:
 			return nil;
 
 		case StatusPlaying:
@@ -125,9 +121,6 @@ func (p *Player) Pause() error {
 
 func (p *Player) Toggle() error {
 	switch p.Status {
-		case StatusStarting:
-			return nil;
-
 		case StatusPaused, StatusStopped:
 			return p.Play();
 
@@ -327,7 +320,7 @@ func (p *Player) SetLoopStatus(mode string) error {
 func Run(cfg ini.File) (*Player, error) {
 	p := new(Player);
 
-	p.Status = StatusStarting;
+	p.Status = StatusStopped;
 
 	p.handle = C.mpv_create();
 	if p.handle == nil {
@@ -412,10 +405,6 @@ func (p *Player) EventLoop() {
 
 		switch ev_name {
 			case "idle":
-				if p.Status == StatusStarting {
-					p.Status = StatusStopped;
-				}
-
 				if p.Status == StatusStopped {
 					break;
 				}

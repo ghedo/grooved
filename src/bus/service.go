@@ -250,7 +250,7 @@ func SetLoopStatus(c *prop.Change) *dbus.Error {
 	return nil;
 }
 
-func Run(pl *player.Player) error {
+func Run(p *player.Player) error {
 	conn, err := dbus.SessionBus();
 	if err != nil {
 		return fmt.Errorf("Could not get session bus: %s", err);
@@ -268,7 +268,7 @@ func Run(pl *player.Player) error {
 	bus_props_spec := map[string]map[string]*prop.Prop{
 		bus_interface_player: {
 			"PlaybackStatus": {
-				player.StatusStarting.String(), false,
+				p.Status.String(), false,
 				prop.EmitTrue, nil,
 			},
 
@@ -298,11 +298,11 @@ func Run(pl *player.Player) error {
 
 	conn.Export(bus, bus_path, bus_interface_player);
 
-	bus.player = pl;
+	bus.player = p;
 	bus.props  = prop.New(conn, bus_path, bus_props_spec);
 
-	pl.HandleStatusChange = HandleStatusChange;
-	pl.HandleTrackChange = HandleTrackChange;
+	p.HandleStatusChange = HandleStatusChange;
+	p.HandleTrackChange = HandleTrackChange;
 
 	introspect := introspect.Introspectable(bus_introspection);
 	conn.Export(introspect, bus_path, bus_interface_introspect);
