@@ -35,14 +35,14 @@ import "os/user"
 import "strings"
 
 func ExpandUser(path string) (string, error) {
-	user, err := user.Current();
+	user, err := user.Current()
 	if err != nil {
-		return "", fmt.Errorf("Could not find current user: %s", err);
+		return "", fmt.Errorf("Could not find current user: %s", err)
 	}
 
 	if strings.HasPrefix(path, "~/") {
-		return strings.Replace(path, "~", user.HomeDir, 1), nil;
+		return strings.Replace(path, "~", user.HomeDir, 1), nil
 	}
 
-	return path, nil;
+	return path, nil
 }

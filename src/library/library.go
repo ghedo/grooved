@@ -35,28 +35,28 @@ import _ "github.com/mattn/go-sqlite3"
 
 import "fmt"
 
-const random_query = "SELECT path FROM items ORDER BY RANDOM() LIMIT 1";
+const random_query = "SELECT path FROM items ORDER BY RANDOM() LIMIT 1"
 
 func Random(library string) (string, error) {
-	db, err := sql.Open("sqlite3", library);
+	db, err := sql.Open("sqlite3", library)
 	if err != nil {
-		return "", fmt.Errorf("Could not open library: %s", err);
+		return "", fmt.Errorf("Could not open library: %s", err)
 	}
-	defer db.Close();
+	defer db.Close()
 
-	rows, err := db.Query(random_query);
+	rows, err := db.Query(random_query)
 	if err != nil {
-		return "", fmt.Errorf("Could not execute query: %s", err);
+		return "", fmt.Errorf("Could not execute query: %s", err)
 	}
-	defer rows.Close();
+	defer rows.Close()
 
 	for rows.Next() {
 		var path string
-		rows.Scan(&path);
+		rows.Scan(&path)
 
-		return path, nil;
+		return path, nil
 	}
-	rows.Close();
+	rows.Close()
 
-	return "", fmt.Errorf("Empty database");
+	return "", fmt.Errorf("Empty database")
 }

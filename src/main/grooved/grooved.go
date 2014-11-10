@@ -40,7 +40,7 @@ import "player"
 import "util"
 
 func main() {
-	log.SetFlags(0);
+	log.SetFlags(0)
 
 	usage := `Usage: grooved [options]
 
@@ -51,33 +51,33 @@ Options:
 
 	args, err := docopt.Parse(usage, nil, true, "", false)
 	if err != nil {
-		log.Fatalf("Invalid arguments: %s", err);
+		log.Fatalf("Invalid arguments: %s", err)
 	}
 
-	cfg_file, err := util.ExpandUser(args["--config"].(string));
+	cfg_file, err := util.ExpandUser(args["--config"].(string))
 	if err != nil {
-		log.Fatalf("Error expanding home directory: %s", err);
+		log.Fatalf("Error expanding home directory: %s", err)
 	}
 
-	cfg, err := ini.LoadFile(cfg_file);
+	cfg, err := ini.LoadFile(cfg_file)
 	if err != nil {
-		log.Fatalf("Error loading config file: %s", err);
+		log.Fatalf("Error loading config file: %s", err)
 	}
 
-	player, err := player.Init(cfg);
+	player, err := player.Init(cfg)
 	if err != nil {
-		log.Fatalf("Error creating player: %s", err);
+		log.Fatalf("Error creating player: %s", err)
 	}
 
-	err = bus.Run(player);
+	err = bus.Run(player)
 	if err != nil {
-		log.Fatalf("Error creating dbus service: %s", err);
+		log.Fatalf("Error creating dbus service: %s", err)
 	}
 
-	err = player.Run();
+	err = player.Run()
 	if err != nil {
-		log.Fatalf("Error running player: %s", err);
+		log.Fatalf("Error running player: %s", err)
 	}
 
-	player.Wait.Wait();
+	player.Wait.Wait()
 }

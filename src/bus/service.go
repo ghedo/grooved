@@ -137,129 +137,129 @@ const bus_introspection = `
       <arg name="invalidates_properties" type="as"/>
     </signal>
   </interface>
-</node>`;
+</node>`
 
-const bus_name = "io.github.ghedo.grooved";
-const bus_path = "/io/github/ghedo/grooved";
-const bus_interface_player = "io.github.ghedo.grooved.Player";
-const bus_interface_introspect = "org.freedesktop.DBus.Introspectable";
+const bus_name = "io.github.ghedo.grooved"
+const bus_path = "/io/github/ghedo/grooved"
+const bus_interface_player = "io.github.ghedo.grooved.Player"
+const bus_interface_introspect = "org.freedesktop.DBus.Introspectable"
 
-var bus *Bus;
+var bus *Bus
 
 type Bus struct {
-	player *player.Player;
-	props  *prop.Properties;
-};
+	player *player.Player
+	props  *prop.Properties
+}
 
 func (b *Bus) TrackPosition() (float64, float64, *dbus.Error) {
-	time, _ := b.player.GetTrackPosition(false);
-	percent, _ := b.player.GetTrackPosition(true);
+	time, _    := b.player.GetTrackPosition(false)
+	percent, _ := b.player.GetTrackPosition(true)
 
-	return time, percent, nil;
+	return time, percent, nil
 }
 
 func (b *Bus) Play() *dbus.Error {
-	b.player.Play();
-	return nil;
+	b.player.Play()
+	return nil
 }
 
 func (b *Bus) Pause() *dbus.Error {
-	b.player.Pause();
-	return nil;
+	b.player.Pause()
+	return nil
 }
 
 func (b *Bus) Toggle() *dbus.Error {
-	b.player.Toggle();
-	return nil;
+	b.player.Toggle()
+	return nil
 }
 
 func (b *Bus) Next() *dbus.Error {
-	b.player.Next();
-	return nil;
+	b.player.Next()
+	return nil
 }
 
 func (b *Bus) Prev() *dbus.Error {
-	b.player.Prev();
-	return nil;
+	b.player.Prev()
+	return nil
 }
 
 func (b *Bus) Stop() *dbus.Error {
-	b.player.Stop();
-	return nil;
+	b.player.Stop()
+	return nil
 }
 
 func (b *Bus) Seek(seconds int64) *dbus.Error {
-	b.player.Seek(seconds);
-	return nil;
+	b.player.Seek(seconds)
+	return nil
 }
 
 func (b *Bus) AddTrack(path string) *dbus.Error {
-	b.player.AddTrack(path, false);
-	return nil;
+	b.player.AddTrack(path, false)
+	return nil
 }
 
 func (b *Bus) AddList(path string) *dbus.Error {
-	b.player.AddList(path);
-	return nil;
+	b.player.AddList(path)
+	return nil
 }
 
 func (b *Bus) GotoTrack(index uint64) *dbus.Error {
-	b.player.GotoTrack(int64(index));
-	return nil;
+	b.player.GotoTrack(int64(index))
+	return nil
 }
 
 func (b *Bus) RemoveTrack(index int64) *dbus.Error {
-	b.player.RemoveTrack(int64(index));
-	return nil;
+	b.player.RemoveTrack(int64(index))
+	return nil
 }
 
 func (b *Bus) Quit() *dbus.Error {
-	b.player.Quit();
-	return nil;
+	b.player.Quit()
+	return nil
 }
 
 func HandleStatusChange() {
-	status := bus.player.Status.String();
-	bus.props.SetMust(bus_interface_player, "PlaybackStatus", status);
+	status := bus.player.Status.String()
+	bus.props.SetMust(bus_interface_player, "PlaybackStatus", status)
 }
 
 func HandleTrackChange() {
-	metadata, _ := bus.player.GetTrackMetadata();
-	bus.props.SetMust(bus_interface_player, "TrackMetadata", metadata);
+	metadata, _ := bus.player.GetTrackMetadata()
+	bus.props.SetMust(bus_interface_player, "TrackMetadata", metadata)
 
-	path, _ := bus.player.GetTrackPath();
-	bus.props.SetMust(bus_interface_player, "TrackPath", path);
+	path, _ := bus.player.GetTrackPath()
+	bus.props.SetMust(bus_interface_player, "TrackPath", path)
 
-	length, _ := bus.player.GetTrackLength();
-	bus.props.SetMust(bus_interface_player, "TrackLength", length);
+	length, _ := bus.player.GetTrackLength()
+	bus.props.SetMust(bus_interface_player, "TrackLength", length)
 
-	title, _ := bus.player.GetTrackTitle();
-	bus.props.SetMust(bus_interface_player, "TrackTitle", title);
+	title, _ := bus.player.GetTrackTitle()
+	bus.props.SetMust(bus_interface_player, "TrackTitle", title)
 }
 
 func HandleTracksChange() {
-	files, _ := bus.player.List();
-	bus.props.SetMust(bus_interface_player, "Tracks", files);
+	files, _ := bus.player.List()
+	bus.props.SetMust(bus_interface_player, "Tracks", files)
 }
 
 func SetLoopStatus(c *prop.Change) *dbus.Error {
-	bus.player.SetLoopStatus(c.Value.(string));
-	return nil;
+	bus.player.SetLoopStatus(c.Value.(string))
+	return nil
 }
 
 func Run(p *player.Player) error {
-	conn, err := dbus.SessionBus();
+	conn, err := dbus.SessionBus()
 	if err != nil {
-		return fmt.Errorf("Could not get session bus: %s", err);
+		return fmt.Errorf("Could not get session bus: %s", err)
 	}
 
-	reply, err := conn.RequestName(bus_name, dbus.NameFlagDoNotQueue);
+	reply, err := conn.RequestName(bus_name, dbus.NameFlagDoNotQueue)
 	if err != nil {
-		return fmt.Errorf("Could not request name: %s", err);
+		return fmt.Errorf("Could not request name: %s", err)
 	}
 
 	if reply != dbus.RequestNameReplyPrimaryOwner {
-		return fmt.Errorf("Name already take");
+		return fmt.Errorf("Name already take")
 	}
 
 	bus_props_spec := map[string]map[string]*prop.Prop{
@@ -293,21 +293,21 @@ func Run(p *player.Player) error {
 				[]string{}, false, prop.EmitTrue, nil,
 			},
 		},
-	};
+	}
 
-	bus = new(Bus);
+	bus = &Bus{
+		player: p,
+		props:  prop.New(conn, bus_path, bus_props_spec),
+	}
 
-	conn.Export(bus, bus_path, bus_interface_player);
+	conn.Export(bus, bus_path, bus_interface_player)
 
-	bus.player = p;
-	bus.props  = prop.New(conn, bus_path, bus_props_spec);
+	p.HandleStatusChange = HandleStatusChange
+	p.HandleTrackChange = HandleTrackChange
+	p.HandleTracksChange = HandleTracksChange
 
-	p.HandleStatusChange = HandleStatusChange;
-	p.HandleTrackChange = HandleTrackChange;
-	p.HandleTracksChange = HandleTracksChange;
+	introspect := introspect.Introspectable(bus_introspection)
+	conn.Export(introspect, bus_path, bus_interface_introspect)
 
-	introspect := introspect.Introspectable(bus_introspection);
-	conn.Export(introspect, bus_path, bus_interface_introspect);
-
-	return nil;
+	return nil
 }
