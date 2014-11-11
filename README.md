@@ -101,6 +101,10 @@ See [grooved(1)] [grooved] and [groovectl(1)] [groovectl] for more information.
 [beetsplug]: http://beets.readthedocs.org/en/latest/plugins/index.html#using-plugins
 [beetsqueries]: http://beets.readthedocs.org/en/latest/reference/query.html
 
+## DEPENDENCIES
+
+ * `libmpv`
+
 ## BUILDING
 
 grooved is distributed as source code. Install with:
