@@ -311,6 +311,20 @@ func (p *Player) SetLoopStatus(mode string) error {
 	return nil
 }
 
+func (p *Player) GetOutputList() ([]string, error) {
+	outputs, err := p.GetProperty("option-info/ao/choices")
+	if err != nil {
+		return nil, err
+	}
+
+	outs := []string{}
+	for _, output := range outputs.([]interface{}) {
+		outs = append(outs, output.(string))
+	}
+
+	return outs, nil
+}
+
 func Init(cfg ini.File) (*Player, error) {
 	p := &Player{
 		Status:  StatusStopped,

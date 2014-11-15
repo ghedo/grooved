@@ -22,6 +22,11 @@ better once you let other people do the hard work.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Specify the configuration file. (default: `~/.config/grooved/config.ini`)
 
+`--list-outputs`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+List supported outputs.
+
 `-V, --verbose`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -60,8 +65,8 @@ Adjust volume gain according to ReplayGain tags. (optional)
 `output=<output>`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-The output audio driver to use. See mpv(1) for a list of suported audio outputs
-and options. (optional)
+The output audio driver to use. Use the `--list-outputs` option to list the
+suported audio outputs. (optional)
 
 `verbose=<yes|no>`
 

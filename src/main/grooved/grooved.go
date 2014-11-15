@@ -31,6 +31,7 @@
 package main
 
 import "log"
+import "os"
 
 import "github.com/docopt/docopt-go"
 import "github.com/vaughan0/go-ini"
@@ -46,6 +47,7 @@ func main() {
 
 Options:
   -c <file>, --config <file>    Configuration file [default: ~/.config/grooved/config.ini].
+  --list-outputs                List supported outputs.
   -V, --verbose                 Enable verbose log messages [default: false].
   -h, --help                    Show the program's help message and exit.`
 
@@ -67,6 +69,16 @@ Options:
 	player, err := player.Init(cfg)
 	if err != nil {
 		log.Fatalf("Error creating player: %s", err)
+	}
+
+	if args["--list-outputs"].(bool) {
+		outputs, err := player.GetOutputList()
+		if err != nil {
+			log.Fatalf("Error retrieving property: %s", err)
+		}
+
+		log.Println(outputs)
+		os.Exit(0);
 	}
 
 	err = bus.Run(player)
