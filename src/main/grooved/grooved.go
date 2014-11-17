@@ -31,6 +31,7 @@
 package main
 
 import "log"
+import "sort"
 import "os"
 
 import "github.com/docopt/docopt-go"
@@ -77,7 +78,12 @@ Options:
 			log.Fatalf("Error retrieving property: %s", err)
 		}
 
-		log.Println(outputs)
+		sort.Strings(outputs)
+
+		for _, output := range outputs {
+			log.Println(output)
+		}
+
 		os.Exit(0);
 	}
 
