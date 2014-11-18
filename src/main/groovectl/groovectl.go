@@ -103,22 +103,22 @@ Options:
 
 	switch {
 	case args["play"].(bool) == true:
-		call = obj.Call(bus_interface+".Play", 0)
+		call = obj.Call(bus_interface + ".Play", 0)
 
 	case args["pause"].(bool) == true:
-		call = obj.Call(bus_interface+".Pause", 0)
+		call = obj.Call(bus_interface + ".Pause", 0)
 
 	case args["toggle"].(bool) == true:
-		call = obj.Call(bus_interface+".Toggle", 0)
+		call = obj.Call(bus_interface + ".Toggle", 0)
 
 	case args["next"].(bool) == true:
-		call = obj.Call(bus_interface+".Next", 0)
+		call = obj.Call(bus_interface + ".Next", 0)
 
 	case args["prev"].(bool) == true:
-		call = obj.Call(bus_interface+".Prev", 0)
+		call = obj.Call(bus_interface + ".Prev", 0)
 
 	case args["stop"].(bool) == true:
-		call = obj.Call(bus_interface+".Stop", 0)
+		call = obj.Call(bus_interface + ".Stop", 0)
 
 	case args["add"].(bool) == true:
 		track := args["<track>"].(string)
@@ -127,16 +127,16 @@ Options:
 			track, _ = filepath.Abs(track)
 		}
 
-		call = obj.Call(bus_interface+".AddTrack", 0, track)
+		call = obj.Call(bus_interface + ".AddTrack", 0, track)
 
 	case args["load"].(bool) == true:
 		file := args["<file>"].(string)
 
 		if !args["--append"].(bool) {
-			call = obj.Call(bus_interface+".Stop", 0)
+			call = obj.Call(bus_interface + ".Stop", 0)
 		}
 
-		call = obj.Call(bus_interface+".AddList", 0, file)
+		call = obj.Call(bus_interface + ".AddList", 0, file)
 
 	case args["save"].(bool) == true:
 		log.Fatalf("Not implemented")
@@ -147,7 +147,7 @@ Options:
 			log.Fatalf("Could not parse arg: %s", err)
 		}
 
-		call = obj.Call(bus_interface+".GotoTrack", 0, index)
+		call = obj.Call(bus_interface + ".GotoTrack", 0, index)
 
 	case args["rm"].(bool) == true:
 		index, err := strconv.ParseInt(args["<index>"].(string), 10, 64)
@@ -155,7 +155,7 @@ Options:
 			log.Fatalf("Could not parse arg: %s", err)
 		}
 
-		call = obj.Call(bus_interface+".RemoveTrack", 0, index)
+		call = obj.Call(bus_interface + ".RemoveTrack", 0, index)
 
 	case args["ls"].(bool) == true:
 		PrintList(obj)
@@ -171,7 +171,7 @@ Options:
 			log.Fatalf("Could not parse arg: %s", err)
 		}
 
-		call = obj.Call(bus_interface+".Seek", 0, secs)
+		call = obj.Call(bus_interface + ".Seek", 0, secs)
 
 	case args["loop"].(bool) == true:
 		var mode string
@@ -192,7 +192,7 @@ Options:
                                 dbus.MakeVariant(mode))
 
 	case args["quit"].(bool) == true:
-		call = obj.Call(bus_interface+".Quit", 0)
+		call = obj.Call(bus_interface + ".Quit", 0)
 	}
 
 	if call.Err != nil {
@@ -243,7 +243,7 @@ func PrintStatus(obj *dbus.Object) {
 	}
 
 	var pos, percent float64
-	obj.Call(bus_interface+".TrackPosition", 0).Store(&pos, &percent)
+	obj.Call(bus_interface + ".TrackPosition", 0).Store(&pos, &percent)
 
 	loop, err := obj.GetProperty(bus_interface + ".LoopStatus")
 	if err != nil {
