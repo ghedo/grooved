@@ -74,6 +74,12 @@ the mpv(1) manpage. (optional)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Whether to enable verbose output. (optional)
 
+`ytdl=<yes|no>`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Play audio from streaming websites (e.g. YouTube, SoundCloud, ...). This
+requires the youtube-dl program to be installed.
+
 ## AUTHOR ##
 
 Alessandro Ghedini <alessandro@ghedini.me>

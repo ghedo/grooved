@@ -385,6 +385,10 @@ func Init(cfg ini.File) (*Player, error) {
 		p.SetOptionString("ao", cfg["default"]["output"])
 	}
 
+	if cfg["default"]["ytdl"] != "" {
+		p.SetOptionString("ytdl", cfg["default"]["ytdl"])
+	}
+
 	if cfg["default"]["filters"] != "" {
 		p.SetOptionString("af", cfg["default"]["filters"])
 	}
