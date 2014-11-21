@@ -55,7 +55,7 @@ Usage:
   groovectl next
   groovectl prev
   groovectl stop
-  groovectl add <track>
+  groovectl add <track> ...
   groovectl load [--append] <file>
   groovectl save <file>
   groovectl goto <index>
@@ -73,7 +73,7 @@ Commands:
   next                     Skip to next track.
   prev                     Skip to previous track.
   stop                     Stop playback and clear tracklist.
-  add <track>              Append a track to the player's tracklist.
+  add <track> ...          Append tracks to the player's tracklist.
   load [--append] <file>   Load a playlist file.
   save <file>              Save the tracklist to a playlist file.
   goto <index>             Skip to a specific track in the tracklist.
@@ -121,13 +121,13 @@ Options:
 		call = obj.Call(bus_interface + ".Stop", 0)
 
 	case args["add"].(bool) == true:
-		track := args["<track>"].(string)
+		for _, track := range args["<track>"].([]string) {
+			if _, err := os.Stat(track); err == nil {
+				track, _ = filepath.Abs(track)
+			}
 
-		if _, err := os.Stat(track); err == nil {
-			track, _ = filepath.Abs(track)
+			call = obj.Call(bus_interface + ".AddTrack", 0, track)
 		}
-
-		call = obj.Call(bus_interface + ".AddTrack", 0, track)
 
 	case args["load"].(bool) == true:
 		file := args["<file>"].(string)
