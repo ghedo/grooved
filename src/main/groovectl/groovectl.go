@@ -63,26 +63,26 @@ Usage:
   groovectl ls
   groovectl status
   groovectl seek <seconds>
-  groovectl loop (none|track|list)
+  groovectl loop (none|track|list|force)
   groovectl quit
 
 Commands:
-  play                     Unpause the player.
-  pause                    Pause the player.
-  toggle                   Toggle the player's pause status.
-  next                     Skip to next track.
-  prev                     Skip to previous track.
-  stop                     Stop playback and clear tracklist.
-  add <track> ...          Append tracks to the player's tracklist.
-  load [--append] <file>   Load a playlist file.
-  save <file>              Save the tracklist to a playlist file.
-  goto <index>             Skip to a specific track in the tracklist.
-  rm <index>               Remove a track from the tracklist.
-  ls                       Show the tracklist.
-  status                   Show the status of the player.
-  seek <seconds>           Seek by a relative amount of seconds.
-  loop (none|track|list)   Set the player's loop mode.
-  quit                     Shutdown the player.
+  play                           Unpause the player.
+  pause                          Pause the player.
+  toggle                         Toggle the player's pause status.
+  next                           Skip to next track.
+  prev                           Skip to previous track.
+  stop                           Stop playback and clear tracklist.
+  add <track> ...                Append tracks to the player's tracklist.
+  load [--append] <file>         Load a playlist file.
+  save <file>                    Save the tracklist to a playlist file.
+  goto <index>                   Skip to a specific track in the tracklist.
+  rm <index>                     Remove a track from the tracklist.
+  ls                             Show the tracklist.
+  status                         Show the status of the player.
+  seek <seconds>                 Seek by a relative amount of seconds.
+  loop (none|track|list|force)   Set the player's loop mode.
+  quit                           Shutdown the player.
 
 Options:
   -h, --help                         Show the program's help message and exit.`
@@ -185,6 +185,9 @@ Options:
 
 		case args["list"].(bool):
 			mode = "list"
+
+		case args["force"].(bool):
+			mode = "force"
 		}
 
 		call = obj.Call("org.freedesktop.DBus.Properties.Set", 0,

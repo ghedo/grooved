@@ -86,7 +86,7 @@ Show the status of the player.
 Seek by the given amount of seconds relative to the current position. A negative
 value seeks backwards.
 
-`loop track|list|none`
+`loop track|list|none|force`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Set the player's loop mode.

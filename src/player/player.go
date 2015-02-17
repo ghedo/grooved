@@ -304,6 +304,10 @@ func (p *Player) SetLoopStatus(mode string) error {
 		p.SetLoopStatus("none")
 		p.SetProperty("loop", "inf")
 
+	case "force":
+		p.SetLoopStatus("none")
+		p.SetProperty("loop", "force")
+
 	default:
 		return fmt.Errorf("Invalid mode")
 	}
