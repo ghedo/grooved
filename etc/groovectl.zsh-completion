@@ -49,6 +49,7 @@ case $state in
           "track:loop current track"
           "list:loop whole tracklist"
           "none:disable looping"
+          "force:loop whole tracklist without skipping failing entries"
         )
 
         _describe -t values 'groovectl loop values' values
