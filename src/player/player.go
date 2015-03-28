@@ -283,6 +283,10 @@ func (p *Player) GetTrackTitle() (string, error) {
 	}
 
 	artist := metadata["artist"]
+	if artist == "" {
+		artist = metadata["ARTIST"]
+	}
+
 	if artist != "" {
 		return fmt.Sprintf("%s - %s", artist, title.(string)), nil
 	}
