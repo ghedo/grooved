@@ -475,8 +475,10 @@ func (p *Player) EventLoop() {
 			}
 
 		case "start-file":
-			p.started = true
-			p.ChangeStatus(StatusPlaying)
+			if !p.started {
+				p.started = true
+				p.ChangeStatus(StatusPlaying)
+			}
 
 		case "property-change":
 			prop := (*C.mpv_event_property)(ev.data)
