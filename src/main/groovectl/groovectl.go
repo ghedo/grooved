@@ -87,7 +87,7 @@ Commands:
 Options:
   -h, --help                         Show the program's help message and exit.`
 
-	args, err := docopt.Parse(usage, nil, true, "", false)
+	args, err := docopt.Parse(usage, nil, true, "", true)
 	if err != nil {
 		log.Fatalf("Invalid arguments: %s", err)
 	}
