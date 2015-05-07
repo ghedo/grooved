@@ -16,11 +16,11 @@ groovectl:
 	go get -tags '$(BUILDTAGS)' -d -v main/groovectl
 	go install -tags '$(BUILDTAGS)' main/groovectl
 
-man: docs/grooved.1.md docs/groovectl.1.md
-	ronn -r $?
+man:
+	sphinx-build -c docs/ -b man docs/ docs/man
 
-html: docs/grooved.1.md docs/groovectl.1.md
-	ronn -h $?
+html:
+	sphinx-build -c docs/ -b html docs/ docs/html
 
 release-all: BUILDTAGS=release
 release-all: all
