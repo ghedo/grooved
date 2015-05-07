@@ -105,7 +105,7 @@ func (p *Player) Play() error {
 		return p.AddTrack("", true)
 
 	case StatusPaused:
-		return p.Command([]string{"cycle", "pause"})
+		return p.SetProperty("pause", "no")
 	}
 
 	return fmt.Errorf("Invalid player state")
@@ -117,7 +117,7 @@ func (p *Player) Pause() error {
 		return nil
 
 	case StatusPlaying:
-		return p.Command([]string{"cycle", "pause"})
+		return p.SetProperty("pause", "yes")
 	}
 
 	return fmt.Errorf("Invalid player state")
