@@ -77,6 +77,8 @@ type Player struct {
 	notify  bool
 	started bool
 
+	Verbose bool
+
 	HandleStatusChange func()
 	HandleTrackChange  func()
 	HandleTracksChange func()
@@ -397,6 +399,10 @@ func Init(cfg ini.File) (*Player, error) {
 		p.SetOptionString("ytdl", cfg["default"]["ytdl"])
 	}
 
+	if cfg["default"]["verbose"] != "" {
+		p.Verbose = true
+	}
+
 	if cfg["default"]["filters"] != "" {
 		p.SetOptionString("af", cfg["default"]["filters"])
 	}
@@ -462,6 +468,10 @@ func (p *Player) EventLoop() {
 		ev := C.mpv_wait_event(p.handle, -1)
 		ev_name := C.GoString(C.mpv_event_name(ev.event_id))
 
+		if p.Verbose {
+			log.Printf("Event %s\n", ev_name)
+		}
+
 		switch ev_name {
 		case "idle":
 			if p.Status == StatusStopped {
@@ -486,6 +496,10 @@ func (p *Player) EventLoop() {
 
 			if prop.format == FormatNone {
 				break
+			}
+
+			if p.Verbose {
+				log.Printf("Property %s\n", prop_name)
 			}
 
 			switch prop_name {

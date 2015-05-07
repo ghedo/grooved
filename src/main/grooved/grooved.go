@@ -87,6 +87,10 @@ Options:
 		os.Exit(0);
 	}
 
+	if args["--verbose"].(bool) {
+		player.Verbose = true
+	}
+
 	err = bus.Run(player)
 	if err != nil {
 		log.Fatalf("Error creating dbus service: %s", err)
