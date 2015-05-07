@@ -152,69 +152,138 @@ type Bus struct {
 }
 
 func (b *Bus) TrackPosition() (float64, float64, *dbus.Error) {
-	time, _    := b.player.GetTrackPosition(false)
-	percent, _ := b.player.GetTrackPosition(true)
+	time, err := b.player.GetTrackPosition(false)
+	if err != nil {
+		return 0, 0, dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
+	percent, err := b.player.GetTrackPosition(true)
+	if err != nil {
+		return 0, 0, dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
 
 	return time, percent, nil
 }
 
 func (b *Bus) Play() *dbus.Error {
-	b.player.Play()
+	err := b.player.Play()
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) Pause() *dbus.Error {
-	b.player.Pause()
+	err := b.player.Pause()
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) Toggle() *dbus.Error {
-	b.player.Toggle()
+	err := b.player.Toggle()
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) Next() *dbus.Error {
-	b.player.Next()
+	err := b.player.Next()
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) Prev() *dbus.Error {
-	b.player.Prev()
+	err := b.player.Prev()
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) Stop() *dbus.Error {
-	b.player.Stop()
+	err := b.player.Stop()
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) Seek(seconds int64) *dbus.Error {
-	b.player.Seek(seconds)
+	err := b.player.Seek(seconds)
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) AddTrack(path string) *dbus.Error {
-	b.player.AddTrack(path, false)
+	err := b.player.AddTrack(path, false)
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) AddList(path string) *dbus.Error {
-	b.player.AddList(path)
+	err := b.player.AddList(path)
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) GotoTrack(index uint64) *dbus.Error {
-	b.player.GotoTrack(int64(index))
+	err := b.player.GotoTrack(int64(index))
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) RemoveTrack(index int64) *dbus.Error {
-	b.player.RemoveTrack(int64(index))
+	err := b.player.RemoveTrack(int64(index))
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
 func (b *Bus) Quit() *dbus.Error {
-	b.player.Quit()
+	err := b.player.Quit()
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
