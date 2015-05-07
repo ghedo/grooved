@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grooved &mdash; grooved 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="grooved 0.2 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="index.html">grooved 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="grooved">
+<span id="grooved-1"></span><h1>grooved<a class="headerlink" href="#grooved" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>SYNOPSIS<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<p><strong>grooved [options]</strong></p>
+</div>
+<div class="section" id="description">
+<h2>DESCRIPTION<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><strong>grooved</strong> is a stupidly simple music player that runs as a daemon instead of
+showing a fancy GUI. I&#8217;m kinda lazy, so instead or re-implementing some of the
+features that make up a music player, I just used stuff someone else already
+built. For example, grooved uses mpv to reproduce audio instead of implementing
+its own half-working audio decoder and player, and piggybacks on tools like
+beets instead of implementing yet another music database. Life gets so much
+better once you let other people do the hard work.</p>
+</div>
+<div class="section" id="options">
+<h2>OPTIONS<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="option">
+<dt id="cmdoption-grooved-c">
+<span id="cmdoption-grooved--config"></span><tt class="descname">-c</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--config</tt><tt class="descclassname">=&lt;file&gt;</tt><a class="headerlink" href="#cmdoption-grooved-c" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Specify the configuration file. (default: <cite>~/.config/grooved/config.ini</cite>)</p>
+<dl class="option">
+<dt id="cmdoption-grooved--list-outputs">
+<tt class="descname">--list-outputs</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-grooved--list-outputs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>List supported outputs.</p>
+<dl class="option">
+<dt id="cmdoption-grooved-V">
+<span id="cmdoption-grooved--verbose"></span><tt class="descname">-V</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--verbose</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-grooved-V" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Enable verbose log messages.</p>
+</div>
+<div class="section" id="config">
+<h2>CONFIG<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
+<p>Here is a list of valid configuration options:</p>
+<dl class="option">
+<dt id="cmdoption-grooved-arg-cache">
+<tt class="descname">cache</tt><tt class="descclassname">=&lt;kBytes|no|auto&gt;</tt><a class="headerlink" href="#cmdoption-grooved-arg-cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The size of the cache in kilobytes. (optional)</p>
+<dl class="option">
+<dt id="cmdoption-grooved-arg-gapless">
+<tt class="descname">gapless</tt><tt class="descclassname">=&lt;yes|no|weak&gt;</tt><a class="headerlink" href="#cmdoption-grooved-arg-gapless" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Whether to play consecutive audio files with no silence or disruption at the
+point of file change. (optional)</p>
+<dl class="option">
+<dt id="cmdoption-grooved-arg-library">
+<tt class="descname">library</tt><tt class="descclassname">=&lt;path&gt;</tt><a class="headerlink" href="#cmdoption-grooved-arg-library" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The path to beets&#8217; database.</p>
+<dl class="option">
+<dt id="cmdoption-grooved-arg-notify">
+<tt class="descname">notify</tt><tt class="descclassname">=&lt;yes|no&gt;</tt><a class="headerlink" href="#cmdoption-grooved-arg-notify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Send desktop notifications on track change.</p>
+<dl class="option">
+<dt id="cmdoption-grooved-arg-replaygain">
+<tt class="descname">replaygain</tt><tt class="descclassname">=&lt;track|album&gt;</tt><a class="headerlink" href="#cmdoption-grooved-arg-replaygain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Adjust volume gain according to ReplayGain tags. (optional)</p>
+<dl class="option">
+<dt id="cmdoption-grooved-arg-output">
+<tt class="descname">output</tt><tt class="descclassname">=&lt;output&gt;</tt><a class="headerlink" href="#cmdoption-grooved-arg-output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The output audio driver to use. Use the <cite>&#8211;list-outputs</cite> option to list the
+suported audio outputs. For more information about the available outputs see
+the mpv(1) manpage. (optional)</p>
+<dl class="option">
+<dt id="cmdoption-grooved-arg-verbose">
+<tt class="descname">verbose</tt><tt class="descclassname">=&lt;yes|no&gt;</tt><a class="headerlink" href="#cmdoption-grooved-arg-verbose" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Whether to enable verbose output. (optional)</p>
+<dl class="option">
+<dt id="cmdoption-grooved-arg-ytdl">
+<tt class="descname">ytdl</tt><tt class="descclassname">=&lt;yes|no&gt;</tt><a class="headerlink" href="#cmdoption-grooved-arg-ytdl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Play audio from streaming websites (e.g. YouTube, SoundCloud, ...). This
+requires the youtube-dl program to be installed.</p>
+</div>
+<div class="section" id="author">
+<h2>AUTHOR<a class="headerlink" href="#author" title="Permalink to this headline">¶</a></h2>
+<p>Alessandro Ghedini &lt;<a class="reference external" href="mailto:alessandro&#37;&#52;&#48;ghedini&#46;me">alessandro<span>&#64;</span>ghedini<span>&#46;</span>me</a>&gt;</p>
+</div>
+<div class="section" id="copyright">
+<h2>COPYRIGHT<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2014 Alessandro Ghedini &lt;<a class="reference external" href="mailto:alessandro&#37;&#52;&#48;ghedini&#46;me">alessandro<span>&#64;</span>ghedini<span>&#46;</span>me</a>&gt;</p>
+<p>This program is released under the 2 clause BSD license.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">grooved</a><ul>
+<li><a class="reference internal" href="#synopsis">SYNOPSIS</a></li>
+<li><a class="reference internal" href="#description">DESCRIPTION</a></li>
+<li><a class="reference internal" href="#options">OPTIONS</a></li>
+<li><a class="reference internal" href="#config">CONFIG</a></li>
+<li><a class="reference internal" href="#author">AUTHOR</a></li>
+<li><a class="reference internal" href="#copyright">COPYRIGHT</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/grooved.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="index.html">grooved 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Alessandro Ghedini.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

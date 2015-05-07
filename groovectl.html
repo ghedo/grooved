@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>groovectl &mdash; grooved 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="grooved 0.2 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="index.html">grooved 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="groovectl">
+<span id="groovectl-1"></span><h1>groovectl<a class="headerlink" href="#groovectl" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>SYNOPSIS<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<p><strong>groovectl command [args]</strong></p>
+</div>
+<div class="section" id="description">
+<h2>DESCRIPTION<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><strong>groovectl</strong> is a command-line client for grooved. It communicates with the
+grooved daemon via the DBus session bus.</p>
+</div>
+<div class="section" id="commands">
+<h2>COMMANDS<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-play">
+<tt class="descname">play</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-groovectl-arg-play" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Unpause the player.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-pause">
+<tt class="descname">pause</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-groovectl-arg-pause" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Pause the player.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-toggle">
+<tt class="descname">toggle</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-groovectl-arg-toggle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Toggle the player&#8217;s pause status.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-next">
+<tt class="descname">next</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-groovectl-arg-next" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Skip to the next track.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-prev">
+<tt class="descname">prev</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-groovectl-arg-prev" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Skip to the previous track.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-stop">
+<tt class="descname">stop</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-groovectl-arg-stop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Stop playback and clear tracklist.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-add">
+<tt class="descname">add</tt><tt class="descclassname"> TRACK</tt><a class="headerlink" href="#cmdoption-groovectl-arg-add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Append tracks to the player&#8217;s tracklist. Tracks can be either files on the
+filesystem or other kinds of streams (e.g. HTTP streams, Youtube videos, ...).</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-load">
+<tt class="descname">load</tt><tt class="descclassname"> [--append] FILE</tt><a class="headerlink" href="#cmdoption-groovectl-arg-load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Load a playlist file. The tracklist will be replaced with the content of the
+given playlist and playback stopped, unless <cite>&#8211;append</cite> is used.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-save">
+<tt class="descname">save</tt><tt class="descclassname"> FILE</tt><a class="headerlink" href="#cmdoption-groovectl-arg-save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Save the tracklist to a playlist file.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-goto">
+<tt class="descname">goto</tt><tt class="descclassname"> INDEX</tt><a class="headerlink" href="#cmdoption-groovectl-arg-goto" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Skip to a specific track, identified by its index, in the tracklist.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-rm">
+<tt class="descname">rm</tt><tt class="descclassname"> INDEX</tt><a class="headerlink" href="#cmdoption-groovectl-arg-rm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Remove a track identified by its index in the tracklist, from the tracklist. The
+special value <cite>-1</cite> corresponds to the current track.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-ls">
+<tt class="descname">ls</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-groovectl-arg-ls" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Show tracklist (the current track is marked with &#8216;*&#8217;).</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-status">
+<tt class="descname">status</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-groovectl-arg-status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Show the status of the player.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-seek">
+<tt class="descname">seek</tt><tt class="descclassname"> SECONDS</tt><a class="headerlink" href="#cmdoption-groovectl-arg-seek" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Seek by the given amount of seconds relative to the current position. A negative
+value seeks backwards.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-loop">
+<tt class="descname">loop</tt><tt class="descclassname"> track|list|none|force</tt><a class="headerlink" href="#cmdoption-groovectl-arg-loop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Set the player&#8217;s loop mode.</p>
+<dl class="option">
+<dt id="cmdoption-groovectl-arg-quit">
+<tt class="descname">quit</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-groovectl-arg-quit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Shutdown the player.</p>
+</div>
+<div class="section" id="author">
+<h2>AUTHOR<a class="headerlink" href="#author" title="Permalink to this headline">¶</a></h2>
+<p>Alessandro Ghedini &lt;<a class="reference external" href="mailto:alessandro&#37;&#52;&#48;ghedini&#46;me">alessandro<span>&#64;</span>ghedini<span>&#46;</span>me</a>&gt;</p>
+</div>
+<div class="section" id="copyright">
+<h2>COPYRIGHT<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2014 Alessandro Ghedini &lt;<a class="reference external" href="mailto:alessandro&#37;&#52;&#48;ghedini&#46;me">alessandro<span>&#64;</span>ghedini<span>&#46;</span>me</a>&gt;</p>
+<p>This program is released under the 2 clause BSD license.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">groovectl</a><ul>
+<li><a class="reference internal" href="#synopsis">SYNOPSIS</a></li>
+<li><a class="reference internal" href="#description">DESCRIPTION</a></li>
+<li><a class="reference internal" href="#commands">COMMANDS</a></li>
+<li><a class="reference internal" href="#author">AUTHOR</a></li>
+<li><a class="reference internal" href="#copyright">COPYRIGHT</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/groovectl.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="index.html">grooved 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Alessandro Ghedini.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

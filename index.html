@@ -1,185 +1,190 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta http-equiv='content-type' value='text/html;charset=utf8'>
-  <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
-  <title>grooved</title>
-  <style type='text/css' media='all'>
-  /* style: man */
-  body#manpage {margin:0}
-  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
-  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
-  .mp h2 {margin:10px 0 0 0}
-  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
-  .mp h3 {margin:0 0 0 4ex}
-  .mp dt {margin:0;clear:left}
-  .mp dt.flush {float:left;width:8ex}
-  .mp dd {margin:0 0 0 9ex}
-  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
-  .mp pre {margin-bottom:20px}
-  .mp pre+h2,.mp pre+h3 {margin-top:22px}
-  .mp h2+pre,.mp h3+pre {margin-top:5px}
-  .mp img {display:block;margin:auto}
-  .mp h1.man-title {display:none}
-  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
-  .mp h2 {font-size:16px;line-height:1.25}
-  .mp h1 {font-size:20px;line-height:2}
-  .mp {text-align:justify;background:#fff}
-  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
-  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
-  .mp u {text-decoration:underline}
-  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
-  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
-  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
-  .mp b.man-ref {font-weight:normal;color:#434241}
-  .mp pre {padding:0 4ex}
-  .mp pre code {font-weight:normal;color:#434241}
-  .mp h2+pre,h3+pre {padding-left:0}
-  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
-  ol.man-decor {width:100%}
-  ol.man-decor li.tl {text-align:left}
-  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
-  ol.man-decor li.tr {text-align:right;float:right}
-  </style>
-</head>
-<!--
-  The following styles are deprecated and will be removed at some point:
-  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
-  .man-navigation should be used instead.
--->
-<body id='manpage'>
-  <div class='mp' id='man'>
 
-  <div class='man-navigation' style='display:none'>
-    <a href="#GETTING-STARTED">GETTING STARTED</a>
-    <a href="#DEPENDENCIES">DEPENDENCIES</a>
-    <a href="#BUILDING">BUILDING</a>
-    <a href="#COPYRIGHT">COPYRIGHT</a>
-  </div>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>grooved &mdash; grooved 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="grooved 0.2 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="#">grooved 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
 
-  <ol class='man-decor man-head man head'>
-    <li class='tl'>README</li>
-    <li class='tc'></li>
-    <li class='tr'>README</li>
-  </ol>
-
-  <h1>grooved</h1>
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="grooved">
+<h1>grooved<a class="headerlink" href="#grooved" title="Permalink to this headline">¶</a></h1>
 <p><strong>grooved</strong> is a stupidly simple music player that runs as a daemon instead of
-showing a fancy GUI. I'm kinda lazy, so instead or re-implementing some of the
+showing a fancy GUI. I&#8217;m kinda lazy, so instead or re-implementing some of the
 features that make up a music player, I just used stuff someone else already
-built. For example, grooved uses <a href="http://mpv.io/">mpv</a> to reproduce audio instead of
-implementing its own half-working audio decoder and player, and piggybacks on
-tools like <a href="http://beets.radbox.org/">beets</a> instead of implementing yet another music database.
-Life gets so much better once you let other people do the hard work.</p>
-
-<p>grooved's operation is very simple: there's a single tracklist (or track queue,
+built. For example, grooved uses <a class="reference external" href="http://mpv.io/">mpv</a> to reproduce audio instead of implementing
+its own half-working audio decoder and player, and piggybacks on tools like
+<a class="reference external" href="http://beets.radbox.org/">beets</a> instead of implementing yet another music database. Life gets so much
+better once you let other people do the hard work.</p>
+<p>grooved&#8217;s operation is very simple: there&#8217;s a single tracklist (or track queue,
 or call-it-however-you-want) which can be filled manually by the user by adding
 any kind of track (local files, network streams, YouTube videos, ..., you can
 throw pretty much anything at it), which will be played in order. Once the
 player reaches the end of the list, depending on the configuration it either
 stops, loops to the beginning of the list, or picks a random track from the user
-library and appends it to the list. And that's just about it. If you need
-anything more complex, you can build a custom client on top of grooved's DBus
+library and appends it to the list. And that&#8217;s just about it. If you need
+anything more complex, you can build a custom client on top of grooved&#8217;s DBus
 interface.</p>
-
 <p>The project is composed of the following components:</p>
-
-<ul>
-<li><a href="http://ghedo.github.io/grooved/grooved.1.html">grooved</a>: the music player daemon.</li>
-<li><a href="http://ghedo.github.io/grooved/groovectl.1.html">groovectl</a>: a command-line client to grooved.</li>
+<ul class="simple">
+<li><a class="reference external" href="http://ghedo.github.io/grooved/grooved.html">grooved</a>: the music player daemon.</li>
+<li><a class="reference external" href="http://ghedo.github.io/grooved/groovectl.html">groovectl</a>: a command-line client to grooved.</li>
 </ul>
-
-
-<h2 id="GETTING-STARTED">GETTING STARTED</h2>
-
-<p>First off, you may want to <a href="http://beets.readthedocs.org/en/latest/guides/main.html">install and configure beets</a>, unless you
-haven't done so already. grooved will use the music library created by beets to
-pick random tracks to play. If no library is available you'll have to provide
-the tracks to play to grooved manually.</p>
-
-<p>If you want grooved to use your music library, you'll also have to configure
-grooved itself. Here's a simple configuration example:</p>
-
-<pre><code class="ini">[default]
-library = ~/data/musiclibrary.blb ; path to beets' database
-</code></pre>
-
-<p>Save that in the file <code>~/.config/grooved/config.ini</code> (see the <a href="http://ghedo.github.io/grooved/grooved.1.html">manual</a>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>First off, you may want to <a class="reference external" href="http://beets.readthedocs.org/en/latest/guides/main.html">install and configure beets</a>, unless you haven&#8217;t
+done so already. grooved will use the music library created by beets to pick
+random tracks to play. If no library is available you&#8217;ll have to provide the
+tracks to play to grooved manually.</p>
+<p>If you want grooved to use your music library, you&#8217;ll also have to configure
+grooved itself. Here&#8217;s a simple configuration example:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span class="k">[default]</span>
+<span class="na">library</span> <span class="o">=</span> <span class="s">~/data/musiclibrary.blb ; path to beets&#39; database</span>
+</pre></div>
+</div>
+<p>Save that in the file <cite>~/.config/grooved/config.ini</cite> (see the [manual] [grooved]
 for more information about configuration options).</p>
-
-<p>That's it for the setup, now start <code>grooved</code>:</p>
-
-<pre><code class="bash">$ grooved
-</code></pre>
-
-<p>You can now control it using the <code>groovectl</code> command:</p>
-
-<pre><code class="bash">$ groovectl toggle                           # toggle playback
-$ groovectl status                           # print the player's current status
-$ groovectl add file.mp3                     # add files to the tracklist
-$ groovectl next                             # skip to next track
-$ groovectl add http://example.com/stream    # add network stream to tracklist
-$ groovectl quit                             # terminate grooved
-</code></pre>
-
+<p>That&#8217;s it for the setup, now start <cite>grooved</cite>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>grooved
+</pre></div>
+</div>
+<p>You can now control it using the <cite>groovectl</cite> command:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>groovectl toggle                           <span class="c"># toggle playback</span>
+<span class="nv">$ </span>groovectl status                           <span class="c"># print the player&#39;s current status</span>
+<span class="nv">$ </span>groovectl add file.mp3                     <span class="c"># add files to the tracklist</span>
+<span class="nv">$ </span>groovectl next                             <span class="c"># skip to next track</span>
+<span class="nv">$ </span>groovectl add http://example.com/stream    <span class="c"># add network stream to tracklist</span>
+<span class="nv">$ </span>groovectl quit                             <span class="c"># terminate grooved</span>
+</pre></div>
+</div>
 <p>You can also use beets to search for songs in your library and add them to the
 grooved tracklist as follows:</p>
-
-<pre><code class="bash">$ beet ls -p song title | groovectl add -
-</code></pre>
-
-<p>You can use beets' <a href="http://beets.readthedocs.org/en/latest/reference/query.html">query syntax</a> for more advanced queries to
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>beet ls -p song title <span class="p">|</span> groovectl add -
+</pre></div>
+</div>
+<p>You can use beets&#8217; <a class="reference external" href="http://beets.readthedocs.org/en/latest/reference/query.html">query syntax</a>  for more advanced queries to
 the database.</p>
+<p>Alternatively you can use beets&#8217; <a class="reference external" href="http://beets.readthedocs.org/en/latest/plugins/play.html">play plugin</a> to automatically add the files
+(note that at least beets v1.3.7 is required for this). First, <a class="reference external" href="http://beets.readthedocs.org/en/latest/plugins/index.html#using-plugins">enable the play
+plugin</a> and add the following section to your configuration file:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">play</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">groovectl load --append</span>
+</pre></div>
+</div>
+<p>then use the <cite>beet play</cite> command to search for tracks:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>beet play song title
+</pre></div>
+</div>
+<p>the matching tracks will be automatically added to grooved&#8217;s tracklist. You can
+use beets&#8217; [query syntax] [beetsqueries] for more advanced queries to the
+database with the <cite>play</cite> command as well.</p>
+<p>See <a class="reference external" href="http://ghedo.github.io/grooved/grooved.html">grooved</a> and <a class="reference external" href="http://ghedo.github.io/grooved/groovectl.html">groovectl</a> for more information.</p>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><cite>libmpv</cite></li>
+</ul>
+</div>
+<div class="section" id="building">
+<h2>Building<a class="headerlink" href="#building" title="Permalink to this headline">¶</a></h2>
+<p>grooved is distributed as source code. Build with:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>make
+</pre></div>
+</div>
+</div>
+<div class="section" id="copyright">
+<h2>Copyright<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2014 Alessandro Ghedini &lt;<a class="reference external" href="mailto:alessandro&#37;&#52;&#48;ghedini&#46;me">alessandro<span>&#64;</span>ghedini<span>&#46;</span>me</a>&gt;</p>
+<p>See <a class="reference external" href="https://github.com/ghedo/pflask/tree/master/COPYING">COPYING</a> for the license.</p>
+</div>
+</div>
 
-<p>Alternatively you can use beets' <a href="http://beets.readthedocs.org/en/latest/plugins/play.html">play</a> plugin to automatically add
-the files (note that at least beets v1.3.7 is required for this). First, <a href="http://beets.readthedocs.org/en/latest/plugins/index.html#using-plugins">enable
-the play plugin</a> and add the following section to your configuration
-file:</p>
 
-<pre><code class="yaml">play:
-    command: groovectl load --append
-</code></pre>
-
-<p>then use the <code>beet play</code> command to search for tracks:</p>
-
-<pre><code class="bash">$ beet play song title
-</code></pre>
-
-<p>the matching tracks will be automatically added to grooved's tracklist. You can
-use beets' <a href="http://beets.readthedocs.org/en/latest/reference/query.html">query syntax</a> for more advanced queries to the
-database with the <code>play</code> command as well.</p>
-
-<p>See <a href="http://ghedo.github.io/grooved/grooved.1.html">grooved(1)</a> and <a href="http://ghedo.github.io/grooved/groovectl.1.html">groovectl(1)</a> for more information.</p>
-
-<h2 id="DEPENDENCIES">DEPENDENCIES</h2>
-
-<ul>
-<li><code>libmpv</code></li>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">grooved</a><ul>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#building">Building</a></li>
+<li><a class="reference internal" href="#copyright">Copyright</a></li>
+</ul>
+</li>
 </ul>
 
-
-<h2 id="BUILDING">BUILDING</h2>
-
-<p>grooved is distributed as source code. Install with:</p>
-
-<pre><code class="bash">$ make
-</code></pre>
-
-<h2 id="COPYRIGHT">COPYRIGHT</h2>
-
-<p>Copyright (C) 2014 Alessandro Ghedini <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#97;&#108;&#101;&#115;&#x73;&#x61;&#110;&#x64;&#x72;&#111;&#64;&#103;&#104;&#101;&#x64;&#x69;&#110;&#x69;&#x2e;&#109;&#101;" data-bare-link="true">&#97;&#x6c;&#x65;&#x73;&#115;&#x61;&#110;&#100;&#114;&#x6f;&#x40;&#103;&#x68;&#x65;&#x64;&#105;&#x6e;&#105;&#x2e;&#x6d;&#101;</a></p>
-
-<p>See COPYING for the license.</p>
-
-
-  <ol class='man-decor man-foot man foot'>
-    <li class='tl'></li>
-    <li class='tc'>November 2014</li>
-    <li class='tr'>README</li>
-  </ol>
-
-  </div>
-</body>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="#">grooved 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Alessandro Ghedini.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
 </html>
