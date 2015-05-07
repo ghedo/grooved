@@ -102,7 +102,8 @@ func (p *Player) Play() error {
 			return p.GotoTrack(0)
 		}
 
-		return p.AddTrack("", true)
+		p.AddTrack("", true)
+		fallthrough
 
 	case StatusPaused:
 		return p.SetProperty("pause", "no")
