@@ -80,7 +80,7 @@ plugin`_ and add the following section to your configuration file:
 .. code-block:: yaml
 
    play:
-       command: groovectl load --append
+       command: groovectl --append load
 
 then use the `beet play` command to search for tracks:
 

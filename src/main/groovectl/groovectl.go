@@ -56,7 +56,7 @@ Usage:
   groovectl prev
   groovectl stop
   groovectl add <track> ...
-  groovectl load [--append] <file>
+  groovectl [--append] load <file>
   groovectl save <file>
   groovectl goto <index>
   groovectl rm <index>
@@ -74,7 +74,7 @@ Commands:
   prev                           Skip to previous track.
   stop                           Stop playback and clear tracklist.
   add <track> ...                Append tracks to the player's tracklist.
-  load [--append] <file>         Load a playlist file.
+  [--append] load <file>         Load a playlist file.
   save <file>                    Save the tracklist to a playlist file.
   goto <index>                   Skip to a specific track in the tracklist.
   rm <index>                     Remove a track from the tracklist.
