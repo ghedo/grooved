@@ -43,8 +43,8 @@ grooved itself. Here's a simple configuration example:
    [default]
    library = ~/data/musiclibrary.blb ; path to beets' database
 
-Save that in the file `~/.config/grooved/config.ini` (see the [manual] [grooved]
-for more information about configuration options).
+Save that in the file *~/.config/grooved/config.ini* (see the manual__ for more
+information about configuration options).
 
 That's it for the setup, now start `grooved`:
 
@@ -52,7 +52,7 @@ That's it for the setup, now start `grooved`:
 
    $ grooved
 
-You can now control it using the `groovectl` command:
+You can now control it using the *groovectl* command:
 
 .. code-block:: bash
 
@@ -89,8 +89,8 @@ then use the `beet play` command to search for tracks:
    $ beet play song title
 
 the matching tracks will be automatically added to grooved's tracklist. You can
-use beets' [query syntax] [beetsqueries] for more advanced queries to the
-database with the `play` command as well.
+use beets' `query syntax`_ for more advanced queries to the database with the
+`play` command as well.
 
 See grooved_ and groovectl_ for more information.
 
@@ -98,6 +98,7 @@ See grooved_ and groovectl_ for more information.
 .. _`play plugin`: http://beets.readthedocs.org/en/latest/plugins/play.html
 .. _`query syntax`: http://beets.readthedocs.org/en/latest/reference/query.html
 .. _`enable the play plugin`: http://beets.readthedocs.org/en/latest/plugins/index.html#using-plugins
+__ grooved_
 
 Dependencies
 ------------
