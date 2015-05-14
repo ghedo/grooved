@@ -48,7 +48,7 @@ Stop playback and clear tracklist.
 Append tracks to the player's tracklist. Tracks can be either files on the
 filesystem or other kinds of streams (e.g. HTTP streams, Youtube videos, ...).
 
-.. option:: load [--append] FILE
+.. option:: [--append] load FILE
 
 Load a playlist file. The tracklist will be replaced with the content of the
 given playlist and playback stopped, unless `--append` is used.
