@@ -348,7 +348,17 @@ func Init(cfg ini.File) (*Player, error) {
 		return nil, fmt.Errorf("Could not create player")
 	}
 
-	err := p.SetOptionString("no-config", "")
+	err := p.SetOptionString("audio-client-name", "grooved")
+	if err != nil {
+		return nil, fmt.Errorf("Could not set option 'audio-client-name': %s", err)
+	}
+
+	err = p.SetOptionString("title", "${?media-title:${media-title}}${!media-title:No file.}")
+	if err != nil {
+		return nil, fmt.Errorf("Could not set option 'title': %s", err)
+	}
+
+	err = p.SetOptionString("no-config", "")
 	if err != nil {
 		return nil, fmt.Errorf("Could not set option 'no-config': %s", err)
 	}
