@@ -82,6 +82,7 @@ type Player struct {
 	HandleStatusChange func()
 	HandleTrackChange  func()
 	HandleTracksChange func()
+	HandleVolumeChange func()
 
 	Wait sync.WaitGroup
 }
@@ -464,6 +465,7 @@ func (p *Player) EventLoop() {
 	p.ObserveProperty("pause",    FormatFlag)
 	p.ObserveProperty("metadata", FormatNode)
 	p.ObserveProperty("playlist", FormatNode)
+	p.ObserveProperty("volume", FormatNode)
 
 	for {
 		ev := C.mpv_wait_event(p.handle, -1)
@@ -510,6 +512,9 @@ func (p *Player) EventLoop() {
 
 			case "playlist":
 				p.HandleTracksChange()
+
+			case "volume":
+				p.HandleVolumeChange()
 			}
 
 		case "log-message":

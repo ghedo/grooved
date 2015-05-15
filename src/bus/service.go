@@ -68,6 +68,9 @@ const bus_introspection = `
     <property name="Tracks" type="as" access="read">
     </property>
 
+    <property name="Volume" type="d" access="readwrite">
+    </property>
+
     <method name="Play">
     </method>
 
@@ -311,8 +314,23 @@ func HandleTracksChange() {
 	bus.props.SetMust(bus_interface_player, "Tracks", files)
 }
 
+func HandleVolumeChange() {
+	vol, _ := bus.player.GetProperty("volume")
+	bus.props.SetMust(bus_interface_player, "Volume", vol.(float64))
+}
+
 func SetLoopStatus(c *prop.Change) *dbus.Error {
 	bus.player.SetLoopStatus(c.Value.(string))
+	return nil
+}
+
+func SetVolume(c *prop.Change) *dbus.Error {
+	err := bus.player.SetProperty("volume", c.Value)
+	if err != nil {
+		return dbus.NewError("io.github.ghedo.grooved.Error",
+		                     []interface{}{err.Error()})
+	}
+
 	return nil
 }
 
@@ -361,6 +379,10 @@ func Run(p *player.Player) error {
 			"Tracks": {
 				[]string{}, false, prop.EmitTrue, nil,
 			},
+
+			"Volume": {
+				0.0, true, prop.EmitTrue, SetVolume,
+			},
 		},
 	}
 
@@ -372,8 +394,9 @@ func Run(p *player.Player) error {
 	conn.Export(bus, bus_path, bus_interface_player)
 
 	p.HandleStatusChange = HandleStatusChange
-	p.HandleTrackChange = HandleTrackChange
+	p.HandleTrackChange  = HandleTrackChange
 	p.HandleTracksChange = HandleTracksChange
+	p.HandleVolumeChange = HandleVolumeChange
 
 	introspect := introspect.Introspectable(bus_introspection)
 	conn.Export(introspect, bus_path, bus_interface_introspect)
