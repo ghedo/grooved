@@ -16,6 +16,9 @@ groovectl:
 	go get -tags '$(BUILDTAGS)' -d -v main/groovectl
 	go install -tags '$(BUILDTAGS)' main/groovectl
 
+vet:
+	go vet ./...
+
 man:
 	sphinx-build -c docs/ -b man docs/ docs/man
 
