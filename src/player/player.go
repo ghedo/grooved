@@ -493,7 +493,7 @@ func (p *Player) EventLoop() {
 
 			err := p.AddTrack("", true)
 			if err != nil {
-				log.Println("Could not add track: %s", err)
+				log.Printf("Could not add track: %s\n", err)
 				p.ChangeStatus(StatusStopped)
 			}
 
