@@ -65,7 +65,7 @@ Adjust volume gain according to ReplayGain tags. (optional)
 .. option:: output=<output>
 
 The output audio driver to use. Use the `--list-outputs` option to list the
-suported audio outputs. For more information about the available outputs see
+supported audio outputs. For more information about the available outputs see
 the mpv(1) manpage. (optional)
 
 .. option:: verbose=<yes|no>
