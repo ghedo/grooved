@@ -7,3 +7,6 @@ Type=dbus
 BusName=io.github.ghedo.grooved
 ExecStart=/usr/bin/grooved
 ExecStop=/usr/bin/groovectl quit
+
+[Install]
+WantedBy=default.target
