@@ -1,0 +1,30 @@
+#!/usr/bin/make -f
+
+TAG = $(shell git tag | tail -1 | cut -b 2-)
+VER = $(shell dpkg-parsechangelog | sed -rne 's,^Version: ([^-]+).*,\1,p')
+
+export DH_GOLANG_BUILDPKG="github.com/ghedo/grooved/cmd/..."
+
+%:
+	dh $@ --buildsystem=golang --with=golang
+
+override_dh_auto_build:
+	dh_auto_build
+	make man
+
+override_dh_install:
+	dh_install
+	dh_install etc/grooved.service usr/lib/systemd/user/
+	dh_install etc/io.github.ghedo.grooved.service usr/share/dbus-1/services/
+	install -T -D -m 644 etc/groovectl.bash-completion debian/grooved/usr/share/bash-completion/completions/groovectl
+	install -T -D -m 644 etc/groovectl.zsh-completion debian/grooved/usr/share/zsh/vendor-completions/_groovectl
+
+override_dh_auto_test:
+	# No tests
+
+override_dh_strip:
+	dh_strip --no-automatic-dbgsym
+
+create-orig:
+	git archive --format=tar.gz --prefix=grooved-$(TAG)/ \
+		--output grooved_$(VER).orig.tar.gz master

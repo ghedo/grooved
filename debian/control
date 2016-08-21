@@ -1,0 +1,28 @@
+Source: grooved
+Section: sound
+Priority: optional
+Maintainer: Alessandro Ghedini <ghedo@debian.org>
+Build-Depends: debhelper (>= 9), dh-golang, golang-go,
+ golang-dbus-dev,
+ golang-github-docopt-docopt-go-dev,
+ golang-github-mattn-go-sqlite3-dev,
+ golang-github-vaughan0-go-ini-dev,
+ libmpv-dev,
+ pkg-config,
+ python-sphinx
+Standards-Version: 4.1.0
+#Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/grooved.git
+#Vcs-Git: git://anonscm.debian.org/collab-maint/grooved.git
+Homepage: https://github.com/ghedo/grooved
+XS-Go-Import-Path: github.com/ghedo/grooved
+
+Package: grooved
+Architecture: any
+Built-Using: ${misc:Built-Using}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Multi-Arch: foreign
+Description: groovy music player daemon
+ grooved is a stupidly simple music player that runs as a daemon instead of
+ showing a fancy GUI. It uses mpv to reproduce audio instead of implementing
+ its own half-working audio decoder and player, and piggybacks on tools like
+ beets instead of implementing yet another music database.
