@@ -41,9 +41,9 @@ import "sync"
 
 import "github.com/vaughan0/go-ini"
 
-import "library"
-import "notify"
-import "util"
+import "github.com/ghedo/grooved/library"
+import "github.com/ghedo/grooved/notify"
+import "github.com/ghedo/grooved/util"
 
 type Event byte
 type Status byte

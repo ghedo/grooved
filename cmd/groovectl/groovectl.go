@@ -203,7 +203,7 @@ Options:
     }
 }
 
-func PrintList(obj *dbus.Object) {
+func PrintList(obj dbus.BusObject) {
     files, err := obj.GetProperty(bus_interface + ".Tracks")
     if err != nil {
         log.Fatalf("Could not retrieve property: %s", err)
@@ -224,7 +224,7 @@ func PrintList(obj *dbus.Object) {
     }
 }
 
-func PrintStatus(obj *dbus.Object) {
+func PrintStatus(obj dbus.BusObject) {
     title, err := obj.GetProperty(bus_interface + ".TrackTitle")
     if err != nil {
         log.Fatalf("Could not retrieve property: %s", err)

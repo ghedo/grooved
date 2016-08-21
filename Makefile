@@ -9,12 +9,12 @@ BUILDTAGS=debug
 all: grooved groovectl
 
 grooved:
-	go get -tags '$(BUILDTAGS)' -d -v main/grooved
-	go install -tags '$(BUILDTAGS)' main/grooved
+	go get -tags '$(BUILDTAGS)' -d -v ./cmd/grooved
+	go build -tags '$(BUILDTAGS)' ./cmd/grooved
 
 groovectl:
-	go get -tags '$(BUILDTAGS)' -d -v main/groovectl
-	go install -tags '$(BUILDTAGS)' main/groovectl
+	go get -tags '$(BUILDTAGS)' -d -v ./cmd/groovectl
+	go build -tags '$(BUILDTAGS)' ./cmd/groovectl
 
 vet:
 	go vet ./...

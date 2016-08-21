@@ -30,10 +30,10 @@
 
 package library
 
+import "fmt"
+
 import "database/sql"
 import _ "github.com/mattn/go-sqlite3"
-
-import "fmt"
 
 const random_query = "SELECT path FROM items ORDER BY RANDOM() LIMIT 1"
 

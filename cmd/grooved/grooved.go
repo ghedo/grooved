@@ -37,9 +37,9 @@ import "os"
 import "github.com/docopt/docopt-go"
 import "github.com/vaughan0/go-ini"
 
-import "bus"
-import "player"
-import "util"
+import "github.com/ghedo/grooved/bus"
+import "github.com/ghedo/grooved/player"
+import "github.com/ghedo/grooved/util"
 
 func main() {
     log.SetFlags(0)

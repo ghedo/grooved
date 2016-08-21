@@ -36,7 +36,7 @@ import "github.com/godbus/dbus"
 import "github.com/godbus/dbus/introspect"
 import "github.com/godbus/dbus/prop"
 
-import "player"
+import "github.com/ghedo/grooved/player"
 
 const bus_introspection = `
 <?xml version="1.0" encoding="UTF-8"?>
