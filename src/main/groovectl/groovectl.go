@@ -44,9 +44,9 @@ const bus_path = "/io/github/ghedo/grooved"
 const bus_interface = "io.github.ghedo.grooved.Player"
 
 func main() {
-	log.SetFlags(0)
+    log.SetFlags(0)
 
-	usage := `groovectl [options] <command> [args...]
+    usage := `groovectl [options] <command> [args...]
 
 Usage:
   groovectl play
@@ -87,188 +87,188 @@ Commands:
 Options:
   -h, --help                         Show the program's help message and exit.`
 
-	args, err := docopt.Parse(usage, nil, true, "", true)
-	if err != nil {
-		log.Fatalf("Invalid arguments: %s", err)
-	}
+    args, err := docopt.Parse(usage, nil, true, "", true)
+    if err != nil {
+        log.Fatalf("Invalid arguments: %s", err)
+    }
 
-	conn, err := dbus.SessionBus()
-	if err != nil {
-		log.Fatalf("Could not get session bus: %s", err)
-	}
+    conn, err := dbus.SessionBus()
+    if err != nil {
+        log.Fatalf("Could not get session bus: %s", err)
+    }
 
-	obj := conn.Object(bus_name, bus_path)
+    obj := conn.Object(bus_name, bus_path)
 
-	var call *dbus.Call
+    var call *dbus.Call
 
-	switch {
-	case args["play"].(bool) == true:
-		call = obj.Call(bus_interface + ".Play", 0)
+    switch {
+    case args["play"].(bool) == true:
+        call = obj.Call(bus_interface + ".Play", 0)
 
-	case args["pause"].(bool) == true:
-		call = obj.Call(bus_interface + ".Pause", 0)
+    case args["pause"].(bool) == true:
+        call = obj.Call(bus_interface + ".Pause", 0)
 
-	case args["toggle"].(bool) == true:
-		call = obj.Call(bus_interface + ".Toggle", 0)
+    case args["toggle"].(bool) == true:
+        call = obj.Call(bus_interface + ".Toggle", 0)
 
-	case args["next"].(bool) == true:
-		call = obj.Call(bus_interface + ".Next", 0)
+    case args["next"].(bool) == true:
+        call = obj.Call(bus_interface + ".Next", 0)
 
-	case args["prev"].(bool) == true:
-		call = obj.Call(bus_interface + ".Prev", 0)
+    case args["prev"].(bool) == true:
+        call = obj.Call(bus_interface + ".Prev", 0)
 
-	case args["stop"].(bool) == true:
-		call = obj.Call(bus_interface + ".Stop", 0)
+    case args["stop"].(bool) == true:
+        call = obj.Call(bus_interface + ".Stop", 0)
 
-	case args["add"].(bool) == true:
-		for _, track := range args["<track>"].([]string) {
-			if _, err := os.Stat(track); err == nil {
-				track, _ = filepath.Abs(track)
-			}
+    case args["add"].(bool) == true:
+        for _, track := range args["<track>"].([]string) {
+            if _, err := os.Stat(track); err == nil {
+                track, _ = filepath.Abs(track)
+            }
 
-			call = obj.Call(bus_interface + ".AddTrack", 0, track)
-		}
+            call = obj.Call(bus_interface + ".AddTrack", 0, track)
+        }
 
-	case args["load"].(bool) == true:
-		file := args["<file>"].(string)
+    case args["load"].(bool) == true:
+        file := args["<file>"].(string)
 
-		if !args["--append"].(bool) {
-			call = obj.Call(bus_interface + ".Stop", 0)
-		}
+        if !args["--append"].(bool) {
+            call = obj.Call(bus_interface + ".Stop", 0)
+        }
 
-		call = obj.Call(bus_interface + ".AddList", 0, file)
+        call = obj.Call(bus_interface + ".AddList", 0, file)
 
-	case args["save"].(bool) == true:
-		log.Fatalf("Not implemented")
+    case args["save"].(bool) == true:
+        log.Fatalf("Not implemented")
 
-	case args["goto"].(bool) == true:
-		index, err := strconv.ParseUint(args["<index>"].(string), 10, 64)
-		if err != nil {
-			log.Fatalf("Could not parse arg: %s", err)
-		}
+    case args["goto"].(bool) == true:
+        index, err := strconv.ParseUint(args["<index>"].(string), 10, 64)
+        if err != nil {
+            log.Fatalf("Could not parse arg: %s", err)
+        }
 
-		call = obj.Call(bus_interface + ".GotoTrack", 0, index)
+        call = obj.Call(bus_interface + ".GotoTrack", 0, index)
 
-	case args["rm"].(bool) == true:
-		index, err := strconv.ParseInt(args["<index>"].(string), 10, 64)
-		if err != nil {
-			log.Fatalf("Could not parse arg: %s", err)
-		}
+    case args["rm"].(bool) == true:
+        index, err := strconv.ParseInt(args["<index>"].(string), 10, 64)
+        if err != nil {
+            log.Fatalf("Could not parse arg: %s", err)
+        }
 
-		call = obj.Call(bus_interface + ".RemoveTrack", 0, index)
+        call = obj.Call(bus_interface + ".RemoveTrack", 0, index)
 
-	case args["ls"].(bool) == true:
-		PrintList(obj)
-		os.Exit(0)
+    case args["ls"].(bool) == true:
+        PrintList(obj)
+        os.Exit(0)
 
-	case args["status"].(bool) == true:
-		PrintStatus(obj)
-		os.Exit(0)
+    case args["status"].(bool) == true:
+        PrintStatus(obj)
+        os.Exit(0)
 
-	case args["seek"].(bool) == true:
-		secs, err := strconv.ParseInt(args["<seconds>"].(string), 10, 64)
-		if err != nil {
-			log.Fatalf("Could not parse arg: %s", err)
-		}
+    case args["seek"].(bool) == true:
+        secs, err := strconv.ParseInt(args["<seconds>"].(string), 10, 64)
+        if err != nil {
+            log.Fatalf("Could not parse arg: %s", err)
+        }
 
-		call = obj.Call(bus_interface + ".Seek", 0, secs)
+        call = obj.Call(bus_interface + ".Seek", 0, secs)
 
-	case args["loop"].(bool) == true:
-		var mode string
+    case args["loop"].(bool) == true:
+        var mode string
 
-		switch {
-		case args["none"].(bool):
-			mode = "none"
+        switch {
+        case args["none"].(bool):
+            mode = "none"
 
-		case args["track"].(bool):
-			mode = "track"
+        case args["track"].(bool):
+            mode = "track"
 
-		case args["list"].(bool):
-			mode = "list"
+        case args["list"].(bool):
+            mode = "list"
 
-		case args["force"].(bool):
-			mode = "force"
-		}
+        case args["force"].(bool):
+            mode = "force"
+        }
 
-		call = obj.Call("org.freedesktop.DBus.Properties.Set", 0,
+        call = obj.Call("org.freedesktop.DBus.Properties.Set", 0,
                                 bus_interface, "LoopStatus",
                                 dbus.MakeVariant(mode))
 
-	case args["quit"].(bool) == true:
-		call = obj.Call(bus_interface + ".Quit", 0)
-	}
+    case args["quit"].(bool) == true:
+        call = obj.Call(bus_interface + ".Quit", 0)
+    }
 
-	if call.Err != nil {
-		log.Fatalf("Error calling method: %s", call.Err)
-	}
+    if call.Err != nil {
+        log.Fatalf("Error calling method: %s", call.Err)
+    }
 }
 
 func PrintList(obj *dbus.Object) {
-	files, err := obj.GetProperty(bus_interface + ".Tracks")
-	if err != nil {
-		log.Fatalf("Could not retrieve property: %s", err)
-	}
+    files, err := obj.GetProperty(bus_interface + ".Tracks")
+    if err != nil {
+        log.Fatalf("Could not retrieve property: %s", err)
+    }
 
-	current, _ := obj.GetProperty(bus_interface + ".TrackPath")
+    current, _ := obj.GetProperty(bus_interface + ".TrackPath")
 
-	for i, file := range files.Value().([]string) {
-		var prefix string
+    for i, file := range files.Value().([]string) {
+        var prefix string
 
-		if current.Value() != nil && file == current.Value().(string) {
-			prefix = "*"
-		} else {
-			prefix = " "
-		}
+        if current.Value() != nil && file == current.Value().(string) {
+            prefix = "*"
+        } else {
+            prefix = " "
+        }
 
-		log.Printf("%s %3d:%s\n", prefix, i, file)
-	}
+        log.Printf("%s %3d:%s\n", prefix, i, file)
+    }
 }
 
 func PrintStatus(obj *dbus.Object) {
-	title, err := obj.GetProperty(bus_interface + ".TrackTitle")
-	if err != nil {
-		log.Fatalf("Could not retrieve property: %s", err)
-	}
+    title, err := obj.GetProperty(bus_interface + ".TrackTitle")
+    if err != nil {
+        log.Fatalf("Could not retrieve property: %s", err)
+    }
 
-	state, err := obj.GetProperty(bus_interface + ".PlaybackStatus")
-	if err != nil {
-		log.Fatalf("Could not retrieve property: %s", err)
-	}
+    state, err := obj.GetProperty(bus_interface + ".PlaybackStatus")
+    if err != nil {
+        log.Fatalf("Could not retrieve property: %s", err)
+    }
 
-	metadata, err := obj.GetProperty(bus_interface + ".TrackMetadata")
-	if err != nil {
-		log.Fatalf("Could not retrieve property: %s", err)
-	}
+    metadata, err := obj.GetProperty(bus_interface + ".TrackMetadata")
+    if err != nil {
+        log.Fatalf("Could not retrieve property: %s", err)
+    }
 
-	length, err := obj.GetProperty(bus_interface + ".TrackLength")
-	if err != nil {
-		log.Fatalf("Could not retrieve property: %s", err)
-	}
+    length, err := obj.GetProperty(bus_interface + ".TrackLength")
+    if err != nil {
+        log.Fatalf("Could not retrieve property: %s", err)
+    }
 
-	var pos, percent float64
-	obj.Call(bus_interface + ".TrackPosition", 0).Store(&pos, &percent)
+    var pos, percent float64
+    obj.Call(bus_interface + ".TrackPosition", 0).Store(&pos, &percent)
 
-	loop, err := obj.GetProperty(bus_interface + ".LoopStatus")
-	if err != nil {
-		log.Fatalf("Could not retrieve property: %s", err)
-	}
+    loop, err := obj.GetProperty(bus_interface + ".LoopStatus")
+    if err != nil {
+        log.Fatalf("Could not retrieve property: %s", err)
+    }
 
-	log.Printf("Title: %s\n", title.Value().(string))
+    log.Printf("Title: %s\n", title.Value().(string))
 
-	log.Printf("Tags:\n")
+    log.Printf("Tags:\n")
 
-	for key, val := range metadata.Value().(map[string]string) {
-		log.Printf(" %s: %s\n", key, val)
-	}
+    for key, val := range metadata.Value().(map[string]string) {
+        log.Printf(" %s: %s\n", key, val)
+    }
 
-	pos_time := time.Duration(int64(pos)) * time.Second
-	len_time := time.Duration(int64(length.Value().(float64))) * time.Second
+    pos_time := time.Duration(int64(pos)) * time.Second
+    len_time := time.Duration(int64(length.Value().(float64))) * time.Second
 
-	log.Printf(
-		"[%s]   %s/%s   (%.f%%)\n",
-		state.Value().(string), pos_time.String(), len_time.String(),
-		percent,
-	)
+    log.Printf(
+        "[%s]   %s/%s   (%.f%%)\n",
+        state.Value().(string), pos_time.String(), len_time.String(),
+        percent,
+    )
 
-	log.Printf("loop: %s\n", loop.Value().(string))
+    log.Printf("loop: %s\n", loop.Value().(string))
 }

@@ -42,9 +42,9 @@ import "player"
 import "util"
 
 func main() {
-	log.SetFlags(0)
+    log.SetFlags(0)
 
-	usage := `Usage: grooved [options]
+    usage := `Usage: grooved [options]
 
 Options:
   -c <file>, --config <file>    Configuration file [default: ~/.config/grooved/config.ini].
@@ -52,54 +52,54 @@ Options:
   -V, --verbose                 Enable verbose log messages [default: false].
   -h, --help                    Show the program's help message and exit.`
 
-	args, err := docopt.Parse(usage, nil, true, "", false)
-	if err != nil {
-		log.Fatalf("Invalid arguments: %s", err)
-	}
+    args, err := docopt.Parse(usage, nil, true, "", false)
+    if err != nil {
+        log.Fatalf("Invalid arguments: %s", err)
+    }
 
-	cfg_file, err := util.ExpandUser(args["--config"].(string))
-	if err != nil {
-		log.Fatalf("Error expanding home directory: %s", err)
-	}
+    cfg_file, err := util.ExpandUser(args["--config"].(string))
+    if err != nil {
+        log.Fatalf("Error expanding home directory: %s", err)
+    }
 
-	cfg, err := ini.LoadFile(cfg_file)
-	if err != nil {
-		log.Fatalf("Error loading config file: %s", err)
-	}
+    cfg, err := ini.LoadFile(cfg_file)
+    if err != nil {
+        log.Fatalf("Error loading config file: %s", err)
+    }
 
-	player, err := player.Init(cfg)
-	if err != nil {
-		log.Fatalf("Error creating player: %s", err)
-	}
+    player, err := player.Init(cfg)
+    if err != nil {
+        log.Fatalf("Error creating player: %s", err)
+    }
 
-	if args["--list-outputs"].(bool) {
-		outputs, err := player.GetOutputList()
-		if err != nil {
-			log.Fatalf("Error retrieving property: %s", err)
-		}
+    if args["--list-outputs"].(bool) {
+        outputs, err := player.GetOutputList()
+        if err != nil {
+            log.Fatalf("Error retrieving property: %s", err)
+        }
 
-		sort.Strings(outputs)
+        sort.Strings(outputs)
 
-		for _, output := range outputs {
-			log.Println(output)
-		}
+        for _, output := range outputs {
+            log.Println(output)
+        }
 
-		os.Exit(0);
-	}
+        os.Exit(0);
+    }
 
-	if args["--verbose"].(bool) {
-		player.Verbose = true
-	}
+    if args["--verbose"].(bool) {
+        player.Verbose = true
+    }
 
-	err = bus.Run(player)
-	if err != nil {
-		log.Fatalf("Error creating dbus service: %s", err)
-	}
+    err = bus.Run(player)
+    if err != nil {
+        log.Fatalf("Error creating dbus service: %s", err)
+    }
 
-	err = player.Run()
-	if err != nil {
-		log.Fatalf("Error running player: %s", err)
-	}
+    err = player.Run()
+    if err != nil {
+        log.Fatalf("Error running player: %s", err)
+    }
 
-	player.Wait.Wait()
+    player.Wait.Wait()
 }

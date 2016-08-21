@@ -38,25 +38,25 @@ import "fmt"
 const random_query = "SELECT path FROM items ORDER BY RANDOM() LIMIT 1"
 
 func Random(library string) (string, error) {
-	db, err := sql.Open("sqlite3", library)
-	if err != nil {
-		return "", fmt.Errorf("Could not open library: %s", err)
-	}
-	defer db.Close()
+    db, err := sql.Open("sqlite3", library)
+    if err != nil {
+        return "", fmt.Errorf("Could not open library: %s", err)
+    }
+    defer db.Close()
 
-	rows, err := db.Query(random_query)
-	if err != nil {
-		return "", fmt.Errorf("Could not execute query: %s", err)
-	}
-	defer rows.Close()
+    rows, err := db.Query(random_query)
+    if err != nil {
+        return "", fmt.Errorf("Could not execute query: %s", err)
+    }
+    defer rows.Close()
 
-	for rows.Next() {
-		var path string
-		rows.Scan(&path)
+    for rows.Next() {
+        var path string
+        rows.Scan(&path)
 
-		return path, nil
-	}
-	rows.Close()
+        return path, nil
+    }
+    rows.Close()
 
-	return "", fmt.Errorf("Empty database")
+    return "", fmt.Errorf("Empty database")
 }

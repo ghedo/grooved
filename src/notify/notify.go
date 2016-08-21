@@ -35,25 +35,25 @@ import "fmt"
 import "github.com/godbus/dbus"
 
 func Notify(title, body, icon string) error {
-	conn, err := dbus.SessionBus()
-	if err != nil {
-		return fmt.Errorf("Could not get session bus: %s", err)
-	}
+    conn, err := dbus.SessionBus()
+    if err != nil {
+        return fmt.Errorf("Could not get session bus: %s", err)
+    }
 
-	obj := conn.Object(
-		"org.freedesktop.Notifications",
-		"/org/freedesktop/Notifications",
-	)
+    obj := conn.Object(
+        "org.freedesktop.Notifications",
+        "/org/freedesktop/Notifications",
+    )
 
-	call := obj.Call(
-		"org.freedesktop.Notifications.Notify", 0,
-		"grooved", uint32(1), icon, title, body, []string{},
-		map[string]dbus.Variant{}, int32(-1),
-	)
+    call := obj.Call(
+        "org.freedesktop.Notifications.Notify", 0,
+        "grooved", uint32(1), icon, title, body, []string{},
+        map[string]dbus.Variant{}, int32(-1),
+    )
 
-	if call.Err != nil {
-		return fmt.Errorf("Could not send notifycation: %s", call.Err)
-	}
+    if call.Err != nil {
+        return fmt.Errorf("Could not send notifycation: %s", call.Err)
+    }
 
-	return nil
+    return nil
 }

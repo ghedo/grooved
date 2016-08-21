@@ -150,256 +150,256 @@ const bus_interface_introspect = "org.freedesktop.DBus.Introspectable"
 var bus *Bus
 
 type Bus struct {
-	player *player.Player
-	props  *prop.Properties
+    player *player.Player
+    props  *prop.Properties
 }
 
 func (b *Bus) TrackPosition() (float64, float64, *dbus.Error) {
-	time, err := b.player.GetTrackPosition(false)
-	if err != nil {
-		return 0, 0, dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    time, err := b.player.GetTrackPosition(false)
+    if err != nil {
+        return 0, 0, dbus.NewError("io.github.ghedo.grooved.Error",
+                                   []interface{}{err.Error()})
+    }
 
-	percent, err := b.player.GetTrackPosition(true)
-	if err != nil {
-		return 0, 0, dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    percent, err := b.player.GetTrackPosition(true)
+    if err != nil {
+        return 0, 0, dbus.NewError("io.github.ghedo.grooved.Error",
+                                   []interface{}{err.Error()})
+    }
 
-	return time, percent, nil
+    return time, percent, nil
 }
 
 func (b *Bus) Play() *dbus.Error {
-	err := b.player.Play()
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.Play()
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) Pause() *dbus.Error {
-	err := b.player.Pause()
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.Pause()
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) Toggle() *dbus.Error {
-	err := b.player.Toggle()
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.Toggle()
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) Next() *dbus.Error {
-	err := b.player.Next()
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.Next()
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) Prev() *dbus.Error {
-	err := b.player.Prev()
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.Prev()
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) Stop() *dbus.Error {
-	err := b.player.Stop()
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.Stop()
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) Seek(seconds int64) *dbus.Error {
-	err := b.player.Seek(seconds)
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.Seek(seconds)
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) AddTrack(path string) *dbus.Error {
-	err := b.player.AddTrack(path, false)
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.AddTrack(path, false)
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) AddList(path string) *dbus.Error {
-	err := b.player.AddList(path)
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.AddList(path)
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) GotoTrack(index uint64) *dbus.Error {
-	err := b.player.GotoTrack(int64(index))
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.GotoTrack(int64(index))
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) RemoveTrack(index int64) *dbus.Error {
-	err := b.player.RemoveTrack(int64(index))
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.RemoveTrack(int64(index))
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func (b *Bus) Quit() *dbus.Error {
-	err := b.player.Quit()
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := b.player.Quit()
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func HandleStatusChange() {
-	status := bus.player.Status.String()
-	bus.props.SetMust(bus_interface_player, "PlaybackStatus", status)
+    status := bus.player.Status.String()
+    bus.props.SetMust(bus_interface_player, "PlaybackStatus", status)
 }
 
 func HandleTrackChange() {
-	metadata, _ := bus.player.GetTrackMetadata()
-	bus.props.SetMust(bus_interface_player, "TrackMetadata", metadata)
+    metadata, _ := bus.player.GetTrackMetadata()
+    bus.props.SetMust(bus_interface_player, "TrackMetadata", metadata)
 
-	path, _ := bus.player.GetTrackPath()
-	bus.props.SetMust(bus_interface_player, "TrackPath", path)
+    path, _ := bus.player.GetTrackPath()
+    bus.props.SetMust(bus_interface_player, "TrackPath", path)
 
-	length, _ := bus.player.GetTrackLength()
-	bus.props.SetMust(bus_interface_player, "TrackLength", length)
+    length, _ := bus.player.GetTrackLength()
+    bus.props.SetMust(bus_interface_player, "TrackLength", length)
 
-	title, _ := bus.player.GetTrackTitle()
-	bus.props.SetMust(bus_interface_player, "TrackTitle", title)
+    title, _ := bus.player.GetTrackTitle()
+    bus.props.SetMust(bus_interface_player, "TrackTitle", title)
 }
 
 func HandleTracksChange() {
-	files, _ := bus.player.List()
-	bus.props.SetMust(bus_interface_player, "Tracks", files)
+    files, _ := bus.player.List()
+    bus.props.SetMust(bus_interface_player, "Tracks", files)
 }
 
 func HandleVolumeChange() {
-	vol, _ := bus.player.GetProperty("volume")
-	bus.props.SetMust(bus_interface_player, "Volume", vol.(float64))
+    vol, _ := bus.player.GetProperty("volume")
+    bus.props.SetMust(bus_interface_player, "Volume", vol.(float64))
 }
 
 func SetLoopStatus(c *prop.Change) *dbus.Error {
-	bus.player.SetLoopStatus(c.Value.(string))
-	return nil
+    bus.player.SetLoopStatus(c.Value.(string))
+    return nil
 }
 
 func SetVolume(c *prop.Change) *dbus.Error {
-	err := bus.player.SetProperty("volume", c.Value)
-	if err != nil {
-		return dbus.NewError("io.github.ghedo.grooved.Error",
-		                     []interface{}{err.Error()})
-	}
+    err := bus.player.SetProperty("volume", c.Value)
+    if err != nil {
+        return dbus.NewError("io.github.ghedo.grooved.Error",
+                             []interface{}{err.Error()})
+    }
 
-	return nil
+    return nil
 }
 
 func Run(p *player.Player) error {
-	conn, err := dbus.SessionBus()
-	if err != nil {
-		return fmt.Errorf("Could not get session bus: %s", err)
-	}
+    conn, err := dbus.SessionBus()
+    if err != nil {
+        return fmt.Errorf("Could not get session bus: %s", err)
+    }
 
-	reply, err := conn.RequestName(bus_name, dbus.NameFlagDoNotQueue)
-	if err != nil {
-		return fmt.Errorf("Could not request name: %s", err)
-	}
+    reply, err := conn.RequestName(bus_name, dbus.NameFlagDoNotQueue)
+    if err != nil {
+        return fmt.Errorf("Could not request name: %s", err)
+    }
 
-	if reply != dbus.RequestNameReplyPrimaryOwner {
-		return fmt.Errorf("Name already take")
-	}
+    if reply != dbus.RequestNameReplyPrimaryOwner {
+        return fmt.Errorf("Name already take")
+    }
 
-	bus_props_spec := map[string]map[string]*prop.Prop{
-		bus_interface_player: {
-			"PlaybackStatus": {
-				p.Status.String(), false,
-				prop.EmitTrue, nil,
-			},
+    bus_props_spec := map[string]map[string]*prop.Prop{
+        bus_interface_player: {
+            "PlaybackStatus": {
+                p.Status.String(), false,
+                prop.EmitTrue, nil,
+            },
 
-			"LoopStatus": {
-				"none", true, prop.EmitTrue, SetLoopStatus,
-			},
+            "LoopStatus": {
+                "none", true, prop.EmitTrue, SetLoopStatus,
+            },
 
-			"TrackMetadata": {
-				map[string]string{}, false, prop.EmitTrue, nil,
-			},
+            "TrackMetadata": {
+                map[string]string{}, false, prop.EmitTrue, nil,
+            },
 
-			"TrackPath": {
-				"", false, prop.EmitTrue, nil,
-			},
+            "TrackPath": {
+                "", false, prop.EmitTrue, nil,
+            },
 
-			"TrackLength": {
-				float64(0), false, prop.EmitTrue, nil,
-			},
+            "TrackLength": {
+                float64(0), false, prop.EmitTrue, nil,
+            },
 
-			"TrackTitle": {
-				"", false, prop.EmitTrue, nil,
-			},
+            "TrackTitle": {
+                "", false, prop.EmitTrue, nil,
+            },
 
-			"Tracks": {
-				[]string{}, false, prop.EmitTrue, nil,
-			},
+            "Tracks": {
+                []string{}, false, prop.EmitTrue, nil,
+            },
 
-			"Volume": {
-				0.0, true, prop.EmitTrue, SetVolume,
-			},
-		},
-	}
+            "Volume": {
+                0.0, true, prop.EmitTrue, SetVolume,
+            },
+        },
+    }
 
-	bus = &Bus{
-		player: p,
-		props:  prop.New(conn, bus_path, bus_props_spec),
-	}
+    bus = &Bus{
+        player: p,
+        props:  prop.New(conn, bus_path, bus_props_spec),
+    }
 
-	conn.Export(bus, bus_path, bus_interface_player)
+    conn.Export(bus, bus_path, bus_interface_player)
 
-	p.HandleStatusChange = HandleStatusChange
-	p.HandleTrackChange  = HandleTrackChange
-	p.HandleTracksChange = HandleTracksChange
-	p.HandleVolumeChange = HandleVolumeChange
+    p.HandleStatusChange = HandleStatusChange
+    p.HandleTrackChange  = HandleTrackChange
+    p.HandleTracksChange = HandleTracksChange
+    p.HandleVolumeChange = HandleVolumeChange
 
-	introspect := introspect.Introspectable(bus_introspection)
-	conn.Export(introspect, bus_path, bus_interface_introspect)
+    introspect := introspect.Introspectable(bus_introspection)
+    conn.Export(introspect, bus_path, bus_interface_introspect)
 
-	return nil
+    return nil
 }
