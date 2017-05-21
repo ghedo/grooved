@@ -373,11 +373,6 @@ func Init(cfg ini.File) (*Player, error) {
         return nil, fmt.Errorf("Could not set option 'no-sub': %s", err)
     }
 
-    err = p.SetOptionString("no-softvol", "")
-    if err != nil {
-        return nil, fmt.Errorf("Could not set option 'no-softvol': %s", err)
-    }
-
     if cfg["default"]["cache"] != "" {
         p.SetOptionString("cache", cfg["default"]["cache"])
     }
