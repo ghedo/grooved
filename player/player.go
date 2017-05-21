@@ -348,74 +348,56 @@ func Init(cfg ini.File) (*Player, error) {
         return nil, fmt.Errorf("Could not create player")
     }
 
-    err := p.SetOptionString("audio-client-name", "grooved")
-    if err != nil {
-        return nil, fmt.Errorf("Could not set option 'audio-client-name': %s", err)
+    cfg_map := map[string]string {
+        "audio-client-name": "grooved",
+        "title":             "${?media-title:${media-title}}${!media-title:No file.}",
+        "no-config":         "",
+        "no-sub":            "",
+        "no-video":          "",
     }
 
-    err = p.SetOptionString("title", "${?media-title:${media-title}}${!media-title:No file.}")
-    if err != nil {
-        return nil, fmt.Errorf("Could not set option 'title': %s", err)
+    for k, v := range cfg["default"] {
+        cfg_map[k] = v
     }
 
-    err = p.SetOptionString("no-config", "")
-    if err != nil {
-        return nil, fmt.Errorf("Could not set option 'no-config': %s", err)
-    }
+    var err error
+    for k, v := range cfg_map {
+        switch (k) {
+        case "filters":
+            /* skip */
 
-    err = p.SetOptionString("no-video", "")
-    if err != nil {
-        return nil, fmt.Errorf("Could not set option 'no-video': %s", err)
-    }
+        case "library":
+            p.library, err = util.ExpandUser(cfg["default"]["library"])
+            if err != nil {
+                return nil, fmt.Errorf("Could not set option '%s': %s", k, err)
+            }
 
-    err = p.SetOptionString("no-sub", "")
-    if err != nil {
-        return nil, fmt.Errorf("Could not set option 'no-sub': %s", err)
-    }
+        case "notify":
+            if v == "yes" {
+                p.notify = true
+            }
 
-    if cfg["default"]["cache"] != "" {
-        p.SetOptionString("cache", cfg["default"]["cache"])
-    }
+        case "replaygain":
+            rgain_af := fmt.Sprintf("volume=replaygain-%s", v)
+            if cfg["default"]["filters"] != "" {
+                cfg["default"]["filters"] += "," + rgain_af
+            } else {
+                cfg["default"]["filters"] = rgain_af
+            }
 
-    if cfg["default"]["gapless"] != "" {
-        p.SetOptionString("gapless-audio", cfg["default"]["gapless"])
-    }
+        case "verbose":
+            p.Verbose = true
 
-    p.library, _ = util.ExpandUser(cfg["default"]["library"])
-
-    if cfg["default"]["notify"] == "yes" {
-        p.notify = true
-    } else {
-        p.notify = false
-    }
-
-    if cfg["default"]["replaygain"] != "" {
-        rgain_af := fmt.Sprintf("volume=replaygain-%s", cfg["default"]["replaygain"])
-        if cfg["default"]["filters"] != "" {
-            cfg["default"]["filters"] += "," + rgain_af
-        } else {
-            cfg["default"]["filters"] = rgain_af
+        default:
+            err = p.SetOptionString(k, v)
+            if err != nil {
+                return nil, fmt.Errorf("Could not set option '%s': %s", k, err)
+            }
         }
-    }
-
-    if cfg["default"]["output"] != "" {
-        p.SetOptionString("ao", cfg["default"]["output"])
-    }
-
-    if cfg["default"]["ytdl"] != "" {
-        p.SetOptionString("ytdl", cfg["default"]["ytdl"])
-    }
-
-    if cfg["default"]["verbose"] != "" {
-        p.Verbose = true
     }
 
     if cfg["default"]["filters"] != "" {
         p.SetOptionString("af", cfg["default"]["filters"])
-    }
-
-    if cfg["default"]["scripts"] != "" {
-        p.SetOptionString("lua", cfg["default"]["scripts"])
     }
 
     C.mpv_request_log_messages(p.handle, C.CString("warn"))
