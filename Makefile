@@ -27,8 +27,3 @@ html:
 
 release-all: BUILDTAGS=release
 release-all: all
-
-clean:
-	go clean -i main/grooved main/groovectl bus library player
-
-.PHONY: all grooved deps clean
