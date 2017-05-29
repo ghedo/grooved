@@ -123,4 +123,4 @@ See COPYING_ for the license.
 
 .. _grooved: http://ghedo.github.io/grooved/grooved.html
 .. _groovectl: http://ghedo.github.io/grooved/groovectl.html
-.. _COPYING: https://github.com/ghedo/pflask/tree/master/COPYING
+.. _COPYING: https://github.com/ghedo/grooved/tree/master/COPYING
