@@ -17,15 +17,15 @@
         VERSION:     '0.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="grooved 0.3 documentation" href="index.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -63,19 +63,19 @@ better once you let other people do the hard work.</p>
 <h2>OPTIONS<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
 <dl class="option">
 <dt id="cmdoption-grooved-c">
-<span id="cmdoption-grooved--config"></span><code class="descname">-c</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--config</code><code class="descclassname">=&lt;file&gt;</code><a class="headerlink" href="#cmdoption-grooved-c" title="Permalink to this definition">¶</a></dt>
+<code class="descname">-c</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--config</code><code class="descclassname">=&lt;file&gt;</code><a class="headerlink" href="#cmdoption-grooved-c" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>Specify the configuration file. (default: <cite>~/.config/grooved/config.ini</cite>)</p>
 <dl class="option">
-<dt id="cmdoption-grooved--list-outputs">
-<code class="descname">--list-outputs</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-grooved--list-outputs" title="Permalink to this definition">¶</a></dt>
+<dt id="cmdoption-grooved-list-outputs">
+<code class="descname">--list-outputs</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-grooved-list-outputs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>List supported outputs.</p>
 <dl class="option">
-<dt id="cmdoption-grooved-V">
-<span id="cmdoption-grooved--verbose"></span><code class="descname">-V</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--verbose</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-grooved-V" title="Permalink to this definition">¶</a></dt>
+<dt id="cmdoption-grooved-v">
+<code class="descname">-V</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--verbose</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-grooved-v" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>Enable verbose log messages.</p>
@@ -95,12 +95,6 @@ better once you let other people do the hard work.</p>
 <dd></dd></dl>
 
 <p>Send desktop notifications on track change.</p>
-<dl class="option">
-<dt id="cmdoption-grooved-arg-replaygain">
-<code class="descname">replaygain</code><code class="descclassname">=&lt;track|album&gt;</code><a class="headerlink" href="#cmdoption-grooved-arg-replaygain" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<p>Adjust volume gain according to ReplayGain tags. (optional)</p>
 <dl class="option">
 <dt id="cmdoption-grooved-arg-verbose">
 <code class="descname">verbose</code><code class="descclassname">=&lt;yes|no&gt;</code><a class="headerlink" href="#cmdoption-grooved-arg-verbose" title="Permalink to this definition">¶</a></dt>
@@ -144,7 +138,7 @@ not all values make sense as part of grooved&#8217;s configuration.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/grooved.txt"
+      <li><a href="_sources/grooved.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -173,7 +167,7 @@ not all values make sense as part of grooved&#8217;s configuration.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014, Alessandro Ghedini.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
     </div>
   </body>
 </html>
