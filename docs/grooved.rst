@@ -49,10 +49,6 @@ The path to beets' database.
 
 Send desktop notifications on track change.
 
-.. option:: replaygain=<track|album>
-
-Adjust volume gain according to ReplayGain tags. (optional)
-
 .. option:: verbose=<yes|no>
 
 Whether to enable verbose output. (optional)

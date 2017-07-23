@@ -377,14 +377,6 @@ func Init(cfg ini.File) (*Player, error) {
                 p.notify = true
             }
 
-        case "replaygain":
-            rgain_af := fmt.Sprintf("volume=replaygain-%s", v)
-            if cfg["default"]["filters"] != "" {
-                cfg["default"]["filters"] += "," + rgain_af
-            } else {
-                cfg["default"]["filters"] = rgain_af
-            }
-
         case "verbose":
             p.Verbose = true
 
