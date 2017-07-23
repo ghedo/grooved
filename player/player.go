@@ -351,9 +351,9 @@ func Init(cfg ini.File) (*Player, error) {
     cfg_map := map[string]string {
         "audio-client-name": "grooved",
         "title":             "${?media-title:${media-title}}${!media-title:No file.}",
-        "no-config":         "",
-        "no-sub":            "",
-        "no-video":          "",
+        "config":            "no",
+        "sub":               "no",
+        "video":             "no",
     }
 
     for k, v := range cfg["default"] {
